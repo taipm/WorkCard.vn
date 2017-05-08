@@ -1,0 +1,107 @@
+﻿@using CafeT.Text
+@using CafeT.Time
+@using System.Globalization
+
+@model Web.Models.WorkIssue
+
+@{
+    ViewBag.Title = "Details - "  + Model.Title;
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <h4>@Model.Title 
+            <span class="label label-danger">@Model.Status</span>
+        </h4>
+        <p>
+            @Html.Raw(Model.Description)
+        </p>
+        <p>
+            @Html.Raw(Model.Content)
+        </p>
+        <div id="Update"></div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dd>
+                <h4>HasTags: </h4>
+                @foreach (var _hasTag in Model.HasTags)
+                {
+                    @Html.Raw(_hasTag + "; ")
+                }
+            </dd>
+            <dd>
+                <h4>Tags: </h4>
+                @foreach (var _tag in Model.Tags)
+            {
+                    @Html.Raw(_tag + "; ")
+                }
+            </dd>
+            @if (Model.Content.GetTimes() != null && Model.Content.GetTimes().Count() > 0)
+            {
+                <dd>
+                    <h4>Times: </h4>
+                    @foreach (var _time in Model.Content.GetTimes())
+                {
+                        @Html.Raw(_time + "; ")
+                    }
+                </dd>
+                <dd>
+                    <h4>Times with sorted: </h4>
+                    @foreach (var _time in Model.Content.GetTimes().ToList().SortAscending())
+                {
+                        @Html.Raw(_time.ToString("dd/MM/yyyy", new CultureInfo("en-GB")) + "; ") <br />
+                    }
+                </dd>
+                <dd>
+                    <h4>LaterNearest: </h4>
+                    @{
+                        var _start = Model.Content.GetTimes().ToList().LaterNearest();
+                        string _startStr = _start.Value.ToString("dd/MM/yyyy", new CultureInfo("en-GB"));
+                        @Html.Raw(_startStr + "; ") <br />
+                        if (_start != null)
+                        {
+                            @Ajax.ActionLink("Work on " + _startStr, "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = _start },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Update",
+                                HttpMethod = "Post",
+                            }, null)
+                        }
+                    }
+                </dd>
+                        }
+
+        </dl>
+        <p>
+            @Html.Partial("_IssueMenu", Model)
+        </p>
+    </div>
+    <div class="col-md-4">
+        Words: @Model.Content.GetCountWords()
+        <br />
+        Sentences: @Model.Content.GetSentences().Count()
+        <br />
+        Emails: @Model.Content.GetEmails().Count()
+        <br />
+        Links: @Model.Content.GetUrls().Count();
+        <br />
+        @if (Model.Content.GetTimes() != null && Model.Content.GetTimes().Length > 0)
+        {
+            <h4>Times: </h4>
+            foreach (var _time in Model.Content.GetTimes())
+            {
+                @Html.Raw(_time + "; ")
+            }
+        }
+    </div>
+</div>
+
+@*<p>
+    @if (Model.IsDaily.HasValue && Model.IsDaily.Value == true)
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+    }
+    @Html.Raw(" | ")
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>*@

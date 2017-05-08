@@ -1,0 +1,65 @@
+﻿@using Web.Helpers
+@model IEnumerable<Web.Models.WorkIssue>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<div class="row">
+    Total (TimeTodo): @Model.ToList().TotalMinutesTimeTodo() (minutes); 
+    @Model.ToList().TotalHoursTimeTodo(); 
+    @Model.ToList().TotalDaysTimeTodo()
+    <hr />
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h3>Today (@Model.Where(t=>t.IsToday()).Count())</h3>
+        <h4>Làm trong: (@Model.Where(t => t.IsToday()).ToList().TotalHoursTimeTodo() giờ)</h4>
+        <hr />
+        <p>
+            @foreach (var item in Model)
+            {
+                if (item.IsToday() && item.Status != Web.Models.IssueStatus.Done)
+                {
+                    @Html.Partial("_IssueItem", item)
+                }
+            }
+        </p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h3>Tomorrow (@Model.Where(t => t.IsTomorrow()).Count())</h3>
+        <hr />
+        <p>
+            @foreach (var item in Model)
+            {
+                if (item.IsTomorrow() && item.Status != Web.Models.IssueStatus.Done)
+                {
+                    @Html.Partial("_IssueItem", item)
+                }
+            }
+           </p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h3>Next</h3>
+        <hr />
+        <p>
+            @foreach (var item in Model)
+            {
+                if (item.IsExpired())
+                {
+                    @Html.Partial("_IssueItem", item)
+                }
+                if (!item.IsStandard() && item.Status != Web.Models.IssueStatus.Done)
+                {
+                    @Html.Partial("_IssueItem", item)
+                }
+            }
+        </p>
+    </div>
+</div>

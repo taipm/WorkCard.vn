@@ -1,0 +1,64 @@
+﻿@model Web.Models.WorkIssue
+
+<div class="row">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <p>
+            @if (Model.IsDaily.HasValue && Model.IsDaily.Value == true)
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+            }
+            @Html.Raw(" | ")
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+            @Html.ActionLink("Back to List", "Index")
+            @Html.Raw(" | ")
+            @Ajax.ActionLink("Set Today ", "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = DateTime.Now },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Update-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, null)
+            @Html.Raw(" | ")
+            @Ajax.ActionLink("Set Tomorrow ", "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = DateTime.Now.AddDays(1) },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Update-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, null)
+            @Html.Raw(" | ")
+
+            @if (Model.Status != Web.Models.IssueStatus.Done)
+            {
+                @Ajax.ActionLink("Mark Done ", "MarkAsDone", "WorkIssues", new { Id = Model.Id },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Status-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, null)
+            }
+            @Html.Raw(" | ")
+            @if (Model.Status != Web.Models.IssueStatus.Finished)
+            {
+                @Ajax.ActionLink("Mark Finished ", "MarkAsFinished", "WorkIssues", new { Id = Model.Id },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Status-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, null)
+            }
+            @Html.Raw(" | ")
+            @if (Model.Status != Web.Models.IssueStatus.Finished)
+            {
+                @Ajax.ActionLink("Email ", "EmailNotify", "WorkIssues", new { Id = Model.Id },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Status-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, null)
+            }
+        </p>
+    }
+
+    <div id="Update-@Model.Id"></div>
+    <div id="Status-@Model.Id"></div>
+</div>

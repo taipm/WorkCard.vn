@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Web.Models.WorkIssue>
+
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        @Html.Partial("_IssueItem", item)
+    }
+</div>
+
+@*<div class="row">
+    <div class="col-md-4">
+        <h3>Today (@Model.Where(t=>t.IsToday()).Count())</h3>
+        <p>
+            @foreach (var item in Model)
+            {
+                if (item.IsToday())
+                {
+                    @Html.Partial("_IssueItem", item)
+                }
+            }
+        </p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h3>Tomorrow (@Model.Where(t => t.IsTomorrow()).Count())</h3>
+        <p>
+            @foreach (var item in Model)
+            {
+                if (item.IsTomorrow())
+                {
+                    @Html.Partial("_IssueItem", item)
+                }
+            }
+           </p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Web Hosting</h2>
+        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    </div>
+</div>*@
