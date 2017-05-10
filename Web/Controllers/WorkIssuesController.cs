@@ -140,6 +140,27 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize]
+        //[ValidateInput(false)]
+        //[ValidateAntiForgeryToken]
+        public async Task<ActionResult> SetWorkOnRepeat(Guid id, RepeatType repeat)
+        {
+            WorkIssue workIssue = _unitOfWorkAsync.RepositoryAsync<WorkIssue>()
+                .Query().Select().Where(t => t.Id == id).FirstOrDefault();
+
+            workIssue.UpdatedDate = DateTime.Now;
+            workIssue.UpdatedBy = User.Identity.Name;
+            workIssue.Repeat = repeat;
+            db.Entry(workIssue).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_WorkTime", repeat);
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Authorize]
         public async Task<ActionResult> EmailNotify(Guid id)
         {
             EmailService _emailService = new EmailService();

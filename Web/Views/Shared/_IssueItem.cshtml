@@ -5,35 +5,9 @@
 @model Web.Models.WorkIssue
 
 <div>
-    <h4>
-        @if (Model.Title != null)
-        {
-            @Html.ActionLink(Model.Title, "Details", new { id = Model.Id }, null)
-            <span class="label label-danger">@Model.Status</span>
-            if (Model.End.HasValue)
-            {
-                <span class="label label-default">@Model.End.Value.ToShortDateString()</span>
-            }
-        }
-        else
-        {
-            @Html.Raw(Model.Description.GetSentences().FirstOrDefault())
-        }
-        @if(Model.TimeToDo.HasValue)
-        {
-            @Html.Raw(Model.TimeToDo.Value.ToString() + " Min")
-        }
-    </h4>
-    @*<div class="row">
-        <div class="panel panel-danger">
-            @Html.Raw(Model.GetMessage())
-        </div>
-    </div>*@
+    @Html.Partial("_IssueTitleItem", Model)
     <p>
         @Html.Raw(Model.Description)
-    </p>
-    <p>
-        @Html.Raw(Model.Content)
     </p>
     <p>
         @if (Model.HasTags != null && Model.HasTags.Count > 0)
@@ -58,6 +32,4 @@
     <p>
         @Html.Partial("_IssueMenu")
     </p>
-    
-    <hr />
 </div>

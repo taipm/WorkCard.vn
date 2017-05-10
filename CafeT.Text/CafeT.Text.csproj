@@ -51,6 +51,7 @@
     <Compile Include="NumberOnText.cs" />
     <Compile Include="SentencesHelper.cs" />
     <Compile Include="SmartText.cs" />
+    <Compile Include="TimeOnText.cs" />
     <Compile Include="ValidateStringHelper.cs" />
     <Compile Include="ExtractStringHelper.cs" />
     <Compile Include="ObjectWrapper.cs" />

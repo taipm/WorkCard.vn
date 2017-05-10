@@ -9,6 +9,17 @@ namespace CafeT.Text
 {
     public static class EmailOnText
     {
+        public static bool HasEmail(this string str)
+        {
+            if (str.GetEmails().Count() > 0) return true;
+            return false;
+        }
+
+        public static int CountEmails(this string str)
+        {
+            return str.GetEmails().Count();
+        }
+
         public static string[] GetEmails(this string str)
         {
             if (str == null || str.Length <= 0) return null;

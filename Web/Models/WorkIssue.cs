@@ -10,15 +10,30 @@ using CafeT.Html;
 
 namespace Web.Models
 {
-    
-
     public enum IssueStatus
     {
         New = 0,
         Doing = 1,
         Finished = 2,
-        Done = 3
+        Done = 3,
+        Testing = 4,
+        ReOpen = 5
     }
+
+    public enum RepeatType
+    {
+        None = 0,
+        Daily = 1,
+        Weekly = 2,
+        Monthly = 3,
+        Quaterly = 4,
+        Yearly = 5
+    }
+
+    //public struct IssueMessage
+    //{
+    //    string 
+    //}
 
     public class WorkIssue:BaseObject
     {
@@ -34,14 +49,7 @@ namespace Web.Models
 
         public IssueStatus Status { set; get; } = IssueStatus.New;
 
-        //public bool? IsFinished { set; get; } = false;
-        //public bool? IsDone { set; get; } = false;
-
-        public bool? IsDaily { set; get; } = false;
-        public bool? IsWeekly { set; get; } = false;
-        public bool? IsMonthly { set; get; } = false;
-        public bool? IsQuaterly { set; get; }
-        public bool? IsYearly { set; get; } = false;
+        public RepeatType Repeat { set; get; } = RepeatType.None;
 
         public Guid? ProjectId { set; get; }
         public virtual IEnumerable<Comment> Comments { set; get; }
@@ -73,10 +81,16 @@ namespace Web.Models
 
         public bool IsExpired()
         {
-            bool _TimeExpiredCondition = (End!=null) && (End.HasValue && End.Value.DayOfYear < DateTime.Now.DayOfYear)
-                && (End.Value.Year <= DateTime.Now.Year);
-            if (this.Status != IssueStatus.Done && _TimeExpiredCondition)
-                return true;
+           if(this.Status != IssueStatus.Done)
+            {
+                if (this.End.HasValue && this.End.Value.IsPrevDay(0)) return true;
+            }
+            return false;
+        }
+
+        public bool IsNoTime()
+        {
+            if (End == null || !End.HasValue) return true;
             return false;
         }
 
@@ -85,28 +99,41 @@ namespace Web.Models
             if (End != null && End.HasValue && End.Value.IsToday()) return true;
             return false;
         }
-
+        public bool IsWeekend()
+        {
+            if (End != null && End.HasValue && End.Value.IsToday()) return true;
+            return false;
+        }
         public bool IsTomorrow()
         {
-            if (End.HasValue && (End.Value.DayOfYear == DateTime.Now.DayOfYear + 1) && End.Value.Year == DateTime.Now.Year)
+            if (End.HasValue && End.Value.IsTomorrow())
                 return true;
             return false;
         }
-
+        public bool IsNextDay(int n)
+        {
+            if (End.HasValue && End.Value.IsNextDay(n))
+                return true;
+            return false;
+        }
+        public bool IsPrevDay(int n)
+        {
+            if (End.HasValue && End.Value.Date.AddDays(n) <= DateTime.Now.Date)
+                return true;
+            return false;
+        }
         public bool IsYesterday()
         {
-            if (End.HasValue && (End.Value.DayOfYear == DateTime.Now.DayOfYear -1) && End.Value.Year == DateTime.Now.Year)
+            if (End.HasValue && End.Value.IsYesterday())
                 return true;
             return false;
         }
         
         public bool IsRepeat()
         {
-            if (IsDaily.HasValue && IsDaily.Value == true) return true;
-            if (IsWeekly.HasValue && IsWeekly.Value == true) return true;
-            if (IsMonthly.HasValue && IsMonthly.Value == true) return true;
-            if (IsYearly.HasValue && IsYearly.Value == true) return true;
-            return false;
+            if(this.Repeat == RepeatType.None)
+                return false;
+            return true;
         }
 
         public void AutoAdjust()
@@ -120,23 +147,23 @@ namespace Web.Models
             
             if(Title.ToLower().Contains("[daily]"))
             {
-                IsDaily = true;
+                Repeat = RepeatType.Daily;
             }
             if (Title.ToLower().Contains("[weekly]"))
             {
-                IsWeekly = true;
+                Repeat = RepeatType.Weekly;
             }
             if (Title.ToLower().Contains("[monthly]"))
             {
-                IsMonthly = true;
+                Repeat = RepeatType.Monthly;
             }
             if (Title.ToLower().Contains("[quaterly]"))
             {
-                IsQuaterly = true;
+                Repeat = RepeatType.Quaterly;
             }
             if (Title.ToLower().Contains("[yearly]"))
             {
-                IsYearly = true;
+                Repeat = RepeatType.Yearly;
             }
 
             //Members
@@ -169,41 +196,54 @@ namespace Web.Models
                 }
             }
 
-            //BuildTile();
+            //BuildTime();
+            if (this.IsNoTime())
+            {
+                if(Times != null && Times.Count > 0)
+                {
+                }
+                else
+                {
+                    this.SetToday();
+                }
+            }
         }
+
+        public void SetToday()
+        {
+            this.Start = DateTime.Today.SetStartWorkingTime();
+            this.End = DateTime.Today.SetStartWorkingTime().AddMinutes(30);
+        }
+
+        public void SetTomorrow()
+        {
+            this.Start = DateTime.Today.AddDays(1).SetStartWorkingTime();
+            this.End = DateTime.Today.AddDays(1).SetStartWorkingTime().AddMinutes(30);
+        }
+
         public string GetMessage()
         {
             Message = string.Empty;
 
             if (!this.Start.HasValue)
             {
-                Message += "; Must setup [Start]";
+                Message += "\n Must setup [Start]";
             }
 
             if (!this.End.HasValue)
             {
-                Message += "; Must setup [End]";
+                Message += "\n Must setup [End]";
+            }
+            if (this.IsNoTime())
+            {
+                Message += "\n Bạn chưa thiết lập thời gian thực thi. Vui lòng cập nhật để chúng tôi có thể hỗ trợ bạn hiệu quả hơn";
+            }
+            if (this.Status != IssueStatus.Done)
+            {
+                if (this.End.HasValue && this.End.Value.IsPrevDay(0))
+                    Message += "\n Đã quá hạn. Vui lòng cập nhật tiến độ";
             }
             return Message;
-            //if (!this.Start.HasValue)
-            //{
-            //    Message += "; Must setup [Start]";
-            //}
         }
-
-        //public void NotifyByEmail()
-        //{
-        //    EmailService _emailService = new EmailService();
-        //    try
-        //    {
-        //        _emailService.SendAsync(this);
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-        //    }
-        //}
     }
-
-    
 }

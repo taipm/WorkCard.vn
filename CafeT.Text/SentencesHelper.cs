@@ -9,10 +9,35 @@ namespace CafeT.Text
 {
     public static class SentencesHelper
     {
-        //public static string[] GetSentencesHasPair(this string text)
-        //{
-            
-        //}
+        #region Words
+        public static string[] ToWords(this string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return null;
+            }
+            else
+            {
+                char[] separators = text.ExtractSeparators();
+                string[] words = text.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                return words;
+                //string[] _delimiters = new string[] { " ", ",", ".", "?", "!" };
+                //return text.ToStandard().Split(_delimiters, StringSplitOptions.None)
+                //    .Where(t => !string.IsNullOrWhiteSpace(t)).ToArray();
+            }
+        }
+
+        public static string WordsToString(this string[] words)
+        {
+            string _result = string.Empty;
+            foreach(string _word in words)
+            {
+                _result += " " + _word;
+            }
+            return _result;
+        }
+        #endregion
+
         public static string[] GetSentences(this string text)
         {
             string[] _strSplits = new string[] { ". ", "? ", "! ", "\r\n" };

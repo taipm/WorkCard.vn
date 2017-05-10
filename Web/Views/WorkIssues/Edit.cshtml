@@ -12,6 +12,11 @@
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model=>Model.CreatedBy)
     @Html.HiddenFor(model => Model.CreatedBy)
+    @Html.HiddenFor(model => Model.Start)
+    @Html.HiddenFor(model => Model.End)
+    @Html.HiddenFor(model => Model.Status)
+    @Html.HiddenFor(model => Model.ProjectId)
+    @Html.HiddenFor(model => Model.TimeToDo)
 
     <div class="form-horizontal">
         <h4>WorkIssue</h4>

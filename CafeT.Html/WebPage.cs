@@ -6,10 +6,29 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CafeT.Html
 {
+    public class Url
+    {
+        public string Title { set; get; }
+        public string Description { set; get; }
+        public string Address { set; get; }
+
+        public string ToHtml()
+        {
+            if(Address.IsUrl())
+            {
+                return Address.ToHtmlLink();
+            }
+            return string.Empty;
+        }
+        
+
+    }
+
     public class WebPage
     {
         public SmartHtml HtmlSmart { set; get; }

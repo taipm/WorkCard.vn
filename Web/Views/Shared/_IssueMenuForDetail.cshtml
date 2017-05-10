@@ -4,7 +4,9 @@
 @if (User.Identity.IsAuthenticated)
 {
     <p>
-        @Html.Raw(" Set as") <br />
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+        @Html.Raw(" | ")
+        @Html.Raw(" Set ")
 
         @if (Model.Repeat == RepeatType.None)
         {
@@ -15,6 +17,7 @@
                                 HttpMethod = "Post",
                             }, new { @class = "btn btn-default" })
         }
+        
         @if (Model.IsToday())
         {
             @Ajax.ActionLink("Tomorrow ", "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = DateTime.Now.AddDays(1) },
@@ -72,6 +75,33 @@
         @if (Model.Status != Web.Models.IssueStatus.Finished)
         {
             @Ajax.ActionLink("Finished ", "MarkAsFinished", "WorkIssues", new { Id = Model.Id },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Status-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, new { @class = "btn btn-default" })
+        }
+        @if (Model.Status != Web.Models.IssueStatus.New)
+        {
+            @Ajax.ActionLink("New ", "EmailNotify", "WorkIssues", new { Id = Model.Id },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Status-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, new { @class = "btn btn-default" })
+        }
+        @if (Model.Status != Web.Models.IssueStatus.ReOpen)
+        {
+            @Ajax.ActionLink("Re-Open ", "MarkAsNew", "WorkIssues", new { Id = Model.Id },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Status-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, new { @class = "btn btn-default" })
+        }
+        @if (Model.Status != Web.Models.IssueStatus.Done)
+        {
+            @Ajax.ActionLink("Done ", "MarkAsTesting", "WorkIssues", new { Id = Model.Id },
                             new AjaxOptions
                             {
                                 UpdateTargetId = "Status-" + Model.Id.ToString(),

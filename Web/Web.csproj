@@ -305,6 +305,14 @@
     <Compile Include="Migrations\201705070801451_AdjustWorkIssue1.Designer.cs">
       <DependentUpon>201705070801451_AdjustWorkIssue1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705100308197_UpdateIssue5.cs" />
+    <Compile Include="Migrations\201705100308197_UpdateIssue5.Designer.cs">
+      <DependentUpon>201705100308197_UpdateIssue5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705100823547_AddRepeatType.cs" />
+    <Compile Include="Migrations\201705100823547_AddRepeatType.Designer.cs">
+      <DependentUpon>201705100823547_AddRepeatType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -332,6 +340,7 @@
     <Compile Include="ModelViews\ManageViewModels.cs" />
     <Compile Include="ModelViews\RegisterViewModel.cs" />
     <Compile Include="ModelViews\WorkView.cs" />
+    <Compile Include="ModelViews\YouTubeView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -875,6 +884,10 @@
     <Content Include="Views\Shared\_WorkStatus.cshtml" />
     <Content Include="Views\Shared\_IssueMenu.cshtml" />
     <Content Include="Views\Shared\_Issues.cshtml" />
+    <Content Include="Views\Shared\_IssueTitleItem.cshtml" />
+    <Content Include="Views\Shared\_IssuesDashboard.cshtml" />
+    <Content Include="Views\Shared\_IssueTitleWithMenuItem.cshtml" />
+    <Content Include="Views\Shared\_IssueMenuForDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -931,6 +944,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705070801451_AdjustWorkIssue1.resx">
       <DependentUpon>201705070801451_AdjustWorkIssue1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705100308197_UpdateIssue5.resx">
+      <DependentUpon>201705100308197_UpdateIssue5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705100823547_AddRepeatType.resx">
+      <DependentUpon>201705100823547_AddRepeatType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
