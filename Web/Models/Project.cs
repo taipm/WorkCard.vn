@@ -58,6 +58,7 @@ namespace Web.Models
         public virtual IEnumerable<Answer> Answers { set; get; }
         public Guid? ProjectId { set; get; }
         public Guid? StoryId { set; get; }
+        public Guid? IssueId { set; get; }
     }
 
     public class Answer : BaseObject

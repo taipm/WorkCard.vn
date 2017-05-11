@@ -7,6 +7,7 @@
     ViewBag.Title = "Index";
 }
 
+ 
 <div class="row">
     <div class="col-md-7">
         <div class="panel panel-default">
@@ -60,9 +61,14 @@
     
 
     <div class="col-md-5">
-        <p>
-            @Html.Partial("_QuickCreateIssue", new WorkIssue())
-        </p>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>New Issue</h4>
+            </div>
+            <div class="panel-body">
+                @Html.Partial("_QuickCreateIssue", new WorkIssue())
+            </div>
+        </div>
         <div class="panel panel-default">
             <div class="panel-heading">
                 Tomorrow (@Model.ToList().GetTomorrow().Count())
@@ -90,14 +96,5 @@
         <h3>No time: (@Model.ToList().GetNoTime().Count())</h3>
         @Html.Partial("_IssuesDashboard", Model.ToList().GetNoTime().AsEnumerable())
         @Html.Partial("_Issues", Model.ToList().GetNoTime().AsEnumerable())
-        @*<p>
-            @foreach (var item in Model)
-            {
-                if (item.Status == Web.Models.IssueStatus.Done)
-                {
-                    @Html.Partial("_IssueTitleWithMenuItem", item)
-                }
-            }
-        </p>*@
     </div>
 </div>

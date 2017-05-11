@@ -314,6 +314,10 @@
     <Compile Include="Migrations\201705100823547_AddRepeatType.Designer.cs">
       <DependentUpon>201705100823547_AddRepeatType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705110642552_AdjustQuestion.cs" />
+    <Compile Include="Migrations\201705110642552_AdjustQuestion.Designer.cs">
+      <DependentUpon>201705110642552_AdjustQuestion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -954,6 +958,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705100823547_AddRepeatType.resx">
       <DependentUpon>201705100823547_AddRepeatType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705110642552_AdjustQuestion.resx">
+      <DependentUpon>201705110642552_AdjustQuestion.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -83,7 +83,7 @@ namespace Web.Models
         {
            if(this.Status != IssueStatus.Done)
             {
-                if (this.End.HasValue && this.End.Value.IsPrevDay(0)) return true;
+                if (this.End.HasValue && this.End.Value.IsExpired()) return true;
             }
             return false;
         }

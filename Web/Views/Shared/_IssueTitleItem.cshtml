@@ -18,7 +18,7 @@
         }
     }
 </div>
-<div class="col-md-8">
+<div class="col-md-7">
     @if (Model.Title != null && Model.Title.ToWords().Count() > 0)
     {
         @Html.ActionLink(Model.Title.ToWords().Take(20).ToArray().WordsToString(), "Details", new { id = Model.Id }, null)
@@ -35,7 +35,7 @@
         }
     </p>
 </div>
-<div class="col-md-2">
+<div class="col-md-3">
     @Html.Partial("_IssueMenu", Model)
 </div>
 

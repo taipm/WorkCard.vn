@@ -32,7 +32,15 @@
                                 HttpMethod = "Post",
                             }, new { @class = "btn btn-default" })
     }
-
+    if (Model.IsExpired())
+    {
+        @Ajax.ActionLink("Now in (10m) ", "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = DateTime.Now.AddMinutes(10) },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Update-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, new { @class = "btn btn-default" })
+    }
 }
 <div id="Update-@Model.Id"></div>
 <div id="Status-@Model.Id"></div>

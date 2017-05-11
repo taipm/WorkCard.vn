@@ -24,6 +24,27 @@ namespace Web.Controllers
         }
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        [HttpPost]
+        public JsonResult AutoCompleted(string Prefix)
+        {
+            //Note : you can bind same list from database   
+            Dictionary<string, string> _dict = new Dictionary<string, string>();
+            _dict.Add("@Now", DateTime.Now.ToString());
+            _dict.Add("@Today", DateTime.Today.ToString());
+            _dict.Add("@Tomorrow", DateTime.Today.AddDays(1).ToString());
+            _dict.Add("@Yesterday", DateTime.Today.AddDays(-1).ToString());
+            _dict.Add("huynhquy9x@gmail.com", "Huỳnh Văn Quy");
+            _dict.Add("taipm.vn@gmail.com", "Phan Minh Tài");
+            //_dict.Add("", "Phan Minh Tài");
+            //_dict.Add("", "Phan Minh Tài");
+            //_dict.Add("", "Phan Minh Tài");
+            //_dict.Add("", "Phan Minh Tài");
+
+            //Searching records from list using LINQ query   
+            var CityName = _dict.Where(t => t.Key.Contains(Prefix) || t.Value.Contains(Prefix)).Select(t => t.Value);
+            return Json(CityName, JsonRequestBehavior.AllowGet);
+        }
+
         // GET: WorkIssues
         public async Task<ActionResult> SearchBy(string keyWord)
         {

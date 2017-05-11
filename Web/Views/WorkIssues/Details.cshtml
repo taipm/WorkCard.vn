@@ -2,6 +2,7 @@
 @using CafeT.Objects
 @using CafeT.Time
 @using System.Globalization
+@using Web.Models
 @using Web.ModelViews
 @model Web.Models.WorkIssue
 
@@ -29,6 +30,22 @@
         </p>
         <p>
             @Html.Raw(Model.Content)
+        </p>
+        @if (Model.Content.HasCloudEmbedFiles())
+        {
+            <h4>
+                Files:
+            </h4>
+            <p>
+                @foreach (string youtubeLink in Model.Content.GetEmbedCloudFiles())
+                {
+                    @Html.Raw(youtubeLink)
+                    <hr />
+                }
+            </p>
+        }
+        <p>
+            
         </p>
         <p>
             @if (Model.Tags != null && Model.Tags.Count > 0)
@@ -77,14 +94,12 @@
                                 YouTubeView _youTube = new YouTubeView(youtubeLink);
                                 @Html.Raw(_youTube.EmbedUrl);
                             }
-                            
-                            @*<iframe id='player' src="http://www.youtube.com/embed/4U4TzAtyYs0" frameborder="0" allowfullscreen></iframe>*@
                         </div>
                     </div>
                 </div>
-                
             }
         }
+        
         <br />
         @if (Model.Content.GetTimes() != null && Model.Content.GetTimes().Length > 0)
         {
@@ -115,4 +130,5 @@
             }*@
                 }
     </div>
+    @Html.Partial("_AddQuestion", new Question() { IssueId = Model.Id })
 </div>

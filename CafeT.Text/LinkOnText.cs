@@ -84,6 +84,31 @@ namespace CafeT.Text
             return false;
         }
 
+        public static bool HasGoogleDriveUrls(this string text)
+        {
+            if (text.GetGoogleDriveUrls() != null && text.GetGoogleDriveUrls().Count() > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool HastMicrosoftDriveUrls(this string text)
+        {
+            if (text.GetMicrosoftDriveUrls() != null && text.GetMicrosoftDriveUrls().Count() > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool HasCloudEmbedFiles(this string text)
+        {
+            if (text.HasGoogleDriveUrls() || text.HastMicrosoftDriveUrls())
+                return true;
+            return false;
+        }
+
         public static string GetYouTubeId(this string youTubeUrl)
         {
             //Setup the RegEx Match and give it 
@@ -115,13 +140,14 @@ namespace CafeT.Text
             string[] _urls = str.GetUrls();
             foreach (string _url in _urls)
             {
-                if (_url.ToLower().Contains("https://drive.google.com/drive"))
+                if (_url.ToLower().Contains("https://drive.google.com/"))
                 {
                     _youtubeUrls.Add(_url);
                 }
             }
             return _youtubeUrls.ToArray();
         }
+
         public static string[] GetDropboxUrls(this string str)
         {
             List<string> _youtubeUrls = new List<string>();
@@ -147,6 +173,14 @@ namespace CafeT.Text
                 }
             }
             return _youtubeUrls.ToArray();
+        }
+
+        public static string[] GetEmbedCloudFiles(this string text)
+        {
+            string[] _microsofts = text.GetMicrosoftDriveUrls();
+            string[] _googles = text.GetGoogleDriveUrls();
+            string[] _dropboxs = text.GetDropboxUrls();
+            return _microsofts.Union(_googles).Union(_dropboxs).ToArray();
         }
         #endregion
     }

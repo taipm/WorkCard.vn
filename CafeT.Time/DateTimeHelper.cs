@@ -119,6 +119,12 @@ namespace CafeT.Time
                 return true;
             return false;
         }
+        public static bool IsExpired(this DateTime date)
+        {
+            if (date < DateTime.Now)
+                return true;
+            return false;
+        }
         public static bool IsToday(this DateTime date)
         {
             if (date.Date == DateTime.Today)
