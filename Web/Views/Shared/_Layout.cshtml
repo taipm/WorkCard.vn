@@ -28,7 +28,18 @@
 
     </script>
 
-    <!--My-->
+    <!--- My Script-->
+    @*@Styles.Render("~/Content/css")*@
+    @*@Styles.Render("~/Content/themes/base/css")*@
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+
+    @*<script src="~/Scripts/jquery-1.8.2.min.js"></script>*@
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
     <script src="~/Scripts/ckeditor/ckeditor.js"></script>
 
     <script type="text/x-mathjax-config">
