@@ -33,6 +33,10 @@ namespace Web.Helpers
         {
             return issues.Where(t => t.Status == IssueStatus.Done).ToList();
         }
+        public static List<WorkIssue> GetNotDone(this List<WorkIssue> issues)
+        {
+            return issues.Where(t => t.Status != IssueStatus.Done).ToList();
+        }
         public static List<WorkIssue> GetToday(this List<WorkIssue> issues)
         {
             return issues.Where(t => t.IsToday()).ToList();

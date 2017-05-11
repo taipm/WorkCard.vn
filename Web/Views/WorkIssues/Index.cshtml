@@ -1,65 +1,88 @@
 ﻿@using Web.Helpers
 @using Web.ModelViews
+@using Web.Models
 @model IEnumerable<Web.Models.WorkIssue>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-
-
 <div class="row">
-    <div class="col-md-8">
-        <h3>Today (@Model.ToList().GetToday().Count())</h3>
-        @Html.Partial("_IssuesDashboard", Model.ToList().GetToday().AsEnumerable())
-        @{ 
-            var _objects = Model.ToList().GetToday().AsEnumerable();
-            
-            var pager = new Pager(_objects.Count(),0);
+    <div class="col-md-7">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Today (@Model.ToList().GetNotDone().GetToday().Count())
+                <span>
+                    @Html.Partial("_IssuesDashboard", Model.ToList().GetNotDone().GetToday().AsEnumerable())
+                </span>
+            </div>
+            <div class="panel-body">
+                @{
+                    var _objects = Model.ToList().GetToday().GetNotDone().AsEnumerable();
 
-            var viewModel = new IndexIssuesViewModel
-            {
-                Items = _objects.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
-                Pager = pager
-            };
+                    var pager = new Pager(_objects.Count(), 0);
 
-            @Html.Partial("_IssuesWithPager", viewModel)
-        }
+                    var viewModel = new IndexIssuesViewModel
+                    {
+                        Items = _objects.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
+                        Pager = pager
+                    };
+
+                    @Html.Partial("_IssuesWithPager", viewModel)
+                }
+            </div>
+
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Today (Hoàn thành) (@Model.ToList().GetToday().GetDone().Count())
+                <span>
+                    @Html.Partial("_IssuesDashboard", Model.ToList().GetDone().GetToday().AsEnumerable())
+                </span>
+            </div>
+            <div class="panel-body">
+                @{
+                    var _object2s = Model.ToList().GetToday().GetDone().AsEnumerable();
+                    var pager2 = new Pager(_object2s.Count(), 0);
+
+                    var viewModel2 = new IndexIssuesViewModel
+                    {
+                        Items = _object2s.Skip((pager.CurrentPage - 1) * pager2.PageSize).Take(pager2.PageSize),
+                        Pager = pager2
+                    };
+
+                    @Html.Partial("_IssuesWithPager", viewModel2)
+                }
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="col-md-5">
+        <p>
+            @Html.Partial("_QuickCreateIssue", new WorkIssue())
+        </p>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Tomorrow (@Model.ToList().GetTomorrow().Count())
+                <span>
+                    @Html.Partial("_IssuesDashboard", Model.ToList().GetTomorrow().AsEnumerable())
+                </span>
+            </div>
+            <div class="panel-body">
+                @Html.Partial("_Issues", Model.ToList().GetTomorrow().AsEnumerable())
+            </div>
+        </div>
     </div>
     <div class="col-md-4">
-        
-        @{
-            var _object2s = Model.ToList().GetToday().GetDone().AsEnumerable();
-            <h3>Today (Hoàn thành) (@_object2s.Count())</h3>
-            @Html.Partial("_IssuesDashboard", _object2s)
-            var pager2 = new Pager(_object2s.Count(), 0);
-
-            var viewModel2 = new IndexIssuesViewModel
-            {
-                Items = _object2s.Skip((pager.CurrentPage - 1) * pager2.PageSize).Take(pager2.PageSize),
-                Pager = pager2
-            };
-
-            @Html.Partial("_IssuesWithPager", viewModel2)
-        }
-    </div>
-
-    <div class="col-md-4">
-        <h3>Tomorrow (@Model.ToList().GetTomorrow().Count())</h3>
-        @Html.Partial("_IssuesDashboard", Model.ToList().GetTomorrow().AsEnumerable())
-        @Html.Partial("_Issues", Model.ToList().GetTomorrow().AsEnumerable())
-    </div>
-    <div class="col-md-4">
-        <h3>Prev (@Model.ToList().GetPrev(2).Count())</h3>
-        @Html.Partial("_IssuesDashboard", Model.ToList().GetPrev(2).AsEnumerable())
-        @Html.Partial("_Issues", Model.ToList().GetPrev(2).AsEnumerable())
+        <h3>Prev (@Model.ToList().GetNotDone().GetPrev(2).Count())</h3>
+        @Html.Partial("_IssuesDashboard", Model.ToList().GetNotDone().GetPrev(2).AsEnumerable())
+        @Html.Partial("_Issues", Model.ToList().GetNotDone().GetPrev(2).AsEnumerable())
         <hr />
     </div>
     <div class="col-md-4">
-        <h3>Next (@Model.ToList().GetNext(2).Count())</h3>
+        <h3>Next (@Model.ToList().GetNotDone().GetNext(2).Count())</h3>
         @Html.Partial("_IssuesDashboard", Model.ToList().GetNext(2).AsEnumerable())
         @Html.Partial("_Issues", Model.ToList().GetNext(2).AsEnumerable())
         <hr />

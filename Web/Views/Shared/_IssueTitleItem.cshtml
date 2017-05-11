@@ -10,6 +10,8 @@
     {
         <span class="label label-default">@Model.End.Value.ToShortDateString()</span>
         <br />
+        <span class="label label-default">@Model.End.Value.TimeOfDay.ToString()</span>
+        <br />
         if (Model.TimeToDo.HasValue)
         {
             @Html.Raw(Model.TimeToDo.Value.ToString() + " Min")
@@ -19,7 +21,7 @@
 <div class="col-md-8">
     @if (Model.Title != null && Model.Title.ToWords().Count() > 0)
     {
-        @Html.ActionLink(Model.Title.ToWords().Take(15).ToArray().WordsToString(), "Details", new { id = Model.Id }, null)
+        @Html.ActionLink(Model.Title.ToWords().Take(20).ToArray().WordsToString(), "Details", new { id = Model.Id }, null)
     }
     else
     {

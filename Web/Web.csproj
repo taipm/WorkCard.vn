@@ -891,6 +891,7 @@
     <Content Include="Views\Shared\_IssueTitleWithMenuItem.cshtml" />
     <Content Include="Views\Shared\_IssueMenuForDetail.cshtml" />
     <Content Include="Views\Shared\_IssuesWithPager.cshtml" />
+    <Content Include="Views\Shared\_QuickCreateIssue.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

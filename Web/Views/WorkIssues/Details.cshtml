@@ -98,7 +98,7 @@
                 {
                 @Html.Raw(_time.ToString("dd/MM/yyyy", new CultureInfo("en-GB")) + "; ") <br />
             }
-            <h4>LaterNearest: </h4>
+            @*<h4>LaterNearest: </h4>
             {
                 var _start = Model.Content.GetTimes().ToList().LaterNearest();
                 string _startStr = _start.Value.ToString("dd/MM/yyyy", new CultureInfo("en-GB"));
@@ -112,7 +112,7 @@
                                 HttpMethod = "Post",
                             }, null)
                 }
-            }
+            }*@
                 }
     </div>
 </div>

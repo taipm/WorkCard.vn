@@ -241,7 +241,7 @@ namespace Web.Models
             if (this.Status != IssueStatus.Done)
             {
                 if (this.End.HasValue && this.End.Value.IsPrevDay(0))
-                    Message += "\n Đã quá hạn. Vui lòng cập nhật tiến độ";
+                    Message += "\n Đã quá hạn " + this.End.Value.TimeAgo()  + ". Vui lòng cập nhật tiến độ";
             }
             return Message;
         }
