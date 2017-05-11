@@ -4,45 +4,43 @@
 
 @model Web.Models.WorkIssue
 
-<div>
-    <h4>
-        @if (Model.Title != null && Model.Title.ToWords().Count()>0)
-        {
-            @Html.ActionLink(Model.Title.ToWords().Take(20).ToArray().WordsToString(), "Details", new { id = Model.Id }, null)
-        }
-        else
-        {
-            @Html.Raw(Model.Description.GetSentences().FirstOrDefault())
-        }
-    </h4>
-    <span class="label label-danger">@Model.Status</span>
-    @if (Model.End.HasValue)
+<h4>
+    @if (Model.Title != null && Model.Title.ToWords().Count() > 0)
     {
-        <span class="label label-default">@Model.End.Value.ToShortDateString()</span>
-        if (Model.TimeToDo.HasValue)
+        @Html.ActionLink(Model.Title.ToWords().Take(20).ToArray().WordsToString(), "Details", new { id = Model.Id }, null)
+    }
+    else
+    {
+        @Html.Raw(Model.Description.GetSentences().FirstOrDefault())
+    }
+</h4>
+<span class="label label-danger">@Model.Status</span>
+@if (Model.End.HasValue)
+{
+    <span class="label label-default">@Model.End.Value.ToShortDateString()</span>
+    if (Model.TimeToDo.HasValue)
+    {
+        @Html.Raw(Model.TimeToDo.Value.ToString() + " Min")
+    }
+}
+<p>
+    @if (Model.HasTags != null && Model.HasTags.Count > 0)
+    {
+        <h4>HasTags: </h4>
+        foreach (var _hasTag in Model.HasTags)
         {
-            @Html.Raw(Model.TimeToDo.Value.ToString() + " Min")
+            @Html.Raw(_hasTag + "; ")
         }
     }
-    <p>
-        @if (Model.HasTags != null && Model.HasTags.Count > 0)
-        {
-            <h4>HasTags: </h4>
-            foreach (var _hasTag in Model.HasTags)
-            {
-                @Html.Raw(_hasTag + "; ")
-            }
-        }
 
-        @if (Model.Tags != null && Model.Tags.Count > 0)
+    @if (Model.Tags != null && Model.Tags.Count > 0)
+    {
+        <h4>Tags: </h4>
+        foreach (var _tag in Model.Tags)
         {
-            <h4>Tags: </h4>
-            foreach (var _tag in Model.Tags)
-            {
-                @Html.Raw(_tag + "; ")
-            }
+            @Html.Raw(_tag + "; ")
         }
-    </p>
-    <hr />
-    @Html.Partial("_IssueMenu", Model)
-</div>
+    }
+</p>
+<hr />
+@Html.Partial("_IssueMenu", Model)

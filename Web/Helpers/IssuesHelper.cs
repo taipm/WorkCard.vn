@@ -29,6 +29,10 @@ namespace Web.Helpers
         {
             return issues.Where(t => t.IsNoTime()).ToList();
         }
+        public static List<WorkIssue> GetDone(this List<WorkIssue> issues)
+        {
+            return issues.Where(t => t.Status == IssueStatus.Done).ToList();
+        }
         public static List<WorkIssue> GetToday(this List<WorkIssue> issues)
         {
             return issues.Where(t => t.IsToday()).ToList();

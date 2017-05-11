@@ -4,7 +4,7 @@
 
 @model Web.Models.WorkIssue
 
-<div>
+<div class="row">
     @Html.Partial("_IssueTitleItem", Model)
     <p>
         @Html.Raw(Model.Description)
@@ -28,8 +28,5 @@
             }
         }
     </p>
-    
-    <p>
-        @Html.Partial("_IssueMenu")
-    </p>
+    <hr />
 </div>

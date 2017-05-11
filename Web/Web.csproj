@@ -240,6 +240,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\IssuesHelper.cs" />
+    <Compile Include="Helpers\Pager.cs" />
     <Compile Include="Managers\IssuesManager.cs" />
     <Compile Include="Migrations\201704250423515_InitialCreate.cs" />
     <Compile Include="Migrations\201704250423515_InitialCreate.Designer.cs">
@@ -337,6 +338,7 @@
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\WorkIssue.cs" />
     <Compile Include="ModelViews\AccountViewModels.cs" />
+    <Compile Include="ModelViews\IndexIssuesViewModel.cs" />
     <Compile Include="ModelViews\ManageViewModels.cs" />
     <Compile Include="ModelViews\RegisterViewModel.cs" />
     <Compile Include="ModelViews\WorkView.cs" />
@@ -888,6 +890,7 @@
     <Content Include="Views\Shared\_IssuesDashboard.cshtml" />
     <Content Include="Views\Shared\_IssueTitleWithMenuItem.cshtml" />
     <Content Include="Views\Shared\_IssueMenuForDetail.cshtml" />
+    <Content Include="Views\Shared\_IssuesWithPager.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

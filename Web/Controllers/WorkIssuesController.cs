@@ -10,6 +10,8 @@ using System.Web.Mvc;
 using Web.Models;
 using Repository.Pattern.UnitOfWork;
 using CafeT.Text;
+using Web.Helpers;
+using Web.ModelViews;
 
 namespace Web.Controllers
 {
@@ -52,13 +54,33 @@ namespace Web.Controllers
                                 .Query().Select()
                                 .Where(m => !string.IsNullOrWhiteSpace(m.Title))
                                 .OrderByDescending(t => t.CreatedDate).ToList();
-            if(User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated)
             {
-                return View("Index", _objects.Where(t=>t.CreatedBy == User.Identity.Name).ToList());
+                return View("Index", _objects.Where(t => t.CreatedBy == User.Identity.Name).ToList());
             }
             return View("Index", _objects);
         }
-        
+
+        //[HttpGet]
+        //public ActionResult Index(int? page)
+        //{
+        //    var dummyItems = Enumerable.Range(1, 150).Select(x => "Item " + x);
+        //    var _objects = _unitOfWorkAsync.RepositoryAsync<WorkIssue>()
+        //                        .Query().Select()
+        //                        .Where(m => !string.IsNullOrWhiteSpace(m.Title))
+        //                        .OrderByDescending(t => t.CreatedDate).ToList();
+
+        //    var pager = new Pager(_objects.Count(), page);
+
+        //    var viewModel = new IndexIssuesViewModel
+        //    {
+        //        Items = _objects.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
+        //        Pager = pager
+        //    };
+
+        //    return View(viewModel);
+        //}
+
         // GET: WorkIssues/Details/5
         public async Task<ActionResult> Details(Guid? id)
         {

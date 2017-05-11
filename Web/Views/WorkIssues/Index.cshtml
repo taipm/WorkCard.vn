@@ -1,4 +1,5 @@
 ﻿@using Web.Helpers
+@using Web.ModelViews
 @model IEnumerable<Web.Models.WorkIssue>
 
 @{
@@ -11,25 +12,58 @@
 
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8">
         <h3>Today (@Model.ToList().GetToday().Count())</h3>
         @Html.Partial("_IssuesDashboard", Model.ToList().GetToday().AsEnumerable())
-        @Html.Partial("_Issues", Model.ToList().GetToday().AsEnumerable())
+        @{ 
+            var _objects = Model.ToList().GetToday().AsEnumerable();
+            
+            var pager = new Pager(_objects.Count(),0);
+
+            var viewModel = new IndexIssuesViewModel
+            {
+                Items = _objects.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
+                Pager = pager
+            };
+
+            @Html.Partial("_IssuesWithPager", viewModel)
+        }
     </div>
+    <div class="col-md-4">
+        
+        @{
+            var _object2s = Model.ToList().GetToday().GetDone().AsEnumerable();
+            <h3>Today (Hoàn thành) (@_object2s.Count())</h3>
+            @Html.Partial("_IssuesDashboard", _object2s)
+            var pager2 = new Pager(_object2s.Count(), 0);
+
+            var viewModel2 = new IndexIssuesViewModel
+            {
+                Items = _object2s.Skip((pager.CurrentPage - 1) * pager2.PageSize).Take(pager2.PageSize),
+                Pager = pager2
+            };
+
+            @Html.Partial("_IssuesWithPager", viewModel2)
+        }
+    </div>
+
     <div class="col-md-4">
         <h3>Tomorrow (@Model.ToList().GetTomorrow().Count())</h3>
         @Html.Partial("_IssuesDashboard", Model.ToList().GetTomorrow().AsEnumerable())
         @Html.Partial("_Issues", Model.ToList().GetTomorrow().AsEnumerable())
     </div>
     <div class="col-md-4">
-        <h3>Next (@Model.ToList().GetNext(2).Count())</h3>
-        @Html.Partial("_IssuesDashboard", Model.ToList().GetNext(2).AsEnumerable())
-        @Html.Partial("_Issues", Model.ToList().GetNext(2).AsEnumerable())
-        <hr />
         <h3>Prev (@Model.ToList().GetPrev(2).Count())</h3>
         @Html.Partial("_IssuesDashboard", Model.ToList().GetPrev(2).AsEnumerable())
         @Html.Partial("_Issues", Model.ToList().GetPrev(2).AsEnumerable())
         <hr />
+    </div>
+    <div class="col-md-4">
+        <h3>Next (@Model.ToList().GetNext(2).Count())</h3>
+        @Html.Partial("_IssuesDashboard", Model.ToList().GetNext(2).AsEnumerable())
+        @Html.Partial("_Issues", Model.ToList().GetNext(2).AsEnumerable())
+        <hr />
+        
         <h3>No time: (@Model.ToList().GetNoTime().Count())</h3>
         @Html.Partial("_IssuesDashboard", Model.ToList().GetNoTime().AsEnumerable())
         @Html.Partial("_Issues", Model.ToList().GetNoTime().AsEnumerable())

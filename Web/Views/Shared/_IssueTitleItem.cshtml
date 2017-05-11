@@ -4,42 +4,36 @@
 
 @model Web.Models.WorkIssue
 
-<div>
-    <h4>
-        @if (Model.Title != null && Model.Title.ToWords().Count()>0)
-        {
-            @Html.ActionLink(Model.Title.ToWords().Take(20).ToArray().WordsToString(), "Details", new { id = Model.Id }, null)
-        }
-        else
-        {
-            @Html.Raw(Model.Description.GetSentences().FirstOrDefault())
-        }
-    </h4>
+<div class="col-md-2">
     <span class="label label-danger">@Model.Status</span>
     @if (Model.End.HasValue)
     {
         <span class="label label-default">@Model.End.Value.ToShortDateString()</span>
+        <br />
         if (Model.TimeToDo.HasValue)
         {
             @Html.Raw(Model.TimeToDo.Value.ToString() + " Min")
         }
     }
+</div>
+<div class="col-md-8">
+    @if (Model.Title != null && Model.Title.ToWords().Count() > 0)
+    {
+        @Html.ActionLink(Model.Title.ToWords().Take(15).ToArray().WordsToString(), "Details", new { id = Model.Id }, null)
+    }
+    else
+    {
+        @Html.Raw(Model.Description.GetSentences().FirstOrDefault())
+    }
+
     <p>
         @if (Model.IsExpired())
         {
-            @Html.Raw(Model.GetMessage())<br />
-            @Ajax.ActionLink("Tomorrow ", "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = DateTime.Now.AddDays(1) },
-                            new AjaxOptions
-                            {
-                                UpdateTargetId = "Update-" + Model.Id.ToString(),
-                                HttpMethod = "Post",
-                            }, new { @class = "btn btn-default" })
-            @Ajax.ActionLink("Today ", "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = DateTime.Now },
-                            new AjaxOptions
-                            {
-                                UpdateTargetId = "Update-" + Model.Id.ToString(),
-                                HttpMethod = "Post",
-                            }, new { @class = "btn btn-default" })
+            <span class="label label-default">@Html.Raw(Model.GetMessage())</span>
         }
     </p>
 </div>
+<div class="col-md-2">
+    @Html.Partial("_IssueMenu", Model)
+</div>
+
