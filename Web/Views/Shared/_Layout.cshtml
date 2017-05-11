@@ -1,73 +1,85 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @*@Styles.Render("~/Content/css")*@
-    @*<link href="~/Content/Site.css" rel="stylesheet" />*@
-    @Styles.Render("~/Content/css")
-    @Styles.Render("~/Content/themes/base/css")
+    <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
+    <meta name="author" content="Coderthemes">
+    <link rel="shortcut icon" href="~/Assets/Templates/Adminto/images/favicon.ico">
+    <title>@ViewBag.Title - WorkCard.vn</title>
+    <link href="~/Assets/Templates/Adminto/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Assets/Templates/Adminto/css/core.css" rel="stylesheet" type="text/css" />
+    <link href="~/Assets/Templates/Adminto/css/components.css" rel="stylesheet" type="text/css" />
+    <link href="~/Assets/Templates/Adminto/css/icons.css" rel="stylesheet" type="text/css" />
+    <link href="~/Assets/Templates/Adminto/css/pages.css" rel="stylesheet" type="text/css" />
+    <link href="~/Assets/Templates/Adminto/css/menu.css" rel="stylesheet" type="text/css" />
+    <link href="~/Assets/Templates/Adminto/css/responsive.css" rel="stylesheet" type="text/css" />
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/jqueryui")
+    <script src="~/Assets/Templates/Adminto/js/modernizr.min.js"></script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','../../../www.google-analytics.com/analytics.js','ga');
 
-    @*<script src="~/Scripts/jquery-1.8.2.min.js"></script>*@
-    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
-    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+  ga('create', 'UA-74137680-1', 'auto');
+  ga('send', 'pageview');
 
+    </script>
+
+    <!--My-->
     <script src="~/Scripts/ckeditor/ckeditor.js"></script>
-    
+
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
         tex2jax: { inlineMath: [['$','$'],['\\(','\\)']] }
         });
     </script>
     <script type='text/javascript' src='http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
-    
 </head>
+
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <!-- Navigation Bar-->
+    <header id="topnav">
+        @RenderPage("~/Views/Shared/Templates/_Top.cshtml")
+        @RenderPage("~/Views/Shared/Templates/_Menu.cshtml")
+    </header>
+    <!-- End Navigation Bar-->
+
+    <div class="wrapper">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("WorkCard.vn", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("Cards", "Index", "WorkIssues")</li>
-                    <li>@Html.ActionLink("Projects", "Index", "Projects")</li>
-                    <li>@Html.ActionLink("Stories", "Index", "Stories")</li>
-                    <li>@Html.ActionLink("Comments", "Index", "Comments")</li>
-                    <li>@Html.ActionLink("Documents", "Index", "Documents")</li>
-                    <li>@Html.ActionLink("Questions", "Index", "Questions")</li>
-                    <li>@Html.ActionLink("Answers", "Index", "Answers")</li>
-                </ul>
-            </div>
+            <!-- Page-Title -->
+            @RenderPage("~/Views/Shared/Templates/_Setting.cshtml")
+
+            @RenderBody()
+
+            <!-- Footer -->
+            @RenderPage("~/Views/Shared/Templates/_Footer.cshtml")
+            <!-- End Footer -->
         </div>
-    </div>
-    @Html.Partial("_LoginPartial")
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - WorkCard.vn</p>
-        </footer>
+        <!-- end container -->
+        <!-- Right Sidebar -->
+        @RenderPage("~/Views/Shared/Templates/_Sidebar.cshtml")
+        <!-- /Right-bar -->
     </div>
 
-    @*@Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryui")
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/modernizr")*@
+    <!-- jQuery  -->
+    <script src="~/Assets/Templates/Adminto/js/jquery.min.js"></script>
+    <script src="~/Assets/Templates/Adminto/js/bootstrap.min.js"></script>
+    <script src="~/Assets/Templates/Adminto/js/detect.js"></script>
+    <script src="~/Assets/Templates/Adminto/js/fastclick.js"></script>
+    <script src="~/Assets/Templates/Adminto/js/jquery.slimscroll.js"></script>
+    <script src="~/Assets/Templates/Adminto/js/jquery.blockUI.js"></script>
+    <script src="~/Assets/Templates/Adminto/js/waves.js"></script>
+    <script src="~/Assets/Templates/Adminto/js/wow.min.js"></script>
+    <script src="~/Assets/Templates/Adminto/js/jquery.nicescroll.js"></script>
+    <script src="~/Assets/Templates/Adminto/js/jquery.scrollTo.min.js"></script>
+
+    <!-- App js -->
+    <script src="~/Assets/Templates/Adminto/js/jquery.core.js"></script>
+    <script src="~/Assets/Templates/Adminto/js/jquery.app.js"></script>
+
     @RenderSection("scripts", required: false)
 </body>
 </html>
