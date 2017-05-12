@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CafeT.Text;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,28 +8,32 @@ using System.Web;
 
 namespace Web.Models
 {
-    //public struct TextStructure
-    //{
-    //    int CountOfWords;
-    //    int CountOfSentences;
-    //    int CountOfEmails;
-    //    int CountOfLinks;
-    //}
-
-    public class BaseObject : CafeT.EF6.Objects.BaseObject
+    
+    public class Url:BaseObject
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
-        public DateTime? CreatedDate { set; get; }
-        public DateTime? UpdatedDate { set; get; }
-        public string UpdatedBy { set; get; }
-        public string CreatedBy { set; get; }
+        public string Domain { set; get; }
+        public string Address { set; get; }
+        public string Title { set; get; }
+        public string HtmlContent { set; get; }
 
-        //public string Message { set; get; }
+        public Guid? IssueId { set; get; }
+        public Guid? QuestionId { set; get; }
+        public Guid? ProjectId { set; get; }
+        public Guid? CommentId { set; get; }
+        public Guid? StoryId { set; get; }
+        public Guid? AnswerId { set; get; }
 
-        public BaseObject()
+        public DateTime? LastestCheck { set; get; }
+
+        //public bool IsLive { set; get; }
+        public Url() : base() { }
+        public Url(string url)
         {
-            CreatedDate = DateTime.Now;
+            if(url.IsUrl())
+            {
+                Address = url;
+                //Domain = url.GetDomain()
+            }
         }
     }
 

@@ -8,11 +8,11 @@ namespace Web.Managers
 {
     public class IssuesManager
     {
-        public IEnumerable<WorkIssue> GetIssuesOnToday() { return null; }
-        public IEnumerable<WorkIssue> GetIssuesOnTomorrow() { return null; }
-        public IEnumerable<WorkIssue> GetIssuesOnYesterday() { return null; }
-        public IEnumerable<WorkIssue> GetIssuesOnNextWeek() { return null; }
-        public IEnumerable<WorkIssue> GetIssuesOnThisWeek() { return null; }
-        public IEnumerable<WorkIssue> GetIssuesOnLastWeek() { return null; }
+        private ApplicationDbContext db = new ApplicationDbContext();
+
+        public IEnumerable<Question> GetQuestion(WorkIssue issue)
+        {
+            return db.Questions.Where(t => t.IssueId.HasValue && t.IssueId == issue.Id).AsEnumerable();
+        }
     }
 }

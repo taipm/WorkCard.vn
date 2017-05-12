@@ -27,7 +27,11 @@
     <tr>
         <td>
             <h4>
-                @Html.Raw(item.Title)
+                @Html.Raw(item.Title) |
+                @if (item.IssueId.HasValue)
+                {
+                    @Html.Raw(item.IssueId);
+                }
             </h4>
             <p>
                 @Html.Raw(item.Content)

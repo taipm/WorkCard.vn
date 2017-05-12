@@ -50,13 +50,19 @@ namespace Web.Controllers
         [Authorize]
         [ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create( Question question)
+        public async Task<ActionResult> Create(Question question)
         {
             if (ModelState.IsValid)
             {
                 question.Id = Guid.NewGuid();
+                question.CreatedBy = User.Identity.Name;
+                question.CreatedDate = DateTime.Now;
                 db.Questions.Add(question);
                 await db.SaveChangesAsync();
+                if(question.IssueId.HasValue)
+                {
+                    return RedirectToAction("Details", "WorkIssues",  new { id = question.IssueId.Value });
+                }
                 return RedirectToAction("Index");
             }
 

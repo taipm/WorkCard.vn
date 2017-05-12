@@ -1,31 +1,31 @@
-﻿@model Web.Models.Question
+﻿@using CafeT.Time
+@model Web.Models.Question
 
-@{
-    ViewBag.Title = "Details";
-}
 
-@*<h2>Details</h2>*@
-
-<div>
-    <h4>@Model.Title</h4>
-    <hr />
+<div class="comment">
+    <img src="assets/images/users/avatar-1.jpg" alt="" class="comment-avatar">
+    <div class="comment-body">
+        <div class="comment-text">
+            <div class="comment-header">
+                <a href="#" title="">@Model.CreatedBy</a>
+                <span>
+                    @Model.CreatedDate.Value.TimeAgo()
+                </span>
+                <span>@Model.Title</span>
+            </div>
+            @Html.Raw(Model.Content)
+        </div>
+        <div class="comment-footer">
+            <a href="#"><i class="fa fa-thumbs-o-up"></i></a>
+            <a href="#"><i class="fa fa-thumbs-o-down"></i></a>
+            <a href="#">Reply</a>
+        </div>
+    </div>
+</div>
+@*<div>
+    
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-
+    
         <dt>
             @Html.DisplayNameFor(model => model.ProjectId)
         </dt>
@@ -34,41 +34,10 @@
             @Html.DisplayFor(model => model.ProjectId)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedBy)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedBy)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
-
+    
     </dl>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
-</p>
+</p>*@

@@ -80,6 +80,7 @@ namespace Web.App_Start
                .RegisterType<IRepositoryAsync<Question>, Repository<Question>>()
                .RegisterType<IRepositoryAsync<Answer>, Repository<Answer>>()
                .RegisterType<IRepositoryAsync<Story>, Repository<Story>>()
+               .RegisterType<IRepositoryAsync<Url>, Repository<Url>>()
 
                 .RegisterType<IUserStore<IdentityUser>, UserStore<IdentityUser>>()
                 .RegisterType<UserManager<ApplicationUser>>(new HierarchicalLifetimeManager())

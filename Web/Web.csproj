@@ -318,6 +318,10 @@
     <Compile Include="Migrations\201705110642552_AdjustQuestion.Designer.cs">
       <DependentUpon>201705110642552_AdjustQuestion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705111549065_AddUrlModel.cs" />
+    <Compile Include="Migrations\201705111549065_AddUrlModel.Designer.cs">
+      <DependentUpon>201705111549065_AddUrlModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -336,6 +340,7 @@
     <Compile Include="Models\ApplicationUserLogin.cs" />
     <Compile Include="Models\ApplicationUserManager.cs" />
     <Compile Include="Models\ApplicationUserRole.cs" />
+    <Compile Include="Models\BaseObject.cs" />
     <Compile Include="Models\Document.cs" />
     <Compile Include="Models\GroupStoreBase.cs" />
     <Compile Include="Models\ImageModel.cs" />
@@ -1042,6 +1047,9 @@
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_Questions.cshtml" />
+    <None Include="Views\WorkIssues\Details.cshtml" />
+    <None Include="Views\WorkIssues\Index.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1059,9 +1067,9 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\WorkIssues\Create.cshtml" />
     <Content Include="Views\WorkIssues\Delete.cshtml" />
-    <Content Include="Views\WorkIssues\Details.cshtml" />
+    <Content Include="Views\WorkIssues\Details2.cshtml" />
     <Content Include="Views\WorkIssues\Edit.cshtml" />
-    <Content Include="Views\WorkIssues\Index.cshtml" />
+    <Content Include="Views\WorkIssues\Index3.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
@@ -1213,6 +1221,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705110642552_AdjustQuestion.resx">
       <DependentUpon>201705110642552_AdjustQuestion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705111549065_AddUrlModel.resx">
+      <DependentUpon>201705111549065_AddUrlModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

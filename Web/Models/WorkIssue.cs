@@ -207,6 +207,9 @@ namespace Web.Models
                     this.SetToday();
                 }
             }
+
+            //Links
+            Links = this.Content.GetUrls().ToList();
         }
 
         public void SetToday()

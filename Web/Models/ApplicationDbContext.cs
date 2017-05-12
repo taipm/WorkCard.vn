@@ -21,6 +21,7 @@ namespace Web.Models
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Story> Stories { get; set; }
+        public DbSet<Url> Urls { get; set; }
 
         // Add the ApplicationGroups property:
         public virtual IDbSet<ApplicationGroup> ApplicationGroups { get; set; }

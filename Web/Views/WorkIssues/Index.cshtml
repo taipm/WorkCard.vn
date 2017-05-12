@@ -1,100 +1,255 @@
-﻿@using Web.Helpers
+﻿
+@using Web.Helpers
 @using Web.ModelViews
 @using Web.Models
 @model IEnumerable<Web.Models.WorkIssue>
 
-@{
-    ViewBag.Title = "Index";
-}
+    @{
+        ViewBag.Title = "Index";
+    }
 
- 
+
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="btn-group pull-right m-t-15">
+                <button type="button" class="btn btn-custom dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="false">Settings <span class="m-l-5"><i class="fa fa-cog"></i></span></button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                </ul>
+            </div>
+            <h4 class="page-title">Taskboard</h4>
+        </div>
+    </div>
 <div class="row">
-    <div class="col-md-7">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Today (@Model.ToList().GetNotDone().GetToday().Count())
-                <span>
-                    @Html.Partial("_IssuesDashboard", Model.ToList().GetNotDone().GetToday().AsEnumerable())
-                </span>
-            </div>
-            <div class="panel-body">
-                @{
-                    var _objects = Model.ToList().GetToday().GetNotDone().AsEnumerable();
-
-                    var pager = new Pager(_objects.Count(), 0);
-
-                    var viewModel = new IndexIssuesViewModel
-                    {
-                        Items = _objects.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
-                        Pager = pager
-                    };
-
-                    @Html.Partial("_IssuesWithPager", viewModel)
-                }
-            </div>
-
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Today (Hoàn thành) (@Model.ToList().GetToday().GetDone().Count())
-                <span>
-                    @Html.Partial("_IssuesDashboard", Model.ToList().GetDone().GetToday().AsEnumerable())
-                </span>
-            </div>
-            <div class="panel-body">
-                @{
-                    var _object2s = Model.ToList().GetToday().GetDone().AsEnumerable();
-                    var pager2 = new Pager(_object2s.Count(), 0);
-
-                    var viewModel2 = new IndexIssuesViewModel
-                    {
-                        Items = _object2s.Skip((pager.CurrentPage - 1) * pager2.PageSize).Take(pager2.PageSize),
-                        Pager = pager2
-                    };
-
-                    @Html.Partial("_IssuesWithPager", viewModel2)
-                }
-            </div>
-        </div>
-    </div>
-    
-
-    <div class="col-md-5">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4>New Issue</h4>
-            </div>
-            <div class="panel-body">
-                @Html.Partial("_QuickCreateIssue", new WorkIssue())
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Tomorrow (@Model.ToList().GetTomorrow().Count())
-                <span>
-                    @Html.Partial("_IssuesDashboard", Model.ToList().GetTomorrow().AsEnumerable())
-                </span>
-            </div>
-            <div class="panel-body">
-                @Html.Partial("_Issues", Model.ToList().GetTomorrow().AsEnumerable())
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <h3>Prev (@Model.ToList().GetNotDone().GetPrev(2).Count())</h3>
-        @Html.Partial("_IssuesDashboard", Model.ToList().GetNotDone().GetPrev(2).AsEnumerable())
-        @Html.Partial("_Issues", Model.ToList().GetNotDone().GetPrev(2).AsEnumerable())
-        <hr />
-    </div>
-    <div class="col-md-4">
-        <h3>Next (@Model.ToList().GetNotDone().GetNext(2).Count())</h3>
-        @Html.Partial("_IssuesDashboard", Model.ToList().GetNext(2).AsEnumerable())
-        @Html.Partial("_Issues", Model.ToList().GetNext(2).AsEnumerable())
-        <hr />
-        
-        <h3>No time: (@Model.ToList().GetNoTime().Count())</h3>
-        @Html.Partial("_IssuesDashboard", Model.ToList().GetNoTime().AsEnumerable())
-        @Html.Partial("_Issues", Model.ToList().GetNoTime().AsEnumerable())
+    <div class="col-sm-8">
+        @Html.Partial("_QuickCreateIssue", new WorkIssue())
     </div>
 </div>
+
+    <div class="row">
+        <div class="col-sm-4">
+            @Html.Partial("_Issues", Model.ToList().GetTomorrow().AsEnumerable())
+        </div><!-- end col -->
+
+        <div class="col-sm-4">
+            @Html.Partial("_Issues", Model.ToList().GetToday().AsEnumerable())
+        </div><!-- end col -->
+
+        <div class="col-sm-4">
+            <div class="card-box taskboard-box">
+                <div class="dropdown pull-right">
+                    <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
+                        <i class="zmdi zmdi-more-vert"></i>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                </div>
+                <h4 class="header-title m-t-0 m-b-30 text-success">Complete</h4>
+                <ul class="list-unstyled task-list" id="drag-complete">
+                    <li>
+                        <div class="card-box kanban-box">
+                            <div class="checkbox-wrapper">
+                                <div class="checkbox checkbox-success checkbox-single">
+                                    <input type="checkbox" id="singleCheckbox10" value="option10"
+                                           aria-label="Single checkbox Two">
+                                    <label></label>
+                                </div>
+                            </div>
+                            <div class="kanban-detail">
+                                <span class="label label-danger pull-right">Urgent</span>
+                                <h4><a href="#">Improve animation loader</a> </h4>
+                                <ul class="list-inline m-b-0">
+                                    <li>
+                                        <a href="#" data-toggle="tooltip" data-placement="top"
+                                           title="" data-original-title="Username">
+                                            <img src="assets/images/users/avatar-2.jpg" alt="img"
+                                                 class="thumb-sm img-circle">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-toggle="tooltip" data-placement="top"
+                                           title="" data-original-title="5 Tasks">
+                                            <i class="zmdi zmdi-format-align-left"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-toggle="tooltip" data-placement="top"
+                                           title="" data-original-title="3 Comments">
+                                            <i class="zmdi zmdi-comment-outline"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="card-box kanban-box">
+                            <div class="checkbox-wrapper">
+                                <div class="checkbox checkbox-success checkbox-single">
+                                    <input type="checkbox" id="singleCheckbox11" value="option11"
+                                           aria-label="Single checkbox Two">
+                                    <label></label>
+                                </div>
+                            </div>
+                            <div class="kanban-detail">
+                                <span class="label label-warning pull-right">High</span>
+                                <h4><a href="#">Write a release note for Ubol v1.5</a> </h4>
+                                <ul class="list-inline m-b-0">
+                                    <li>
+                                        <a href="#" data-toggle="tooltip" data-placement="top"
+                                           title="" data-original-title="Username">
+                                            <img src="assets/images/users/avatar-3.jpg" alt="img"
+                                                 class="thumb-sm img-circle">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-toggle="tooltip" data-placement="top"
+                                           title="" data-original-title="5 Tasks">
+                                            <i class="zmdi zmdi-format-align-left"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-toggle="tooltip" data-placement="top"
+                                           title="" data-original-title="3 Comments">
+                                            <i class="zmdi zmdi-comment-outline"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="card-box kanban-box">
+                            <div class="checkbox-wrapper">
+                                <div class="checkbox checkbox-success checkbox-single">
+                                    <input type="checkbox" id="singleCheckbox12" value="option12"
+                                           aria-label="Single checkbox Two">
+                                    <label></label>
+                                </div>
+                            </div>
+                            <div class="kanban-detail">
+                                <h4><a href="#">Invite user to a project</a> </h4>
+                                <ul class="list-inline m-b-0">
+                                    <li>
+                                        <a href="#" data-toggle="tooltip" data-placement="top"
+                                           title="" data-original-title="Username">
+                                            <img src="assets/images/users/avatar-4.jpg" alt="img"
+                                                 class="thumb-sm img-circle">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-toggle="tooltip" data-placement="top"
+                                           title="" data-original-title="5 Tasks">
+                                            <i class="zmdi zmdi-format-align-left"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-toggle="tooltip" data-placement="top"
+                                           title="" data-original-title="3 Comments">
+                                            <i class="zmdi zmdi-comment-outline"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="card-box kanban-box">
+                            <div class="checkbox-wrapper">
+                                <div class="checkbox checkbox-success checkbox-single">
+                                    <input type="checkbox" id="singleCheckbox13" value="option13"
+                                           aria-label="Single checkbox Two">
+                                    <label></label>
+                                </div>
+                            </div>
+                            <div class="kanban-detail">
+                                <span class="label label-danger pull-right">Urgent</span>
+                                <h4><a href="#">Code HTML email template for welcome email</a> </h4>
+                                <ul class="list-inline m-b-0">
+                                    <li>
+                                        <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Username">
+                                            <img src="assets/images/users/avatar-6.jpg" alt="img" class="thumb-sm img-circle">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="5 Tasks">
+                                            <i class="zmdi zmdi-format-align-left"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="3 Comments">
+                                            <i class="zmdi zmdi-comment-outline"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="text-center">
+                    <a href="#custom-modal" class="btn btn-default btn-md waves-effect waves-light"
+                       data-animation="fadein" data-plugin="custommodal" data-overlaySpeed="200" data-overlayColor="#36404a">
+                        <i class="zmdi zmdi-plus"></i> Add New
+                    </a>
+                </div>
+            </div>
+        </div><!-- end col -->
+    </div>
+    <!-- end row -->
+    <!-- Modal -->
+    <div id="custom-modal" class="modal-demo">
+        <button type="button" class="close" onclick="Custombox.close();">
+            <span>&times;</span><span class="sr-only">Close</span>
+        </button>
+        <h4 class="custom-modal-title">Add New</h4>
+        <div class="custom-modal-text text-left">
+            <form role="form">
+                <div class="form-group">
+                    <label for="name">Task Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="">
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="assign">Assign to</label>
+                            <input type="text" class="form-control" id="assign" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="priority">Priority</label>
+                            <input type="text" class="form-control" id="priority" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="Sdate">Start Date</label>
+                            <input type="text" class="form-control" id="Sdate" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="Ddate">Due Date</label>
+                            <input type="text" class="form-control" id="Ddate" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success waves-effect waves-light">Save</button>
+                <button type="button" class="btn btn-danger waves-effect waves-light m-l-5">Cancel</button>
+            </form>
+        </div>
+    </div>

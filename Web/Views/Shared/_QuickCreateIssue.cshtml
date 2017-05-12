@@ -20,7 +20,6 @@
                         response($.map(data, function (item) {
                             return { label: item, value: item };  
                         }))
-
                     }
                 })
             },
@@ -33,8 +32,12 @@
 @using (Html.BeginForm("Create", "WorkIssues", FormMethod.Post, null))
 {
     @Html.AntiForgeryToken()
-    <textarea class="form-control" rows="5" id="Content" name="Content"></textarea>
-    <p>
-        <input type="submit" value="Create" class="btn btn-default" />
-    </p>
+    <div class="card-box">
+        <textarea id="Content" name="Content" rows="3" class="form-control" placeholder="Post a new message"></textarea>
+        <div class="p-t-10 pull-right">
+            <p>
+                <input type="submit" value="Create" class="btn btn-default" />
+            </p>
+        </div>
+    </div>
 }

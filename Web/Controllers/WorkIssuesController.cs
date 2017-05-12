@@ -12,6 +12,7 @@ using Repository.Pattern.UnitOfWork;
 using CafeT.Text;
 using Web.Helpers;
 using Web.ModelViews;
+using Web.Managers;
 
 namespace Web.Controllers
 {
@@ -111,6 +112,8 @@ namespace Web.Controllers
             }
 
             WorkIssue workIssue = await db.Issues.FindAsync(id);
+            ViewBag.Urls = db.Urls.Where(t => t.IssueId.HasValue && t.IssueId == id).Select(t => t.Address).AsEnumerable();
+            ViewBag.Questions = new IssuesManager().GetQuestion(workIssue);
             
             if (workIssue == null)
             {
@@ -150,6 +153,14 @@ namespace Web.Controllers
                 workIssue.AutoAdjust();
                 db.Issues.Add(workIssue);
                 await db.SaveChangesAsync();
+                if(workIssue.Links != null && workIssue.Links.Count > 0)
+                {
+                    foreach(string link in workIssue.Links)
+                    {
+                        db.Urls.Add(new Url(link) { IssueId = workIssue.Id });
+                        await db.SaveChangesAsync();
+                    }
+                }
                 return RedirectToAction("Index");
             }
 
