@@ -16,7 +16,7 @@ using Web.Managers;
 
 namespace Web.Controllers
 {
-    [Authorize]
+    
     public class WorkIssuesController : BaseController
     {
         public WorkIssuesController(IUnitOfWorkAsync unitOfWorkAsync) : base(unitOfWorkAsync)

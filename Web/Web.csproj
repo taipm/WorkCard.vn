@@ -1067,9 +1067,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\WorkIssues\Create.cshtml" />
     <Content Include="Views\WorkIssues\Delete.cshtml" />
-    <Content Include="Views\WorkIssues\Details2.cshtml" />
     <Content Include="Views\WorkIssues\Edit.cshtml" />
-    <Content Include="Views\WorkIssues\Index3.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
@@ -1141,7 +1139,6 @@
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Views\Shared\_WorkTime.cshtml" />
     <Content Include="Views\Shared\_IssueItem.cshtml" />
-    <Content Include="Views\WorkIssues\Index2.cshtml" />
     <Content Include="Views\Shared\_WorkStatus.cshtml" />
     <Content Include="Views\Shared\_IssueMenu.cshtml" />
     <Content Include="Views\Shared\_Issues.cshtml" />
