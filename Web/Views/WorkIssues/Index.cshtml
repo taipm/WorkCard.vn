@@ -61,6 +61,14 @@
         </div>
     </div><!-- end col -->
 </div>
+    @if (ViewBag.LastStory != null)
+    {
+        <div class="row">
+            <div class="col-sm-12">
+                @Html.Partial("_StoryItem", (Story)ViewBag.LastStory)
+            </div>
+        </div>
+    }
 
     <div class="row">
         <div class="col-sm-4">
@@ -79,11 +87,14 @@
             
         </div><!-- end col -->
         <div class="col-sm-4">
+            @if (Model != null && Model.ToList().GetExpired() != null && Model.ToList().GetExpired().Count > 0)
+            {
+                @Html.Partial("_IssuesExpired", Model.ToList().GetExpired().AsEnumerable())
+            }
             @if (Model != null && Model.ToList().GetDone() != null && Model.ToList().GetDone().Count > 0)
             {
                 @Html.Partial("_Issues", Model.ToList().GetDone().AsEnumerable())
             }
-
         </div><!-- end col -->
         @*<div class="col-sm-4">
             <div class="card-box taskboard-box">

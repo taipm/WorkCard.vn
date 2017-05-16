@@ -72,6 +72,8 @@ namespace Web.Controllers
 
         public async Task<ActionResult> Index()
         {
+            ViewBag.LastStory = _unitOfWorkAsync.RepositoryAsync<Story>().Query().Select().FirstOrDefault();
+
             var _objects = _unitOfWorkAsync.RepositoryAsync<WorkIssue>()
                                 .Query().Select()
                                 .Where(m => !string.IsNullOrWhiteSpace(m.Title))
@@ -80,6 +82,7 @@ namespace Web.Controllers
             {
                 return View("Index", _objects.Where(t => t.CreatedBy == User.Identity.Name).ToList());
             }
+            
             return View("Index", _objects);
         }
 

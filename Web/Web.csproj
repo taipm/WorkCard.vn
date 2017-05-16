@@ -1052,6 +1052,10 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_Questions.cshtml" />
+    <Content Include="Views\Shared\_IssueItemExpired.cshtml" />
+    <Content Include="Views\Shared\_IssuesExpired.cshtml" />
+    <Content Include="Views\Shared\_StoryItem.cshtml" />
+    <Content Include="Views\Shared\_StoryMenuForDetail.cshtml" />
     <None Include="Views\WorkIssues\Details.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

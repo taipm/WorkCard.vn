@@ -89,11 +89,15 @@ namespace Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Title,Description,ProjectId,CreatedDate,UpdatedDate,UpdatedBy,CreatedBy")] Story story)
+        [ValidateInput(false)]
+        [Authorize]
+        public async Task<ActionResult> Create(Story story)
         {
             if (ModelState.IsValid)
             {
                 story.Id = Guid.NewGuid();
+                story.CreatedBy = User.Identity.Name;
+                story.CreatedDate = DateTime.Now;
                 db.Stories.Add(story);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -103,6 +107,7 @@ namespace Web.Controllers
         }
 
         // GET: Stories/Edit/5
+        [Authorize]
         public async Task<ActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -122,10 +127,14 @@ namespace Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,Description,ProjectId,CreatedDate,UpdatedDate,UpdatedBy,CreatedBy")] Story story)
+        [ValidateInput(false)]
+        [Authorize]
+        public async Task<ActionResult> Edit(Story story)
         {
             if (ModelState.IsValid)
             {
+                story.UpdatedBy = User.Identity.Name;
+                story.UpdatedDate = DateTime.Now;
                 db.Entry(story).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -134,6 +143,7 @@ namespace Web.Controllers
         }
 
         // GET: Stories/Delete/5
+        [Authorize]
         public async Task<ActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -151,6 +161,7 @@ namespace Web.Controllers
         // POST: Stories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> DeleteConfirmed(Guid id)
         {
             Story story = await db.Stories.FindAsync(id);
