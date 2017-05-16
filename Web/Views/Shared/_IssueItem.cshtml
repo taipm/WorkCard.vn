@@ -19,7 +19,13 @@
         {
             <h4><a href="#">@Html.ActionLink(Model.Title, "Details", new { id = Model.Id }, null)</a> </h4>
         }
-        
+        @if (Model.TimeToDo.HasValue)
+        {
+            <span class="label label-success pull-right">@Model.TimeToDo.Value phút</span>
+        }
+        <p>
+            @Html.Partial("_IssueMenu")
+        </p>
         <ul class="list-inline m-b-0">
             <li>
                 <a href="#" data-toggle="tooltip" data-placement="top"

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Web.Models.WorkIssue>
+﻿@using CafeT.Time
+@model IEnumerable<Web.Models.WorkIssue>
 
 <div class="card-box taskboard-box">
     <div class="dropdown pull-right">
@@ -13,7 +14,22 @@
             <li><a href="#">Separated link</a></li>
         </ul>
     </div>
-    <h4 class="header-title m-t-0 m-b-30 text-primary">Upcoming</h4>
+    @if (Model != null && Model.FirstOrDefault() != null)
+    {
+        if (Model.FirstOrDefault().End.HasValue && Model.FirstOrDefault().End.Value.IsToday())
+        {
+            <h4 class="header-title m-t-0 m-b-30 text-primary">Now</h4>
+        }
+        else if(Model.FirstOrDefault().Status == Web.Models.IssueStatus.Done)
+        {
+            <h4 class="header-title m-t-0 m-b-30 text-primary">Completed</h4>
+        }
+        else if (Model.FirstOrDefault().End.HasValue && Model.FirstOrDefault().End.Value.IsTomorrow())
+        {
+            <h4 class="header-title m-t-0 m-b-30 text-primary">Upcoming</h4>
+        }
+    }
+    
     <ul class="list-unstyled task-list" id="drag-upcoming">
         @foreach (var item in Model)
         {

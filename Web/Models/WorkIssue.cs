@@ -42,6 +42,7 @@ namespace Web.Models
         public string Content { set; get; }
         public string Message { set; get; } = string.Empty;
         public string Owner { set; get; }
+        public double Price { set; get; } = 0;
         
         public DateTime? Start { set; get; }
         public DateTime? End { set; get; }
@@ -71,6 +72,12 @@ namespace Web.Models
             Links = new List<string>();
             Emails = new List<string>();
             Times = new List<DateTime>();
+        }
+
+        public bool IsFree()
+        {
+            if (this.Price == 0) return true;
+            return false;
         }
 
         public bool IsStandard()
@@ -136,6 +143,71 @@ namespace Web.Models
             return true;
         }
 
+        public void AutoSetTimes()
+        {
+            //Autofill time
+            DateTime[] _times = Content.GetTimes();
+            if (_times != null && _times.Count() > 0)
+            {
+                foreach (var _time in _times)
+                {
+                    Times.Add(_time);
+                }
+            }
+
+            
+
+            string[] _contains = Content.ToWords().Where(t => t.CountOf("/") == 1).ToArray();
+            if(_contains != null && _contains.Length > 0)
+            {
+                foreach (string value in _contains)
+                {
+                    try
+                    {
+                        int year = DateTime.Now.Year;
+                        int month = int.Parse(value.After("/"));
+                        int day = int.Parse(value.Before("/"));
+                        var time = new DateTime(year, month, day) { };
+                        Times.Add(time);
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
+            //BuildTime();
+            if (this.IsNoTime())
+            {
+                if (Times == null ||Times.Count == 0)
+                {
+                    this.SetToday();
+                }
+                else
+                {
+                    this.Start = Times.FirstOrDefault();
+                    this.End = Times.LastOrDefault();
+                }
+            }
+        }
+
+        public bool HasKeywords(string keyWord)
+        {
+            if (keyWord == null || keyWord.IsNullOrEmptyOrWhiteSpace()) return false;
+            keyWord = keyWord.ToLower();
+            if (this.Content.IsNullOrEmptyOrWhiteSpace() 
+                //|| this.Description.IsNullOrEmptyOrWhiteSpace() || this.Title.IsNullOrEmptyOrWhiteSpace()
+                ) return false;
+            if (this.Content.ToLower().Contains(keyWord)
+                //|| this.Description.ToLower().Contains(keyWord)
+                //|| this.Title.ToLower().Contains(keyWord))
+                )
+            {
+                return true;
+            }
+            return false;
+        }
+
         public void AutoAdjust()
         {
             if(Title.IsNullOrEmptyOrWhiteSpace())
@@ -166,6 +238,9 @@ namespace Web.Models
                 Repeat = RepeatType.Yearly;
             }
 
+            //AutoSetTime
+            this.AutoSetTimes();
+
             //Members
             string[] _emails = Content.GetEmails();
             if(_emails != null && _emails.Count()>0)
@@ -186,27 +261,7 @@ namespace Web.Models
                 }
             }
 
-            //Autofill time
-            DateTime[] _times = Content.GetTimes();
-            if (_times != null && _times.Count() > 0)
-            {
-                foreach (var _time in _times)
-                {
-                    Times.Add(_time);
-                }
-            }
-
-            //BuildTime();
-            if (this.IsNoTime())
-            {
-                if(Times != null && Times.Count > 0)
-                {
-                }
-                else
-                {
-                    this.SetToday();
-                }
-            }
+            
 
             //Links
             Links = this.Content.GetUrls().ToList();

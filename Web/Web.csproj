@@ -322,6 +322,10 @@
     <Compile Include="Migrations\201705111549065_AddUrlModel.Designer.cs">
       <DependentUpon>201705111549065_AddUrlModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705160705463_AddPrice.cs" />
+    <Compile Include="Migrations\201705160705463_AddPrice.Designer.cs">
+      <DependentUpon>201705160705463_AddPrice.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -1049,7 +1053,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_Questions.cshtml" />
     <None Include="Views\WorkIssues\Details.cshtml" />
-    <None Include="Views\WorkIssues\Index.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1153,6 +1156,7 @@
     <Content Include="Views\Shared\Templates\_Setting.cshtml" />
     <Content Include="Views\Shared\Templates\_Footer.cshtml" />
     <Content Include="Views\Shared\Templates\_Sidebar.cshtml" />
+    <Content Include="Views\WorkIssues\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1221,6 +1225,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705111549065_AddUrlModel.resx">
       <DependentUpon>201705111549065_AddUrlModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705160705463_AddPrice.resx">
+      <DependentUpon>201705160705463_AddPrice.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

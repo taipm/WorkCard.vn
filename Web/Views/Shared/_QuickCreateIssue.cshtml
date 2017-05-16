@@ -29,15 +29,26 @@
         });
     })
 </script>
-@using (Html.BeginForm("Create", "WorkIssues", FormMethod.Post, null))
-{
-    @Html.AntiForgeryToken()
-    <div class="card-box">
+
+<div class="card-box">
+    @using (Html.BeginForm("Create", "WorkIssues", FormMethod.Post, null))
+    {
+        @Html.AntiForgeryToken()
+
         <textarea id="Content" name="Content" rows="3" class="form-control" placeholder="Post a new message"></textarea>
         <div class="p-t-10 pull-right">
             <p>
                 <input type="submit" value="Create" class="btn btn-default" />
             </p>
         </div>
-    </div>
-}
+    }
+    <p>
+        Gợi ý: <br />
+        <ul>
+            <li>Mặc định khi tạo issue, ngày đến hạn và bắt đầu (end/start) sẽ là ngày hôm nay</li>
+            <li>Nếu bạn ai sẽ tham gia vào issue, chỉ cần nhập email của họ vào, chương trình sẽ tự động thông báo đến người đó</li>
+            <li>Chúng tôi có tạo sẵn một số từ khóa hữu ích mà bạn có thể tham khảo @Html.ActionLink("Tại đây", "Index", "Keywords")</li>
+        </ul>
+    </p>
+</div>
+

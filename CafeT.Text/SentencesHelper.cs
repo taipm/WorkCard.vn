@@ -10,6 +10,50 @@ namespace CafeT.Text
     public static class SentencesHelper
     {
         #region Words
+        public static char[] ExtractSeparators(this string text)
+        {
+            List<char> separators = new List<char>();
+            foreach (char character in text)
+            {
+                // If the character is not a letter,
+                // then by definition it is a separator
+                if (!char.IsLetter(character))
+                {
+                    separators.Add(character);
+                }
+            }
+            return separators.ToArray();
+        }
+        public static string[] GetHasTags(this string text)
+        {
+            //string text = "This is a string that #contains a hashtag!";
+            if (text == null || text.Length <= 0) return null;
+            List<string> _hasTags = new List<string>();
+            var regex = new Regex(@"(?<=#)\w+");
+            var matches = regex.Matches(text);
+            foreach (Match m in matches)
+            {
+                _hasTags.Add(m.Value);
+            }
+            return _hasTags.ToArray();
+        }
+        //public static string[] GetHasTags(this string text)
+        //{
+        //    if (string.IsNullOrWhiteSpace(text))
+        //    {
+        //        return null;
+        //    }
+        //    else
+        //    {
+        //        var matches = Regex.Matches(text, "(\\#\\w+) ");
+        //        List<string> _words = new List<string>();
+        //        foreach (Match match in matches)
+        //        {
+        //            _words.Add(match.Value);
+        //        }
+        //        return _words.ToArray();
+        //    }
+        //}
         public static string[] ToWords(this string text)
         {
             if (string.IsNullOrWhiteSpace(text))
@@ -21,9 +65,6 @@ namespace CafeT.Text
                 char[] separators = text.ExtractSeparators();
                 string[] words = text.Split(separators, StringSplitOptions.RemoveEmptyEntries);
                 return words;
-                //string[] _delimiters = new string[] { " ", ",", ".", "?", "!" };
-                //return text.ToStandard().Split(_delimiters, StringSplitOptions.None)
-                //    .Where(t => !string.IsNullOrWhiteSpace(t)).ToArray();
             }
         }
 
@@ -80,37 +121,6 @@ namespace CafeT.Text
             }
             return _result;
         }
-
-        //public static string[] GetSentencesHasTime(this string text)
-        //{
-        //    List<string> _sentences = new List<string>();
-        //    //Match Collection for every sentence
-        //    MatchCollection matchSentences =
-        //        Regex.Matches(text, @"([A-Z][^\.!?]*[\.!?])");
-        //    //Alternative pattern :  @"(\S.+?[.!?])(?=\s+|$)"
-
-        //    //counter for sentences.
-        //    int foundSentenceWithWord = 0;
-        //    foreach (Match sFound in matchSentences)
-        //    {
-        //        foreach (Capture capture in sFound.Captures)
-        //        {
-        //            string current_sentence = capture.Value;
-
-        //            //if you don't want to match for words like 'bank'er  or  'bank'ing
-        //            //use the word boundary "\b"
-        //            //change this pattern to   @"\b"+word+@"\b"
-        //            Match matchWordInSentence =
-        //                Regex.Match(capture.Value, word, RegexOptions.IgnoreCase);
-        //            if (matchWordInSentence.Success)
-        //            {
-        //                _sentences.Add(current_sentence);
-        //                foundSentenceWithWord++;
-        //            }
-        //        }
-        //    }
-        //    return _sentences.ToArray();
-        //}
 
         public static string[] GetSentences(this string text, string word)
         {

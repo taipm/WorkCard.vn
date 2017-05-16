@@ -146,20 +146,7 @@ namespace CafeT.Text
             return _commands;
         }
 
-        public static char[] ExtractSeparators(this string text)
-        {
-            List<char> separators = new List<char>();
-            foreach (char character in text)
-            {
-                // If the character is not a letter,
-                // then by definition it is a separator
-                if (!char.IsLetter(character))
-                {
-                    separators.Add(character);
-                }
-            }
-            return separators.ToArray();
-        }
+        
 
         public static char[] ExtractOperators(string expression)
         {

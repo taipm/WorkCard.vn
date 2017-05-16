@@ -114,6 +114,12 @@ namespace Web.Controllers
             WorkIssue workIssue = await db.Issues.FindAsync(id);
             ViewBag.Urls = db.Urls.Where(t => t.IssueId.HasValue && t.IssueId == id).Select(t => t.Address).AsEnumerable();
             ViewBag.Questions = new IssuesManager().GetQuestion(workIssue);
+            string _keyWord = workIssue.Content.GetHasTags().FirstOrDefault();
+            var _all = db.Issues.Where(t => t.CreatedBy.ToLower() == workIssue.CreatedBy).AsEnumerable();
+            if (_all != null && _all.Count()>0)
+            {
+                ViewBag.ReferItems = _all.Where(t => t.HasKeywords(_keyWord)).AsEnumerable();
+            }
             
             if (workIssue == null)
             {

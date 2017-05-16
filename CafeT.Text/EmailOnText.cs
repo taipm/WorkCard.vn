@@ -42,19 +42,5 @@ namespace CafeT.Text
 
             return MatchList;
         }
-
-        public static string[] GetHasTags(this string text)
-        {
-            //string text = "This is a string that #contains a hashtag!";
-            if (text == null || text.Length <= 0) return null;
-            List<string> _hasTags = new List<string>();
-            var regex = new Regex(@"(?<=#)\w+");
-            var matches = regex.Matches(text);
-            foreach (Match m in matches)
-            {
-                _hasTags.Add(m.Value);
-            }
-            return _hasTags.ToArray();
-        }
     }
 }
