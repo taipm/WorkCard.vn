@@ -36,6 +36,15 @@
                                 HttpMethod = "Post",
                             }, new { @class = "btn btn-default" })
             }
+            @if (DateTime.Now.IsInHours(11, 12))
+            {
+                @Ajax.ActionLink("Tomorrow", "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = DateTime.Now.AddDays(1) },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Update-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, new { @class = "btn btn-default" })
+            }
             <div id="Update-@Model.Id"></div>
             <ul class="list-inline m-b-0">
                 <li>
