@@ -117,6 +117,12 @@
                                 HttpMethod = "Post",
                             }, new { @class = "btn btn-default" })
         }
+        @Ajax.ActionLink("5 phút ", "SetTimeTodo", "WorkIssues", new { Id = Model.Id, timeTodo = 5 },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Status-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, new { @class = "btn btn-default" })
     </p>
 }
 <div id="Update-@Model.Id"></div>

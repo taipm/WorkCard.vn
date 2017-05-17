@@ -1,4 +1,4 @@
-﻿@using CafeT.Time
+﻿@using Web.Models
 @model Web.Models.Question
 
 
@@ -14,30 +14,19 @@
                 <span>@Model.Title</span>
             </div>
             @Html.Raw(Model.Content)
+            @foreach (var _answer in Model.Answers)
+            {
+                <div class="comment-text">
+                    @Html.Raw(_answer.Content)
+                </div>
+            }
         </div>
+
         <div class="comment-footer">
             <a href="#"><i class="fa fa-thumbs-o-up"></i></a>
             <a href="#"><i class="fa fa-thumbs-o-down"></i></a>
-            <a href="#">Reply</a>
+            @Html.ActionLink("Reply", "Create", "Answers", new { questionId = Model.Id }, null)
+            @Html.Partial("_AddAnswer", new Answer() { QuestionId = Model.Id })
         </div>
     </div>
 </div>
-@*<div>
-    
-    <dl class="dl-horizontal">
-    
-        <dt>
-            @Html.DisplayNameFor(model => model.ProjectId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProjectId)
-        </dd>
-
-    
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>*@

@@ -4,7 +4,7 @@
 
 @model Web.Models.WorkIssue
 
-@if (Model.IsExpired())
+@if (Model.IsUpcoming())
 {
     <div class="card-box kanban-box">
         <div class="checkbox-wrapper">
@@ -27,6 +27,12 @@
             @if (User.Identity.IsAuthenticated)
             {
                 @Ajax.ActionLink("Now in (10m) ", "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = DateTime.Now.AddMinutes(10) },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Update-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, new { @class = "btn btn-default" })
+                @Ajax.ActionLink("Today ", "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = DateTime.Now.SetStartWorkingTime() },
                             new AjaxOptions
                             {
                                 UpdateTargetId = "Update-" + Model.Id.ToString(),

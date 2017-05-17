@@ -15,6 +15,9 @@
                                 UpdateTargetId = "Status-" + Model.Id.ToString(),
                                 HttpMethod = "Post",
                             }, new { @class = "btn btn-default" })
+    }
+    else if (Model.Status != IssueStatus.Done)
+    {
         @Ajax.ActionLink("Done ", "MarkAsDone", "WorkIssues", new { Id = Model.Id },
                             new AjaxOptions
                             {
@@ -22,7 +25,6 @@
                                 HttpMethod = "Post",
                             }, new { @class = "btn btn-danger" })
     }
-
     if (Model.IsTomorrow() && Model.Status != IssueStatus.Done)
     {
         @Ajax.ActionLink("Today ", "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = DateTime.Now },

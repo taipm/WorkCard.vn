@@ -11,123 +11,113 @@ using Web.Models;
 
 namespace Web.Controllers
 {
-    public class QuestionsController : Controller
+    public class UrlsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Questions
+        // GET: Urls
         public async Task<ActionResult> Index()
         {
-            return View(await db.Questions.ToListAsync());
+            var _objects = db.Urls.AsEnumerable();
+            if(User.Identity.IsAuthenticated)
+            {
+                _objects = _objects.Where(t => t.CreatedBy == User.Identity.Name).AsEnumerable();
+            }
+            return View(_objects);
         }
 
-        // GET: Questions/Details/5
+        // GET: Urls/Details/5
         public async Task<ActionResult> Details(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Question question = await db.Questions.FindAsync(id);
-            question.Answers = await db.Answers.Where(t => t.QuestionId == id.Value).ToListAsync();
-            if (question == null)
+            Url url = await db.Urls.FindAsync(id);
+            if (url == null)
             {
                 return HttpNotFound();
             }
-            return View(question);
+            return View(url);
         }
 
-        // GET: Questions/Create
-        [Authorize]
+        // GET: Urls/Create
         public ActionResult Create()
         {
-            Question question = new Question();
-            return View(question);
+            return View();
         }
 
-        // POST: Questions/Create
+        // POST: Urls/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize]
-        [ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Question question)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Domain,Address,Title,HtmlContent,IssueId,QuestionId,ProjectId,CommentId,StoryId,AnswerId,LastestCheck,CreatedDate,UpdatedDate,UpdatedBy,CreatedBy")] Url url)
         {
             if (ModelState.IsValid)
             {
-                question.CreatedBy = User.Identity.Name;
-                db.Questions.Add(question);
-
+                url.Id = Guid.NewGuid();
+                db.Urls.Add(url);
                 await db.SaveChangesAsync();
-                if(question.IssueId.HasValue)
-                {
-                    return RedirectToAction("Details", "WorkIssues",  new { id = question.IssueId.Value });
-                }
                 return RedirectToAction("Index");
             }
 
-            return View(question);
+            return View(url);
         }
 
-        // GET: Questions/Edit/5
-        [Authorize]
+        // GET: Urls/Edit/5
         public async Task<ActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Question question = await db.Questions.FindAsync(id);
-            if (question == null)
+            Url url = await db.Urls.FindAsync(id);
+            if (url == null)
             {
                 return HttpNotFound();
             }
-            return View(question);
+            return View(url);
         }
 
-        // POST: Questions/Edit/5
+        // POST: Urls/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize]
-        [ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(Question question)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Domain,Address,Title,HtmlContent,IssueId,QuestionId,ProjectId,CommentId,StoryId,AnswerId,LastestCheck,CreatedDate,UpdatedDate,UpdatedBy,CreatedBy")] Url url)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(question).State = EntityState.Modified;
+                db.Entry(url).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(question);
+            return View(url);
         }
 
-        // GET: Questions/Delete/5
-        [Authorize]
+        // GET: Urls/Delete/5
         public async Task<ActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Question question = await db.Questions.FindAsync(id);
-            if (question == null)
+            Url url = await db.Urls.FindAsync(id);
+            if (url == null)
             {
                 return HttpNotFound();
             }
-            return View(question);
+            return View(url);
         }
 
-        // POST: Questions/Delete/5
+        // POST: Urls/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public async Task<ActionResult> DeleteConfirmed(Guid id)
         {
-            Question question = await db.Questions.FindAsync(id);
-            db.Questions.Remove(question);
+            Url url = await db.Urls.FindAsync(id);
+            db.Urls.Remove(url);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }

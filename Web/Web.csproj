@@ -224,6 +224,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AnswersController.cs" />
     <Compile Include="Controllers\ApplicationUsersController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
@@ -234,6 +235,7 @@
     <Compile Include="Controllers\QuestionsController.cs" />
     <Compile Include="Controllers\RolesAdminController.cs" />
     <Compile Include="Controllers\StoriesController.cs" />
+    <Compile Include="Controllers\UrlsController.cs" />
     <Compile Include="Controllers\UserAdminController.cs" />
     <Compile Include="Controllers\WorkIssuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -241,6 +243,7 @@
     </Compile>
     <Compile Include="Helpers\IssuesHelper.cs" />
     <Compile Include="Helpers\Pager.cs" />
+    <Compile Include="Managers\QuestionManager.cs" />
     <Compile Include="Managers\IssuesManager.cs" />
     <Compile Include="Migrations\201704250423515_InitialCreate.cs" />
     <Compile Include="Migrations\201704250423515_InitialCreate.Designer.cs">
@@ -1056,6 +1059,21 @@
     <Content Include="Views\Shared\_IssuesExpired.cshtml" />
     <Content Include="Views\Shared\_StoryItem.cshtml" />
     <Content Include="Views\Shared\_StoryMenuForDetail.cshtml" />
+    <Content Include="Views\Shared\_IssueItemUpcoming.cshtml" />
+    <Content Include="Views\Shared\_IssuesUpcoming.cshtml" />
+    <Content Include="Views\Shared\_IssuesAnalysis.cshtml" />
+    <Content Include="Views\Urls\Create.cshtml" />
+    <Content Include="Views\Urls\Delete.cshtml" />
+    <Content Include="Views\Urls\Details.cshtml" />
+    <Content Include="Views\Urls\Edit.cshtml" />
+    <Content Include="Views\Urls\Index.cshtml" />
+    <Content Include="Views\Answers\Create.cshtml" />
+    <Content Include="Views\Answers\Delete.cshtml" />
+    <Content Include="Views\Answers\Details.cshtml" />
+    <Content Include="Views\Answers\Edit.cshtml" />
+    <Content Include="Views\Answers\Index.cshtml" />
+    <Content Include="Views\Shared\_Answers.cshtml" />
+    <Content Include="Views\Shared\_AddAnswer.cshtml" />
     <None Include="Views\WorkIssues\Details.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

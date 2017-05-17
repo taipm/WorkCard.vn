@@ -29,7 +29,7 @@ namespace Web
                 EnableSsl = true,
                 Host = "smtp.gmail.com",
                 Port = 587,
-                Credentials = new NetworkCredential("taipm.vn@gmail.com", "P@$$w0rdPMT789")
+                Credentials = new NetworkCredential("taipm.vn@gmail.com", "P@$$w0rd789PMT123")
             })
             {
                 client.Send(_msg);
@@ -52,7 +52,7 @@ namespace Web
                     EnableSsl = true,
                     Host = "smtp.gmail.com",
                     Port = 587,
-                    Credentials = new NetworkCredential("taipm.vn@gmail.com", "P@$$w0rdPMT789")
+                    Credentials = new NetworkCredential("taipm.vn@gmail.com", "P@$$w0rd789PMT123")
                 })
                 {
                     client.Send(_msg);

@@ -17,7 +17,11 @@
         <span class="label label-danger pull-right">Urgent</span>
         @if (Model.Title != null && Model.Title.Length > 0)
         {
-            <h4><a href="#">@Html.ActionLink(Model.Title, "Details", new { id = Model.Id }, null)</a> </h4>
+            <h4>
+                <span class="label label-success pull-left">@Model.End.Value.ToShortTimeString()</span>
+                @Html.Raw(" ")
+                <a href="#">@Html.ActionLink(Model.Title, "Details", new { id = Model.Id }, null)</a> 
+            </h4>
         }
         @if (Model.TimeToDo.HasValue)
         {

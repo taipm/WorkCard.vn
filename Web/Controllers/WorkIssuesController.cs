@@ -116,7 +116,12 @@ namespace Web.Controllers
 
             WorkIssue workIssue = await db.Issues.FindAsync(id);
             ViewBag.Urls = db.Urls.Where(t => t.IssueId.HasValue && t.IssueId == id).Select(t => t.Address).AsEnumerable();
-            ViewBag.Questions = new IssuesManager().GetQuestion(workIssue);
+            var _questions = new IssuesManager().GetQuestion(workIssue);
+            foreach(var _question in _questions)
+            {
+                _question.Answers = new QuestionManager().GetAnswers(_question.Id);
+            }
+            ViewBag.Questions = _questions;
             string _keyWord = workIssue.Content.GetHasTags().FirstOrDefault();
             var _all = db.Issues.Where(t => t.CreatedBy.ToLower() == workIssue.CreatedBy).AsEnumerable();
             if (_all != null && _all.Count()>0)
@@ -166,7 +171,11 @@ namespace Web.Controllers
                 {
                     foreach(string link in workIssue.Links)
                     {
-                        db.Urls.Add(new Url(link) { IssueId = workIssue.Id });
+                        Url _url = new Models.Url(link);
+                        _url.IssueId = workIssue.Id;
+                        _url.CreatedBy = User.Identity.Name;
+                        _url.CreatedDate = DateTime.Now;
+                        db.Urls.Add(_url);
                         await db.SaveChangesAsync();
                     }
                 }
@@ -181,8 +190,6 @@ namespace Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [Authorize]
-        //[ValidateInput(false)]
-        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> SetWorkOnTime(Guid id, DateTime date)
         {
             WorkIssue workIssue = _unitOfWorkAsync.RepositoryAsync<WorkIssue>()
@@ -197,6 +204,25 @@ namespace Web.Controllers
             if (Request.IsAjaxRequest())
             {
                 return PartialView("_WorkTime", "Work on " + date.ToShortDateString());
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> SetTimeTodo(Guid id, int timeTodo)
+        {
+            WorkIssue workIssue = _unitOfWorkAsync.RepositoryAsync<WorkIssue>()
+                .Query().Select().Where(t => t.Id == id).FirstOrDefault();
+
+            workIssue.UpdatedDate = DateTime.Now;
+            workIssue.UpdatedBy = User.Identity.Name;
+            workIssue.TimeToDo = timeTodo;
+            db.Entry(workIssue).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_WorkTime", "Work on " + timeTodo.ToString() + " phút");
             }
             return RedirectToAction("Index");
         }

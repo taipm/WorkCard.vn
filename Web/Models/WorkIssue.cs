@@ -94,7 +94,14 @@ namespace Web.Models
             }
             return false;
         }
-
+        public bool IsUpcoming()
+        {
+            if (this.Status != IssueStatus.Done)
+            {
+                if (this.End.HasValue && !this.End.Value.IsExpired() && !this.End.Value.IsToday()) return true;
+            }
+            return false;
+        }
         public bool IsNoTime()
         {
             if (End == null || !End.HasValue) return true;
@@ -155,8 +162,6 @@ namespace Web.Models
                 }
             }
 
-            
-
             string[] _contains = Content.ToWords().Where(t => t.CountOf("/") == 1).ToArray();
             if(_contains != null && _contains.Length > 0)
             {
@@ -181,7 +186,7 @@ namespace Web.Models
             {
                 if (Times == null ||Times.Count == 0)
                 {
-                    this.SetToday();
+                    this.SetNow();
                 }
                 else
                 {
@@ -272,7 +277,11 @@ namespace Web.Models
             this.Start = DateTime.Today.SetStartWorkingTime();
             this.End = DateTime.Today.SetStartWorkingTime().AddMinutes(30);
         }
-
+        public void SetNow()
+        {
+            this.Start = DateTime.Now;
+            this.End = DateTime.Now.AddMinutes(30);
+        }
         public void SetTomorrow()
         {
             this.Start = DateTime.Today.AddDays(1).SetStartWorkingTime();
