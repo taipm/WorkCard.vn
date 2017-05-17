@@ -4,6 +4,33 @@
 @if (User.Identity.IsAuthenticated)
 {
     <p>
+        @Html.Raw(" Set price")
+        @if (Model.Repeat == RepeatType.None)
+        {
+            @Ajax.ActionLink("100.000 (VND)", "SetPrice", "WorkIssues", new { Id = Model.Id, price = 100},
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Update-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, new { @class = "btn btn-default" })
+        }
+    </p>
+    <p>
+        @Html.Raw(" Set working time")
+        @Ajax.ActionLink("5 phút ", "SetTimeTodo", "WorkIssues", new { Id = Model.Id, timeTodo = 5 },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Status-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, new { @class = "btn btn-default" })
+        @Ajax.ActionLink("10 phút ", "SetTimeTodo", "WorkIssues", new { Id = Model.Id, timeTodo = 10 },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Status-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, new { @class = "btn btn-default" })
+    </p>
+    <p>
         @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
         @Html.Raw(" | ")
         @Html.Raw(" Set ")
@@ -117,12 +144,7 @@
                                 HttpMethod = "Post",
                             }, new { @class = "btn btn-default" })
         }
-        @Ajax.ActionLink("5 phút ", "SetTimeTodo", "WorkIssues", new { Id = Model.Id, timeTodo = 5 },
-                            new AjaxOptions
-                            {
-                                UpdateTargetId = "Status-" + Model.Id.ToString(),
-                                HttpMethod = "Post",
-                            }, new { @class = "btn btn-default" })
+        
     </p>
 }
 <div id="Update-@Model.Id"></div>

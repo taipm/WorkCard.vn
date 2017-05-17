@@ -228,6 +228,7 @@
     <Compile Include="Controllers\ApplicationUsersController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
+    <Compile Include="Controllers\ContactsController.cs" />
     <Compile Include="Controllers\DocumentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -329,6 +330,10 @@
     <Compile Include="Migrations\201705160705463_AddPrice.Designer.cs">
       <DependentUpon>201705160705463_AddPrice.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705170623559_AddContacts.cs" />
+    <Compile Include="Migrations\201705170623559_AddContacts.Designer.cs">
+      <DependentUpon>201705170623559_AddContacts.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -352,6 +357,8 @@
     <Compile Include="Models\GroupStoreBase.cs" />
     <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\Project.cs" />
+    <Compile Include="Models\Contact.cs" />
+    <Compile Include="Models\Url.cs" />
     <Compile Include="Models\WorkIssue.cs" />
     <Compile Include="ModelViews\AccountViewModels.cs" />
     <Compile Include="ModelViews\IndexIssuesViewModel.cs" />
@@ -1074,6 +1081,11 @@
     <Content Include="Views\Answers\Index.cshtml" />
     <Content Include="Views\Shared\_Answers.cshtml" />
     <Content Include="Views\Shared\_AddAnswer.cshtml" />
+    <Content Include="Views\Contacts\Create.cshtml" />
+    <Content Include="Views\Contacts\Delete.cshtml" />
+    <Content Include="Views\Contacts\Details.cshtml" />
+    <Content Include="Views\Contacts\Edit.cshtml" />
+    <Content Include="Views\Contacts\Index.cshtml" />
     <None Include="Views\WorkIssues\Details.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1250,6 +1262,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705160705463_AddPrice.resx">
       <DependentUpon>201705160705463_AddPrice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705170623559_AddContacts.resx">
+      <DependentUpon>201705170623559_AddContacts.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

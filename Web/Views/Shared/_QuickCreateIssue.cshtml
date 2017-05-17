@@ -6,7 +6,8 @@
 }
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>  
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
 <script>
     $(document).ready(function () {
         $("#Content").autocomplete({
@@ -18,7 +19,13 @@
                     data: { Prefix: request.term },
                     success: function (data) {
                         response($.map(data, function (item) {
-                            return { label: item, value: item };  
+                            var _content = $("#Content").val();
+                            var _index = _content.lastIndexOf(" ");
+                            _content = _content.substring(0, _index + 1);
+                            return {
+                                label: item,
+                                value: _content +  item
+                            };
                         }))
                     }
                 })

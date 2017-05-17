@@ -28,6 +28,11 @@ namespace Web.Controllers
         [HttpPost]
         public JsonResult AutoCompleted(string Prefix)
         {
+            //Process Prefix
+            string _text = Prefix;
+            string _lastWord = Prefix.ToWords().LastOrDefault();
+            _text = _text.DeleteEndTo(" ");
+            Prefix = _lastWord;
             //Note : you can bind same list from database   
             Dictionary<string, string> _dict = new Dictionary<string, string>();
             _dict.Add("@Now", DateTime.Now.ToString());
@@ -42,8 +47,8 @@ namespace Web.Controllers
             //_dict.Add("", "Phan Minh Tài");
 
             //Searching records from list using LINQ query   
-            var CityName = _dict.Where(t => t.Key.Contains(Prefix) || t.Value.Contains(Prefix)).Select(t => t.Value);
-            return Json(CityName, JsonRequestBehavior.AllowGet);
+            var _keyWord = _dict.Where(t => t.Key.Contains(Prefix) || t.Value.Contains(Prefix)).Select(t => t.Value);
+            return Json(_keyWord, JsonRequestBehavior.AllowGet);
         }
 
         // GET: WorkIssues
@@ -167,6 +172,22 @@ namespace Web.Controllers
                 workIssue.AutoAdjust();
                 db.Issues.Add(workIssue);
                 await db.SaveChangesAsync();
+                
+                if(workIssue.HasInnerMembers())
+                {
+                    var _innerMembers = workIssue.GetInnerMembers();
+                    foreach(string _member in _innerMembers)
+                    {
+                        Contact _contact = new Contact();
+                        _contact.Email = _member;
+                        _contact.UserName = User.Identity.Name;
+                        _contact.CreatedBy = User.Identity.Name;
+
+                        db.Contacts.Add(_contact);
+                        await db.SaveChangesAsync();
+                    }
+                }
+
                 if(workIssue.Links != null && workIssue.Links.Count > 0)
                 {
                     foreach(string link in workIssue.Links)
@@ -183,6 +204,25 @@ namespace Web.Controllers
             }
 
             return View(workIssue);
+        }
+
+        // POST: WorkIssues/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> PushEmail(Guid id)
+        {
+            WorkIssue workIssue = _unitOfWorkAsync.RepositoryAsync<WorkIssue>()
+                .Query().Select().Where(t => t.Id == id).FirstOrDefault();
+
+            EmailService _email = new EmailService();
+            await _email.SendAsync(workIssue);
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_WorkTime", "Sent email");
+            }
+            return RedirectToAction("Index");
         }
 
         // POST: WorkIssues/Edit/5

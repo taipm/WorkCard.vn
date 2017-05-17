@@ -222,8 +222,9 @@ namespace CafeT.Html
             return images.ToArray();
         }
         
-        public static async Task<string> GetHtml(this string url)
+        public static async Task<string> LoadHtml(this string url)
         {
+            if (!url.IsUrl()) return string.Empty;
             HttpClient http = new HttpClient();
             try
             {

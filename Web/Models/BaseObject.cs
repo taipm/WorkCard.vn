@@ -11,15 +11,20 @@ namespace Web.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+        [ScaffoldColumn(false)]
         public DateTime? CreatedDate { set; get; }
+        [ScaffoldColumn(false)]
         public DateTime? UpdatedDate { set; get; }
+        [ScaffoldColumn(false)]
         public string UpdatedBy { set; get; }
+        [ScaffoldColumn(false)]
         public string CreatedBy { set; get; }
 
         //public string Message { set; get; }
 
         public BaseObject()
         {
+            Id = Guid.NewGuid();
             CreatedDate = DateTime.Now;
         }
     }

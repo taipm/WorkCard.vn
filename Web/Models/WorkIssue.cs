@@ -94,11 +94,12 @@ namespace Web.Models
             }
             return false;
         }
+
         public bool IsUpcoming()
         {
             if (this.Status != IssueStatus.Done)
             {
-                if (this.End.HasValue && !this.End.Value.IsExpired() && !this.End.Value.IsToday()) return true;
+                if (this.End.HasValue && !this.End.Value.IsExpired() && (this.End.Value > DateTime.Now)) return true;
             }
             return false;
         }
@@ -130,6 +131,12 @@ namespace Web.Models
                 return true;
             return false;
         }
+        //public bool IsUpcoming()
+        //{
+        //    if (End.HasValue && End.Value.Date > DateTime.Now)
+        //        return true;
+        //    return false;
+        //}
         public bool IsPrevDay(int n)
         {
             if (End.HasValue && End.Value.Date.AddDays(n) <= DateTime.Now.Date)
@@ -246,16 +253,6 @@ namespace Web.Models
             //AutoSetTime
             this.AutoSetTimes();
 
-            //Members
-            string[] _emails = Content.GetEmails();
-            if(_emails != null && _emails.Count()>0)
-            {
-                foreach(string _email in _emails)
-                {
-                    Members.Add(_email);
-                }
-            }
-
             //HasTags
             string[] _hasTags = Content.GetHasTags();
             if (_hasTags != null && _hasTags.Count() > 0)
@@ -270,6 +267,26 @@ namespace Web.Models
 
             //Links
             Links = this.Content.GetUrls().ToList();
+        }
+
+        public bool HasInnerMembers()
+        {
+            if (GetInnerMembers() != null && GetInnerMembers().Count() > 0) return true;
+            return false;
+        }
+        public string[] GetInnerMembers()
+        {
+            //Members
+            List<string> _innerMembers = new List<string>();
+            string[] _emails = Content.GetEmails();
+            if (_emails != null && _emails.Count() > 0)
+            {
+                foreach (string _email in _emails)
+                {
+                    _innerMembers.Add(_email);
+                }
+            }
+            return _innerMembers.ToArray();
         }
 
         public void SetToday()

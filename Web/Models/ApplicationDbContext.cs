@@ -22,6 +22,7 @@ namespace Web.Models
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Story> Stories { get; set; }
         public DbSet<Url> Urls { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
 
         // Add the ApplicationGroups property:
         public virtual IDbSet<ApplicationGroup> ApplicationGroups { get; set; }
@@ -72,9 +73,5 @@ namespace Web.Models
                 ((IObjectState)dbEntityEntry.Entity).ObjectState = StateHelper.ConvertState(dbEntityEntry.State);
             }
         }
-
-        //public System.Data.Entity.DbSet<Web.Models.Question> Questions { get; set; }
-
-        //public System.Data.Entity.DbSet<Web.Models.Story> Stories { get; set; }
     }
 }

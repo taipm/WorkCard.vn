@@ -43,6 +43,12 @@
                                 HttpMethod = "Post",
                             }, new { @class = "btn btn-default" })
     }
+    @Ajax.ActionLink("Push", "PushEmail", "WorkIssues", new { Id = Model.Id},
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Update-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, new { @class = "btn btn-default" })
 }
 <div id="Update-@Model.Id"></div>
 <div id="Status-@Model.Id"></div>

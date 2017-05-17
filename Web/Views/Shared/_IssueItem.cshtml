@@ -23,6 +23,10 @@
                 <a href="#">@Html.ActionLink(Model.Title, "Details", new { id = Model.Id }, null)</a> 
             </h4>
         }
+        @if (Model.Price > 0)
+        {
+            <span class="label label-danger pull-right">@Model.Price (VND)</span>
+        }
         @if (Model.TimeToDo.HasValue)
         {
             <span class="label label-success pull-right">@Model.TimeToDo.Value phút</span>
