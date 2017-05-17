@@ -1095,6 +1095,7 @@
     <Content Include="Views\Shared\_IssueItemNow.cshtml" />
     <Content Include="Views\Shared\_IssuesCompleted.cshtml" />
     <Content Include="Views\Shared\_IssueItemCompleted.cshtml" />
+    <Content Include="Views\Shared\_ProjectItem.cshtml" />
     <None Include="Views\WorkIssues\Details.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

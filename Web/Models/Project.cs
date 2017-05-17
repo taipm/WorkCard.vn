@@ -8,9 +8,6 @@ using System.Web;
 
 namespace Web.Models
 {
-    
-    
-
     public class Project : BaseObject
     {
         public string Title { set; get; }
@@ -21,6 +18,7 @@ namespace Web.Models
         public virtual IEnumerable<Comment> Comments { set; get; }
         public virtual IEnumerable<Document> Documents { set; get; }
         public virtual IEnumerable<Story> Stories { set; get; }
+        public Project() : base() { }
     }
 
     public class Story : BaseObject
@@ -29,6 +27,7 @@ namespace Web.Models
         public string Description { set; get; }
         public virtual IEnumerable<Question> Questions { set; get; }
         public Guid? ProjectId { set; get; }
+        public Story() : base() { }
     }
     
 
@@ -36,6 +35,7 @@ namespace Web.Models
     {
         public string Content { set; get; }
         public Guid QuestionId { set; get; }
+        public Answer() : base() { }
     }
 
     public class Comment : BaseObject
@@ -45,5 +45,7 @@ namespace Web.Models
         public Guid? ProjectId { set; get; }
         public Guid? IssueId { set; get; }
         public Guid? QuestionId { set; get; }
+
+        public Comment() : base() { }
     }
 }

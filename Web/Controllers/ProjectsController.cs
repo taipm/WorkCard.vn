@@ -16,7 +16,6 @@ namespace Web.Controllers
     {
         public ProjectsController(IUnitOfWorkAsync unitOfWorkAsync) : base(unitOfWorkAsync)
         {
-
         }
 
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -47,6 +46,7 @@ namespace Web.Controllers
         }
 
         // GET: Projects/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -57,11 +57,14 @@ namespace Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Title,Description,CreatedDate,UpdatedDate,UpdatedBy,CreatedBy")] Project project)
+        [Authorize]
+        [ValidateInput(false)]
+        public async Task<ActionResult> Create(Project project)
         {
             if (ModelState.IsValid)
             {
                 project.Id = Guid.NewGuid();
+                project.CreatedBy = User.Identity.Name;
                 db.Projects.Add(project);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -71,6 +74,7 @@ namespace Web.Controllers
         }
 
         // GET: Projects/Edit/5
+        [Authorize]
         public async Task<ActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -90,10 +94,14 @@ namespace Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,Description,CreatedDate,UpdatedDate,UpdatedBy,CreatedBy")] Project project)
+        [Authorize]
+        [ValidateInput(false)]
+        public async Task<ActionResult> Edit(Project project)
         {
             if (ModelState.IsValid)
             {
+                project.UpdatedDate = DateTime.Now;
+                project.UpdatedBy = User.Identity.Name;
                 db.Entry(project).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -102,6 +110,7 @@ namespace Web.Controllers
         }
 
         // GET: Projects/Delete/5
+        [Authorize]
         public async Task<ActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -119,6 +128,7 @@ namespace Web.Controllers
         // POST: Projects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> DeleteConfirmed(Guid id)
         {
             Project project = await db.Projects.FindAsync(id);

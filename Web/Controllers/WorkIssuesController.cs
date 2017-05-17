@@ -166,6 +166,11 @@ namespace Web.Controllers
                 workIssue.Id = Guid.NewGuid();
                 workIssue.CreatedDate = DateTime.Now;
                 workIssue.CreatedBy = User.Identity.Name;
+                if(workIssue.Content.Contains("#WorkCard"))
+                {
+                    var _project = db.Projects.Where(t => t.Title.ToLower().Contains("workcard")).FirstOrDefault();
+                    workIssue.ProjectId = _project.Id;
+                }
                 workIssue.AutoAdjust();
                 db.Issues.Add(workIssue);
                 await db.SaveChangesAsync();
