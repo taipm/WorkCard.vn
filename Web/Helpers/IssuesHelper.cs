@@ -41,6 +41,10 @@ namespace Web.Helpers
         {
             return issues.Where(t => t.Status != IssueStatus.Done).ToList();
         }
+        public static List<WorkIssue> GetFromNow(this List<WorkIssue> issues)
+        {
+            return issues.Where(t => t.End.HasValue && t.End.Value >= DateTime.Now).ToList();
+        }
         public static List<WorkIssue> GetToday(this List<WorkIssue> issues)
         {
             return issues.Where(t => t.IsToday()).ToList();

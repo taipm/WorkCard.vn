@@ -15,8 +15,9 @@ namespace Web.Models
         public bool? IsRegistered { set; get; }
 
         public Contact() : base() { }
-        public Contact(string email)
+        public Contact(string email):base()
         {
+            Email = email;
         }
     }
 }

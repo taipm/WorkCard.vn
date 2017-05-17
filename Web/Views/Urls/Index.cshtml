@@ -17,12 +17,9 @@
         <th>
             @Html.DisplayNameFor(model => model.Address)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HtmlContent)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.LastestCheck)
         </th>
@@ -37,7 +34,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.Address)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.Title)
             <br />| @Html.DisplayFor(modelItem => item.CommentId)
             <br />| @Html.DisplayFor(modelItem => item.StoryId)
@@ -45,20 +42,8 @@
             <br />| @Html.DisplayFor(modelItem => item.ProjectId)
             <br />| @Html.DisplayFor(modelItem => item.QuestionId)
             <br />| @Html.DisplayFor(modelItem => item.AnswerId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HtmlContent)
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AnswerId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastestCheck)
-        </td>
-
+        </td>*@
+       
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Details", "Details", new { id=item.Id }) |

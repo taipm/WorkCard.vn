@@ -13,16 +13,23 @@
                 <img src="assets/images/profile.jpg"
                      class="img-thumbnail" alt="profile-image">
                 <div class="profile-info-detail">
-                    <h3 class="m-t-0 m-b-0">
+                    <h4 class="m-t-0 m-b-0">
                         @if (Model.Repeat != Web.Models.RepeatType.None)
                         {
                             <span class="label label-info">@Model.Repeat</span>
                         }
                         @Model.Title
                         <span class="label label-danger">@Model.Status</span>
-                    </h3>
+                    </h4>
                     <p>
-                        Work on: @Model.Start.Value.ToShortDateString() - @Model.End.Value.ToShortDateString()
+                        Work on: 
+                        @if (@Model.Start.HasValue)
+                        {
+                            @Model.Start.Value.ToShortDateString()
+                            @Html.Raw("-")
+                        }
+                        @Model.End.Value.ToShortDateString()
+                        <span class="label label-danger">@Model.TimeToDo (phút)</span>
                     </p>
                     <p class="text-muted m-b-20"><i>@Model.CreatedBy</i></p>
                     <p>
@@ -81,16 +88,24 @@
                 {
                     foreach (string _member in Model.Content.GetEmails())
                     {
-                        <li class="list-group-item">
-                            <a href="#" class="user-list-item">
+                        string _cssId = _member.Replace("@", "_").Replace(".", "_");
+                        <li id="@_cssId" class="list-group-item">
                                 <div class="avatar">
                                     <img src="assets/images/users/avatar-2.jpg" alt="">
                                 </div>
                                 <div class="user-desc">
                                     <span class="name">@Html.Raw(_member)</span>
-                                    <span class="desc">Member</span>
+                                    <span class="desc">
+                                        @Ajax.ActionLink("Add", "AddContact", "Contacts", new { email = _member },
+                                            new AjaxOptions
+                                            {
+                                                UpdateTargetId = @_cssId,
+                                                HttpMethod = "Post",
+                                                InsertionMode = InsertionMode.Replace
+                                            }, 
+                                            new { @class = "user-list-item" })
+                                    </span>
                                 </div>
-                            </a>
                         </li>
                     }
                 }
@@ -128,61 +143,6 @@
                         </li>
                     }
                 }
-                @*<li class="list-group-item">
-                    <a href="#" class="user-list-item">
-                        <div class="avatar text-center">
-                            <i class="zmdi zmdi-circle text-primary"></i>
-                        </div>
-                        <div class="user-desc">
-                            <span class="name">Meet Manager</span>
-                            <span class="desc">February 29, 2016 - 10:30am to 12:45pm</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="list-group-item">
-                    <a href="#" class="user-list-item">
-                        <div class="avatar text-center">
-                            <i class="zmdi zmdi-circle text-success"></i>
-                        </div>
-                        <div class="user-desc">
-                            <span class="name">Project Discussion</span>
-                            <span class="desc">February 29, 2016 - 10:30am to 12:45pm</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="list-group-item">
-                    <a href="#" class="user-list-item">
-                        <div class="avatar text-center">
-                            <i class="zmdi zmdi-circle text-pink"></i>
-                        </div>
-                        <div class="user-desc">
-                            <span class="name">Meet Manager</span>
-                            <span class="desc">February 29, 2016 - 10:30am to 12:45pm</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="list-group-item">
-                    <a href="#" class="user-list-item">
-                        <div class="avatar text-center">
-                            <i class="zmdi zmdi-circle text-muted"></i>
-                        </div>
-                        <div class="user-desc">
-                            <span class="name">Project Discussion</span>
-                            <span class="desc">February 29, 2016 - 10:30am to 12:45pm</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="list-group-item">
-                    <a href="#" class="user-list-item">
-                        <div class="avatar text-center">
-                            <i class="zmdi zmdi-circle text-danger"></i>
-                        </div>
-                        <div class="user-desc">
-                            <span class="name">Meet Manager</span>
-                            <span class="desc">February 29, 2016 - 10:30am to 12:45pm</span>
-                        </div>
-                    </a>
-                </li>*@
             </ul>
         </div>
         <div class="card-box">
@@ -256,6 +216,49 @@
                     </a>
                 </li>
             </ul>
+        </div>
+        <div class="card-box">
+            <div class="dropdown pull-right">
+                <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
+                    <i class="zmdi zmdi-more-vert"></i>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                </ul>
+            </div>
+            <h4 class="header-title m-t-0 m-b-30"><i class="zmdi zmdi-notifications-none m-r-5"></i> Links</h4>
+            <ul class="list-group m-b-0 user-list">
+                    @if (ViewBag.Urls != null)
+                    {
+                        foreach (string _link in (IEnumerable<string>)ViewBag.Urls)
+                        {
+                            string _linkId = _link.Replace("/", "_").Replace(".", "_").Replace(":","_");
+                            <li id="@_linkId" class="list-group-item">
+                                <div class="avatar">
+                                    <img src="assets/images/users/avatar-2.jpg" alt="">
+                                </div>
+                                <div class="user-desc">
+                                    <span class="name">@Html.Raw(_link.ToHtmlLink())</span>
+                                    <br />
+                                    <span class="desc">
+                                        @Ajax.ActionLink("Add", "AddUrl", "Urls", new { url = _link },
+                                                            new AjaxOptions
+                                                            {
+                                                                UpdateTargetId = _linkId,
+                                                                HttpMethod = "Post",
+                                                                InsertionMode = InsertionMode.Replace
+                                                            },
+                                                            new { @class = "user-list-item" })
+                                    </span>
+                                </div>
+                            </li>
+                        }
+                    }
+                </ul>
         </div>
     </div>
 </div>
@@ -365,80 +368,37 @@
                 
             </div>
             <div class="col-md-4">
-                Words: @Model.Content.GetCountWords()
-                <br />
                 Sentences: @Model.Content.GetSentences().Count()
                 <br />
-                Emails: @Model.Content.GetEmails().Count()
-                <br />
-
-                Links: @Model.Content.GetUrls().Count(); <br />
-                <ul>
-                    @if (Model.Content.GetUrlsWithoutHref() != null && Model.Content.GetUrlsWithoutHref().Count() > 0)
-                    {
-                    foreach (string _link in Model.Content.GetUrlsWithoutHref())
-                    {
-                    <li>
-                        @Html.Raw(_link.ToHtmlLink())
-                    </li>
-                    }
-                    }
-                </ul>
                 @if (Model.Content.HasYouTubeLink())
                 {
-                foreach (string youtubeLink in Model.Content.GetYouTubeUrls())
-                {
-                <div class="container">
-                    <div class="sixteen columns">
-                        <div class="embed-container">
-                            @{
-                            YouTubeView _youTube = new YouTubeView(youtubeLink);
-                            @Html.Raw(_youTube.EmbedUrl);
-                            }
-                        </div>
-                    </div>
-                </div>
-                }
-                }
-
-                <br />
-                @if (Model.Content.GetTimes() != null && Model.Content.GetTimes().Length > 0)
-                {
-                <h4>Times: </h4>
-                foreach (var _time in Model.Content.GetTimes())
-                {
-                    @Html.Raw(_time + "; ")
-                }
-                <h4>Times with sorted: </h4>
-                foreach (var _time in Model.Content.GetTimes().ToList().SortAscending())
-                {
-                @Html.Raw(_time.ToString("dd/MM/yyyy", new CultureInfo("en-GB")) + "; ") <br />
-                }
-                @*<h4>LaterNearest: </h4>
-                {
-                var _start = Model.Content.GetTimes().ToList().LaterNearest();
-                string _startStr = _start.Value.ToString("dd/MM/yyyy", new CultureInfo("en-GB"));
-                @Html.Raw(_startStr + "; ") <br />
-                if (_start != null)
-                {
-                @Ajax.ActionLink("Work on " + _startStr, "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = _start },
-                new AjaxOptions
-                {
-                UpdateTargetId = "Update",
-                HttpMethod = "Post",
-                }, null)
-                }
-                }*@
-                }
-            </div>
-            <div class="row">
-                @Html.Raw("Urls: ") <br />
-                @foreach (string link in (IEnumerable<string>
-                    )ViewBag.Urls)
+                    foreach (string youtubeLink in Model.Content.GetYouTubeUrls())
                     {
-                    @Html.Raw(link);
-                    <br />
+                        <div class="container">
+                            <div class="sixteen columns">
+                                <div class="embed-container">
+                                    @{
+                                    YouTubeView _youTube = new YouTubeView(youtubeLink);
+                                    @Html.Raw(_youTube.EmbedUrl);
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        }
                     }
+                    <br />
+                    @if (Model.Content.GetTimes() != null && Model.Content.GetTimes().Length > 0)
+                    {
+                        <h4>Times: </h4>
+                        foreach (var _time in Model.Content.GetTimes())
+                        {
+                            @Html.Raw(_time + "; ")
+                        }
+                        <h4>Times with sorted: </h4>
+                        foreach (var _time in Model.Content.GetTimes().ToList().SortAscending())
+                        {
+                            @Html.Raw(_time.ToString("dd/MM/yyyy", new CultureInfo("en-GB")) + "; ") <br />
+                        }
+                }
             </div>
-            
         </div>

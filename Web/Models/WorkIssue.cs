@@ -57,7 +57,19 @@ namespace Web.Models
         public virtual IEnumerable<Question> Questions { set; get; }
 
         public List<string> Tags { set; get; }
-        public List<string> Links { set; get; }
+        public List<string> Links
+        {
+            get
+            {
+                List<string> _links = new List<string>();
+                _links.AddRange(this.Content.GetUrls().ToList());
+                if(!this.Description.IsNullOrEmptyOrWhiteSpace())
+                    _links.AddRange(this.Description.GetUrls().ToList());
+                if(!this.Title.IsNullOrEmptyOrWhiteSpace())
+                    _links.AddRange(this.Title.GetUrls().ToList());
+                return _links.Distinct().ToList();
+            }
+        }
         public List<string> Numbers { set; get; }
         public List<DateTime> Times { set; get; }
         public List<string> Emails { set; get; }
@@ -69,7 +81,6 @@ namespace Web.Models
             HasTags = new List<string>();
             Members = new List<string>();
             Tags = new List<string>();
-            Links = new List<string>();
             Emails = new List<string>();
             Times = new List<DateTime>();
         }
@@ -95,13 +106,19 @@ namespace Web.Models
             return false;
         }
 
-        public bool IsUpcoming()
+        public bool IsUpcoming(int? n)
         {
-            if (this.Status != IssueStatus.Done)
+            if(n.HasValue)
             {
-                if (this.End.HasValue && !this.End.Value.IsExpired() && (this.End.Value > DateTime.Now)) return true;
+                if (this.End.HasValue && !this.End.Value.IsExpired() && (this.End.Value > DateTime.Today.AddDays(n.Value))) return true;
+                return false;
             }
-            return false;
+            else
+            {
+                if (this.End.HasValue && !this.End.Value.IsExpired() && (this.End.Value > DateTime.Today.AddDays(n.Value))) return true;
+                return false;
+            }
+            
         }
         public bool IsNoTime()
         {
@@ -131,12 +148,7 @@ namespace Web.Models
                 return true;
             return false;
         }
-        //public bool IsUpcoming()
-        //{
-        //    if (End.HasValue && End.Value.Date > DateTime.Now)
-        //        return true;
-        //    return false;
-        //}
+        
         public bool IsPrevDay(int n)
         {
             if (End.HasValue && End.Value.Date.AddDays(n) <= DateTime.Now.Date)
@@ -262,11 +274,8 @@ namespace Web.Models
                     HasTags.Add(_hasTag);
                 }
             }
-
-            
-
             //Links
-            Links = this.Content.GetUrls().ToList();
+            //Links = this.Content.GetUrls().ToList();
         }
 
         public bool HasInnerMembers()

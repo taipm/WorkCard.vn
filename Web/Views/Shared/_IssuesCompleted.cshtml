@@ -16,15 +16,16 @@
     </div>
     @if (Model != null)
     {
-        @*<h4 class="header-title m-t-0 m-b-30 text-primary">Trễ hạn (@Model.Count())</h4>*@
         <h4 class="header-title m-t-0 m-b-30 text-primary">
-            Trễ hạn @Html.Partial("_IssuesAnalysis", Model)
+            Đã hoàn thành(@Model.Count())
         </h4>
+        @*<h4 class="header-title m-t-0 m-b-30 text-primary">Completed (@Model.Count())</h4>
+        @Html.Raw("Tổng thời gian " + Model.Where(t => t.TimeToDo.HasValue).Sum(t=>t.TimeToDo.Value).ToString())*@
         <ul class="list-unstyled task-list" id="drag-upcoming">
             @foreach (var item in Model)
             {
                 <li>
-                    @Html.Partial("_IssueItemExpired", item)
+                    @Html.Partial("_IssueItemCompleted", item)
                 </li>
             }
         </ul>

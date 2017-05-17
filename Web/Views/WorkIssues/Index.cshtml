@@ -72,9 +72,9 @@
 
     <div class="row">
         <div class="col-sm-4">
-        @if (Model != null && Model.ToList().GetToday() != null && Model.ToList().GetToday().Count > 0)
+        @if (Model != null && Model.ToList().GetFromNow() != null && Model.ToList().GetFromNow().Count > 0)
         {
-            @Html.Partial("_Issues", Model.ToList().GetToday().AsEnumerable())
+            @Html.Partial("_IssuesNow", Model.ToList().GetFromNow().AsEnumerable())
         }
             
         </div><!-- end col -->
@@ -93,7 +93,7 @@
             }
             @if (Model != null && Model.ToList().GetDone() != null && Model.ToList().GetDone().Count > 0)
             {
-                @Html.Partial("_Issues", Model.ToList().GetDone().AsEnumerable())
+                @Html.Partial("_IssuesCompleted", Model.ToList().GetDone().AsEnumerable())
             }
         </div><!-- end col -->
     </div>

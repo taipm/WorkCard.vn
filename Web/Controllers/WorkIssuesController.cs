@@ -120,8 +120,12 @@ namespace Web.Controllers
             }
 
             WorkIssue workIssue = await db.Issues.FindAsync(id);
-            ViewBag.Urls = db.Urls.Where(t => t.IssueId.HasValue && t.IssueId == id).Select(t => t.Address).AsEnumerable();
+            IssuesManager _manager = new IssuesManager();
+            //ViewBag.Urls = db.Urls.Where(t => t.IssueId.HasValue && t.IssueId == id).Select(t => t.Address).AsEnumerable();
+            ViewBag.Urls = _manager.GetLinks(workIssue);
+
             var _questions = new IssuesManager().GetQuestion(workIssue);
+
             foreach(var _question in _questions)
             {
                 _question.Answers = new QuestionManager().GetAnswers(_question.Id);

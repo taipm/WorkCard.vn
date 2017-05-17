@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Web.Models;
+using Web.Managers;
 
 namespace Web.Controllers
 {
@@ -41,6 +42,33 @@ namespace Web.Controllers
             return View(contact);
         }
 
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> AddContact(string email)
+        {
+            ContactManager _manager = new ContactManager();
+            Contact _contact = new Contact(email);
+            _contact.CreatedBy = User.Identity.Name;
+            _contact.UserName = User.Identity.Name;
+
+            bool _isAdded = _manager.Add(_contact);
+            if(_isAdded)
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    return PartialView("_WorkTime", "Đã thêm");
+                }
+                return RedirectToAction("Index");
+            }
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    return PartialView("_WorkTime", "Không thêm được. Thành viên này đã có");
+                }
+                return RedirectToAction("Index");
+            }
+        }
+
         // GET: Contacts/Create
         public ActionResult Create()
         {
@@ -52,7 +80,7 @@ namespace Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,FirstName,LastName,Email,UserName,IsRegistered,CreatedDate,UpdatedDate,UpdatedBy,CreatedBy")] Contact contact)
+        public async Task<ActionResult> Create(Contact contact)
         {
             if (ModelState.IsValid)
             {

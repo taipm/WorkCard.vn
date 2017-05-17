@@ -25,7 +25,7 @@ namespace Web.Models
 
         //public bool IsLive { set; get; }
         public Url() : base() { }
-        public Url(string url)
+        public Url(string url):base()
         {
             if (url.IsUrl())
             {

@@ -55,6 +55,7 @@
     <Compile Include="Family.cs" />
     <Compile Include="FolderObject.cs" />
     <Compile Include="IBaseObject.cs" />
+    <Compile Include="NullObject.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="ObjectHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

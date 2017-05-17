@@ -30,15 +30,7 @@ namespace Web.Models
         public virtual IEnumerable<Question> Questions { set; get; }
         public Guid? ProjectId { set; get; }
     }
-    public class Question : BaseObject
-    {
-        public string Title { set; get; }
-        public string Content { set; get; }
-        public virtual IEnumerable<Answer> Answers { set; get; }
-        public Guid? ProjectId { set; get; }
-        public Guid? StoryId { set; get; }
-        public Guid? IssueId { set; get; }
-    }
+    
 
     public class Answer : BaseObject
     {

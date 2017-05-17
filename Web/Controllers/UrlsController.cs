@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Web.Models;
+using Web.Managers;
 
 namespace Web.Controllers
 {
@@ -41,6 +42,33 @@ namespace Web.Controllers
             return View(url);
         }
 
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> AddUrl(string url)
+        {
+            UrlManager _manager = new UrlManager();
+            Url _url = new Url(url);
+            _url.CreatedBy = User.Identity.Name;
+
+            bool _isAdded = _manager.Add(_url);
+
+            if (_isAdded)
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    return PartialView("_WorkTime", "Đã thêm");
+                }
+                return RedirectToAction("Index");
+            }
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    return PartialView("_WorkTime", "Không thêm được. Địa chỉ này đã có");
+                }
+                return RedirectToAction("Index");
+            }
+        }
+
         // GET: Urls/Create
         public ActionResult Create()
         {
@@ -52,7 +80,9 @@ namespace Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Domain,Address,Title,HtmlContent,IssueId,QuestionId,ProjectId,CommentId,StoryId,AnswerId,LastestCheck,CreatedDate,UpdatedDate,UpdatedBy,CreatedBy")] Url url)
+        [Authorize]
+        [ValidateInput(false)]
+        public async Task<ActionResult> Create(Url url)
         {
             if (ModelState.IsValid)
             {

@@ -16,15 +16,15 @@
     </div>
     @if (Model != null)
     {
-        @*<h4 class="header-title m-t-0 m-b-30 text-primary">Trễ hạn (@Model.Count())</h4>*@
         <h4 class="header-title m-t-0 m-b-30 text-primary">
-            Trễ hạn @Html.Partial("_IssuesAnalysis", Model)
+            Now @Html.Partial("_IssuesAnalysis", Model)
         </h4>
+        
         <ul class="list-unstyled task-list" id="drag-upcoming">
             @foreach (var item in Model)
             {
                 <li>
-                    @Html.Partial("_IssueItemExpired", item)
+                    @Html.Partial("_IssueItemNow", item)
                 </li>
             }
         </ul>
