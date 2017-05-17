@@ -84,7 +84,11 @@ namespace CafeT.Text
             string[] _strSplits = new string[] { ". ", "? ", "! ", "\r\n" };
             return text.ToStandard().Split(_strSplits, StringSplitOptions.None);
         }
-
+        public static string[] GetLines(this string text)
+        {
+            string[] _strSplits = new string[] { ". ", "? ", "! ", "\r\n" };
+            return text.ToStandard().Split(_strSplits, StringSplitOptions.None);
+        }
         /// <summary>
         /// Authors: Phan Minh Tai
         /// Email: taipm.vn@outlook.com

@@ -41,12 +41,6 @@ namespace Web.Controllers
             _dict.Add("@Yesterday", DateTime.Today.AddDays(-1).ToString());
             _dict.Add("huynhquy9x@gmail.com", "Huỳnh Văn Quy");
             _dict.Add("taipm.vn@gmail.com", "Phan Minh Tài");
-            //_dict.Add("", "Phan Minh Tài");
-            //_dict.Add("", "Phan Minh Tài");
-            //_dict.Add("", "Phan Minh Tài");
-            //_dict.Add("", "Phan Minh Tài");
-
-            //Searching records from list using LINQ query   
             var _keyWord = _dict.Where(t => t.Key.Contains(Prefix) || t.Value.Contains(Prefix)).Select(t => t.Value);
             return Json(_keyWord, JsonRequestBehavior.AllowGet);
         }
@@ -121,7 +115,6 @@ namespace Web.Controllers
 
             WorkIssue workIssue = await db.Issues.FindAsync(id);
             IssuesManager _manager = new IssuesManager();
-            //ViewBag.Urls = db.Urls.Where(t => t.IssueId.HasValue && t.IssueId == id).Select(t => t.Address).AsEnumerable();
             ViewBag.Urls = _manager.GetLinks(workIssue);
 
             var _questions = new IssuesManager().GetQuestion(workIssue);
@@ -292,26 +285,26 @@ namespace Web.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        [Authorize]
-        public async Task<ActionResult> EmailNotify(Guid id)
-        {
-            EmailService _emailService = new EmailService();
-            try
-            {
-                WorkIssue workIssue = await db.Issues.FindAsync(id);
-                await _emailService.SendAsync(workIssue);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("_WorkTime", "Sent email");
-            }
-            return RedirectToAction("Index");
-        }
+        //[HttpPost]
+        //[Authorize]
+        //public async Task<ActionResult> EmailNotify(Guid id)
+        //{
+        //    EmailService _emailService = new EmailService();
+        //    try
+        //    {
+        //        WorkIssue workIssue = await db.Issues.FindAsync(id);
+        //        await _emailService.SendAsync(workIssue);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //    }
+        //    if (Request.IsAjaxRequest())
+        //    {
+        //        return PartialView("_WorkTime", "Sent email");
+        //    }
+        //    return RedirectToAction("Index");
+        //}
         //public void NotifyByEmail()
         //{
         //    EmailService _emailService = new EmailService();

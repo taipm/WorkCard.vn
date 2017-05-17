@@ -238,7 +238,7 @@ namespace Web.Models
             {
                 HtmlToText convert = new HtmlToText();
                 string _text = convert.Convert(this.Content);
-                Title = _text.GetSentences().FirstOrDefault();
+                Title = _text.GetLines().FirstOrDefault();
             }
             
             if(Title.ToLower().Contains("[daily]"))

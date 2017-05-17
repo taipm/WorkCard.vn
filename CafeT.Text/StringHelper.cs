@@ -8,6 +8,17 @@ namespace CafeT.Text
 {
     public static class StringHelper
     {
+        public static string[] GetLines(string text)
+        {
+            string[] lines = text.Replace("\r", "").Split('\n');
+            return lines;
+        }
+        public static string GetLine(string text, int n)
+        {
+            string[] lines = text.Replace("\r", "").Split('\n');
+            return lines.Length >= n ? lines[n - 1] : null;
+        }
+
         public static string DeleteBeginTo(this string text, string to)
         {
             int _firstIndex = text.IndexOf(to);
