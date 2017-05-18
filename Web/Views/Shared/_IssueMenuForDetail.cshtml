@@ -80,7 +80,7 @@
                                 HttpMethod = "Post",
                             }, new { @class = "btn btn-default" })
             }
-            @if (!Model.IsNextDay(3))
+            @if (!Model.IsNextDay(1))
             {
                 @Ajax.ActionLink("Next Week ", "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = DateTime.Now.Date.AddDays(7) },
                             new AjaxOptions

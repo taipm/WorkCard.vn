@@ -2,7 +2,12 @@
     <div class="container">
         <!-- LOGO -->
         <div class="topbar-left">
-            <a href="/" class="logo"><span>Work<span>Card</span></span></a>
+            <a href="/" class="logo">
+                <span>Work<span>Card</span></span>
+                <span class="label label-sm label-success">
+                    Nhắc việc thông minh
+                </span>
+            </a>
         </div>
         <!-- End Logo container-->
 
@@ -35,7 +40,6 @@
                     <a href="#" class="dropdown-toggle waves-effect waves-light profile " data-toggle="dropdown" aria-expanded="true">
                         <img src="~/Assets/Templates/Adminto/images/users/avatar-1.jpg" alt="user-img" class="img-circle user-img">
                         <div class="user-status away"><i class="zmdi zmdi-dot-circle"></i></div>
-                        @*@Html.ActionLink(User.Identity.Name + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })*@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="javascript:void(0)"><i class="ti-user m-r-5"></i> Profile</a></li>

@@ -1,0 +1,18 @@
+﻿@*@model string*@
+
+@{
+    string _userName = string.Empty;
+    if (User.Identity.IsAuthenticated)
+    {
+        _userName = User.Identity.Name;
+    }
+    <h4>
+        Cảm ơn bạn @_userName đã đến với WorkCard.vn
+    </h4>
+    <p>
+        WorkCard.vn vẫn đang trong giai đoạn hoàn thiện, chúng tôi mong muốn WorkCard.vn có thể giúp ích cho mọi người trong việc Quản lý công việc và Quản trị dự án một cách tiện lợi hơn.
+        Tuy nhiên, với góc nhìn của riêng tôi về công tác quản lý công việc, quản trị dự án theo cách mà cá nhân tôi cảm nhận (thông qua việc tham khảo các phương pháp quản lý công việc và quản lý thời gian) 
+        có thể chưa hoàn toàn phù hợp với số đông người dùng, nên chúng tôi mong muốn nhận được các ý kiến đóng góp của mọi người, 
+        thông qua đó tôi sẽ cố gắng hoàn thiện hệ thống nhằm hữu ích và phục vụ các bạn dễ dàng sử dụng có hiệu quả WorkCard.vn hơn.
+    </p>
+}
