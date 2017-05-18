@@ -246,6 +246,7 @@
     <Compile Include="Helpers\IssuesHelper.cs" />
     <Compile Include="Helpers\NullHelper.cs" />
     <Compile Include="Helpers\Pager.cs" />
+    <Compile Include="Managers\ProjectManager.cs" />
     <Compile Include="Managers\UrlManager.cs" />
     <Compile Include="Managers\ContactManager.cs" />
     <Compile Include="Managers\QuestionManager.cs" />
@@ -1096,6 +1097,8 @@
     <Content Include="Views\Shared\_IssuesCompleted.cshtml" />
     <Content Include="Views\Shared\_IssueItemCompleted.cshtml" />
     <Content Include="Views\Shared\_ProjectItem.cshtml" />
+    <Content Include="Views\Shared\_ShareIssue.cshtml" />
+    <Content Include="Views\Shared\_CreateIssueForProject.cshtml" />
     <None Include="Views\WorkIssues\Details.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

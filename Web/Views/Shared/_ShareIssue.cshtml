@@ -38,8 +38,7 @@
 </script>
 
 <div class="card-box">
-    <h4>Thêm thẻ công việc mới</h4>
-    @using (Html.BeginForm("Create", "WorkIssues", FormMethod.Post, null))
+    @using (Html.BeginForm("ShareTo", "WorkIssues", FormMethod.Post, null))
     {
         @Html.AntiForgeryToken()
 

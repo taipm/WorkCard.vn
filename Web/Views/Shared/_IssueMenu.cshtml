@@ -3,6 +3,9 @@
 
 @if (User.Identity.IsAuthenticated)
 {
+    //Common menu for all item
+    @*@Html.Partial("_ShareIssue", Model)*@
+
     if (Model.Status == Web.Models.IssueStatus.Done)
     {
         @Html.Raw("Hoàn thành")

@@ -9,11 +9,13 @@ using System.Web;
 using System.Web.Mvc;
 using Web.Models;
 using Repository.Pattern.UnitOfWork;
+using Web.Managers;
 
 namespace Web.Controllers
 {
     public class ProjectsController : BaseController
     {
+        ProjectManager _manager = new ProjectManager();
         public ProjectsController(IUnitOfWorkAsync unitOfWorkAsync) : base(unitOfWorkAsync)
         {
         }
@@ -25,9 +27,12 @@ namespace Web.Controllers
         {
             var _objects = _unitOfWorkAsync.Repository<Project>()
                                 .Query().Select().Where(m => !string.IsNullOrWhiteSpace(m.Title))
-                                .OrderByDescending(t => t.CreatedDate).ToList();
-
-            return View(await db.Projects.ToListAsync());
+                                .OrderByDescending(t => t.CreatedDate).AsEnumerable();
+            if(User.Identity.IsAuthenticated)
+            {
+                _objects = _objects.Where(t => t.CreatedBy == User.Identity.Name).AsEnumerable();
+            }
+            return View("Index", _objects);
         }
 
         // GET: Projects/Details/5
@@ -38,6 +43,7 @@ namespace Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Project project = await db.Projects.FindAsync(id);
+            project.Issues = _manager.GetIssues(project.Id);
             if (project == null)
             {
                 return HttpNotFound();

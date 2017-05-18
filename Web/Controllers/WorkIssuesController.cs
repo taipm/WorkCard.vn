@@ -159,6 +159,31 @@ namespace Web.Controllers
         [Authorize]
         [ValidateInput(false)]
         [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateForProject(WorkIssue workIssue)
+        {
+            IssuesManager _manager = new IssuesManager();
+            if (ModelState.IsValid)
+            {
+                workIssue.CreatedBy = User.Identity.Name;
+                workIssue.AutoAdjust();
+                var _isAdded = _manager.AddIssue(workIssue);
+                if(_isAdded)
+                    return RedirectToAction("Index");
+                else
+                    return RedirectToAction("Error");
+            }
+
+            return View(workIssue);
+        }
+
+
+        // POST: WorkIssues/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [Authorize]
+        [ValidateInput(false)]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(WorkIssue workIssue)
         {
             if (ModelState.IsValid)
@@ -290,38 +315,7 @@ namespace Web.Controllers
             return RedirectToAction("Index");
         }
 
-        //[HttpPost]
-        //[Authorize]
-        //public async Task<ActionResult> EmailNotify(Guid id)
-        //{
-        //    EmailService _emailService = new EmailService();
-        //    try
-        //    {
-        //        WorkIssue workIssue = await db.Issues.FindAsync(id);
-        //        await _emailService.SendAsync(workIssue);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-        //    }
-        //    if (Request.IsAjaxRequest())
-        //    {
-        //        return PartialView("_WorkTime", "Sent email");
-        //    }
-        //    return RedirectToAction("Index");
-        //}
-        //public void NotifyByEmail()
-        //{
-        //    EmailService _emailService = new EmailService();
-        //    try
-        //    {
-        //        _emailService.SendAsync(this);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-        //    }
-        //}
+       
         [HttpPost]
         [Authorize]
         //[ValidateInput(false)]
@@ -399,6 +393,24 @@ namespace Web.Controllers
                 return RedirectToAction("Index");
             }
             return View(workIssue);
+        }
+
+        // POST: WorkIssues/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [Authorize]
+        [ValidateInput(false)]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ShareTo(Guid id, string userName)
+        {
+            WorkIssue workIssue = await db.Issues.FindAsync(id);
+            workIssue.UpdatedDate = DateTime.Now;
+            workIssue.UpdatedBy = User.Identity.Name;
+            workIssue.AutoAdjust();
+            db.Entry(workIssue).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
         // GET: WorkIssues/Delete/5
