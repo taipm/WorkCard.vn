@@ -1,4 +1,5 @@
-﻿using CafeT.Text;
+﻿using CafeT.Objects;
+using CafeT.Text;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,8 +18,23 @@ namespace Web.Models
         public virtual IEnumerable<Question> Questions { set; get; }
         public virtual IEnumerable<Comment> Comments { set; get; }
         public virtual IEnumerable<Document> Documents { set; get; }
+        public virtual IEnumerable<Contact> Contacts { set; get; }
         public virtual IEnumerable<Story> Stories { set; get; }
         public Project() : base() { }
+        public Project(string Name) : base() { Title = Name; }
+
+        public IEnumerable<string> GetUrls()
+        {
+            //Dictionary<string, string> _dict = new Dictionary<string, string>();
+            List<string> _urls = new List<string>();
+            var _fields = this.Fields();
+            foreach(var item in _fields)
+            {
+                //_dict.Add(item.Key, item.Value.ToJson());
+                _urls.AddRange(item.Value.ToJson().GetUrls().ToList());
+            }
+            return _urls;
+        }
     }
 
     public class Story : BaseObject

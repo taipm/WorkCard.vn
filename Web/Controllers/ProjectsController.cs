@@ -32,6 +32,11 @@ namespace Web.Controllers
             {
                 _objects = _objects.Where(t => t.CreatedBy == User.Identity.Name).AsEnumerable();
             }
+            foreach(var item in _objects)
+            {
+                item.Issues = _manager.GetIssues(item.Id);
+                item.Questions = _manager.GetQuestions(item.Id);
+            }
             return View("Index", _objects);
         }
 

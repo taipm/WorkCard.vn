@@ -215,9 +215,10 @@ namespace Web.Controllers
                     }
                 }
 
-                if(workIssue.Links != null && workIssue.Links.Count > 0)
+                if(workIssue.GetUrls() != null)
                 {
-                    foreach(string link in workIssue.Links)
+                    var _links = workIssue.GetUrls();
+                    foreach (string link in _links)
                     {
                         Url _url = new Models.Url(link);
                         _url.IssueId = workIssue.Id;

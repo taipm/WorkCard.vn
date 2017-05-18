@@ -65,9 +65,10 @@ namespace Web.Managers
                 }
             }
 
-            if (issue.Links != null && issue.Links.Count > 0)
+            if (issue.GetUrls() != null)
             {
-                foreach (string link in issue.Links)
+                var _links = issue.GetUrls();
+                foreach (string link in _links)
                 {
                     Url _url = new Models.Url(link);
                     _result = _urlManager.Add(_url);
@@ -85,7 +86,7 @@ namespace Web.Managers
         public IEnumerable<string> GetLinks(WorkIssue issue)
         {
             List<string> _links = new List<string>();
-            _links.AddRange(issue.Links);
+            _links.AddRange(issue.GetUrls());
             var _questions = GetQuestion(issue);
             foreach(var _question in _questions)
             {

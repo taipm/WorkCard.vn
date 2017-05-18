@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Web.Models.Contact>
+
+<h4 class="header-title m-t-0 m-b-30">Contacts/Members</h4>
+
+@if (Model != null)
+{
+    <ul class="list-group m-b-0 user-list">
+        @foreach (var item in Model)
+        {
+            <li class="list-group-item">
+                @Html.Partial("_ContactItem", item)
+            </li>
+        }
+    </ul>
+
+}
+

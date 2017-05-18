@@ -38,6 +38,13 @@ namespace CafeT.Objects
             return src.GetType().GetProperty(propName).GetValue(src, null);
         }
         
+        /// <summary>
+        /// Get all files into dictionary
+        /// Tested by: Phan Minh Tai
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
+        /// <returns></returns>
         public static Dictionary<string, object> Fields<T>(this T instance) where T : class
         {
             Dictionary<string, object> _dict = new Dictionary<string, object>();
@@ -52,7 +59,6 @@ namespace CafeT.Objects
                 }
             }
 
-           
             PropertyInfo[] pi = _type.GetProperties();
             if (pi.Length > 0)
             {
@@ -225,6 +231,7 @@ namespace CafeT.Objects
             return obj.ToDelimitedString<object>('|',
                 (object o, System.Reflection.PropertyInfo p) => { return (string.Format("{0}.{1}={2}", p.ReflectedType.Name, p.Name, Convert.ToString(p.GetValue(o, null)))); });
         }
+
         public static void IfType<T>(this object item, Action<T> action) where T : class
         {
             if (item is T)
@@ -232,6 +239,7 @@ namespace CafeT.Objects
                 action(item as T);
             }
         }
+
         public static string ToSortedString(this object value)
         {
             BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public;

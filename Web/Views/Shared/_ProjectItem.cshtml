@@ -11,19 +11,35 @@
     </h4>
     <p class="text-success text-uppercase m-b-20 font-13">Web Design</p>
     <p class="text-muted font-13">
-        @Html.Raw(Model.Description)
+        @Html.Raw(Model.Description.Truncate(100))
         <br />
         <a href="#" class="font-600 text-muted">view more</a>
     </p>
     <ul class="list-inline">
-        <li>
-            <h3 class="m-b-0">56</h3>
-            <p class="text-muted">Questions</p>
-        </li>
-        <li>
-            <h3 class="m-b-0">452</h3>
-            <p class="text-muted">Comments</p>
-        </li>
+        @if (Model.Issues != null)
+        {
+            <li>
+                <h3 class="m-b-0">@Model.Issues.Count()</h3>
+                <p class="text-muted">Issues</p>
+            </li>
+        }
+        
+        @if (Model.Questions != null)
+        {
+            <li>
+                <h3 class="m-b-0">@Model.Questions.Count()</h3>
+                <p class="text-muted">Questions</p>
+            </li>
+        }
+        
+        @if (Model.Comments != null)
+        {
+            <li>
+                <h3 class="m-b-0">@Model.Comments.Count()</h3>
+                <p class="text-muted">Comments</p>
+            </li>
+        }
+        
     </ul>
     <div class="project-members m-b-20">
         <span class="m-r-5 font-600">Team :</span>

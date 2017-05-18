@@ -7,6 +7,7 @@ using System.Web;
 using CafeT.Text;
 using CafeT.Time;
 using CafeT.Html;
+using CafeT.Objects;
 
 namespace Web.Models
 {
@@ -57,19 +58,19 @@ namespace Web.Models
         public virtual IEnumerable<Question> Questions { set; get; }
 
         public List<string> Tags { set; get; }
-        public List<string> Links
-        {
-            get
-            {
-                List<string> _links = new List<string>();
-                _links.AddRange(this.Content.GetUrls().ToList());
-                if(!this.Description.IsNullOrEmptyOrWhiteSpace())
-                    _links.AddRange(this.Description.GetUrls().ToList());
-                if(!this.Title.IsNullOrEmptyOrWhiteSpace())
-                    _links.AddRange(this.Title.GetUrls().ToList());
-                return _links.Distinct().ToList();
-            }
-        }
+        //public List<string> Links
+        //{
+        //    get
+        //    {
+        //        List<string> _links = new List<string>();
+        //        _links.AddRange(this.Content.GetUrls().ToList());
+        //        if(!this.Description.IsNullOrEmptyOrWhiteSpace())
+        //            _links.AddRange(this.Description.GetUrls().ToList());
+        //        if(!this.Title.IsNullOrEmptyOrWhiteSpace())
+        //            _links.AddRange(this.Title.GetUrls().ToList());
+        //        return _links.Distinct().ToList();
+        //    }
+        //}
         public List<string> Numbers { set; get; }
         public List<DateTime> Times { set; get; }
         public List<string> Emails { set; get; }
@@ -83,6 +84,17 @@ namespace Web.Models
             Tags = new List<string>();
             Emails = new List<string>();
             Times = new List<DateTime>();
+        }
+
+        public IEnumerable<string> GetUrls()
+        {
+            List<string> _urls = new List<string>();
+            var _fields = this.Fields();
+            foreach (var item in _fields)
+            {
+                _urls.AddRange(item.Value.ToJson().GetUrls().ToList());
+            }
+            return _urls;
         }
 
         public bool IsFree()
