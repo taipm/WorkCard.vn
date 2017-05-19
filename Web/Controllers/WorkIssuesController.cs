@@ -13,6 +13,7 @@ using CafeT.Text;
 using Web.Helpers;
 using Web.ModelViews;
 using Web.Managers;
+using CafeT.Objects;
 
 namespace Web.Controllers
 {
@@ -215,9 +216,9 @@ namespace Web.Controllers
                     }
                 }
 
-                if(workIssue.GetUrls() != null)
+                if(workIssue.GetLinks() != null)
                 {
-                    var _links = workIssue.GetUrls();
+                    var _links = workIssue.GetLinks();
                     foreach (string link in _links)
                     {
                         Url _url = new Models.Url(link);

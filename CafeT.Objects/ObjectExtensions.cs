@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CafeT.Text;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
@@ -59,16 +60,27 @@ namespace CafeT.Objects
                 }
             }
 
-            PropertyInfo[] pi = _type.GetProperties();
-            if (pi.Length > 0)
+            PropertyInfo[] pi = _type.GetProperties()
+                                    .Where(p => p.GetIndexParameters().Length == 0).ToArray();
+
+            foreach (PropertyInfo p in pi)
             {
-                foreach (PropertyInfo p in pi)
-                {
-                    _dict.Add(p.ToString(), p.GetValue(instance));
-                }
+                _dict.Add(p.ToString(), p.GetValue(instance));
             }
 
             return _dict;
+        }
+
+        public static IEnumerable<string> GetLinks<T>(this T instance) where T : class
+        {
+            List<string> _urls = new List<string>();
+            var _fields = instance.Fields();
+            foreach (var item in _fields)
+            {
+                _urls.AddRange(item.Value.ToJson().GetUrls().ToList());
+            }
+
+            return _urls;
         }
 
         public static string GetObjectAllFields<T>(this T instance) where T : class

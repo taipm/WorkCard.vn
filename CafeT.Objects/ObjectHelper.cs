@@ -79,23 +79,17 @@ namespace CafeT.Objects
             //Assign all source property to taget object 's properties
 
             foreach (PropertyInfo property in propertyInfo)
-
             {
 
                 //Check whether property can be written to
 
                 if (property.CanWrite)
-
                 {
-
                     //check whether property type is value type, enum or string type
 
                     if (property.PropertyType.IsValueType || property.PropertyType.IsEnum || property.PropertyType.Equals(typeof(System.String)))
-
                     {
-
                         property.SetValue(objTarget, property.GetValue(objSource, null), null);
-
                     }
 
                     //else property type is object/complex types, so need to recursively call this method until the end of the tree is reached

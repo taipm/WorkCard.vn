@@ -86,16 +86,16 @@ namespace Web.Models
             Times = new List<DateTime>();
         }
 
-        public IEnumerable<string> GetUrls()
-        {
-            List<string> _urls = new List<string>();
-            var _fields = this.Fields();
-            foreach (var item in _fields)
-            {
-                _urls.AddRange(item.Value.ToJson().GetUrls().ToList());
-            }
-            return _urls;
-        }
+        //public IEnumerable<string> GetUrls()
+        //{
+        //    List<string> _urls = new List<string>();
+        //    var _fields = this.Fields();
+        //    foreach (var item in _fields)
+        //    {
+        //        _urls.AddRange(item.Value.ToJson().GetUrls().ToList());
+        //    }
+        //    return _urls;
+        //}
 
         public bool IsFree()
         {

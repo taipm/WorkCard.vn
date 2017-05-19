@@ -45,12 +45,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSharpHelper.cs" />
+    <Compile Include="Document.cs" />
     <Compile Include="EmailOnText.cs" />
     <Compile Include="LinkOnText.cs" />
     <Compile Include="MathOnText.cs" />
     <Compile Include="NumberOnText.cs" />
     <Compile Include="SentencesHelper.cs" />
-    <Compile Include="SmartText.cs" />
     <Compile Include="TimeOnText.cs" />
     <Compile Include="ValidateStringHelper.cs" />
     <Compile Include="ExtractStringHelper.cs" />
@@ -62,10 +62,6 @@
     <Compile Include="WordGrid.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CafeT.Objects\CafeT.Objects.csproj">
-      <Project>{e9909e52-25be-4f82-873b-daf2ec30de76}</Project>
-      <Name>CafeT.Objects</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CafeT.Writers\CafeT.Writers.csproj">
       <Project>{bb07442c-89ff-48aa-b4a9-5413be5d4d09}</Project>
       <Name>CafeT.Writers</Name>

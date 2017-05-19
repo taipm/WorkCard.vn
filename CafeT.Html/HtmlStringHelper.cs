@@ -203,7 +203,7 @@ namespace CafeT.Html
         }
 
         #region Basics
-        public static string[] GetLinks(this string htmlInput)
+        public static string[] GetHtmlLinks(this string htmlInput)
         {
             List<string> _links = new List<string>();
             HtmlDocument doc = new HtmlDocument();

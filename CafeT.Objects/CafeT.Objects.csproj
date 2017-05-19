@@ -68,6 +68,12 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CafeT.Text\CafeT.Text.csproj">
+      <Project>{5ab7261d-f74c-4853-bd70-4eb2239b89f9}</Project>
+      <Name>CafeT.Text</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

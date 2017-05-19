@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Web.Models;
 using System.Data;
+using CafeT.Objects;
 
 namespace Web.Managers
 {
@@ -16,32 +17,6 @@ namespace Web.Managers
             bool _result = false;
             UrlManager _urlManager = new UrlManager();
             ContactManager _contactManager = new ContactManager();
-
-            //using (var transaction = new System.Transactions.TransactionScope())
-            //{
-            //    // DBC = Database Command
-
-            //    // create the database context
-            //    var database = new DatabaseContext();
-
-            //    // search for the user with id #1
-            //    // DBC: BEGIN TRANSACTION
-            //    // DBC: select * from [User] where Id = 1
-            //    var userA = database.Users.Find(1);
-            //    // DBC: select * from [User] where Id = 2
-            //    var userB = database.Users.Find(2);
-            //    userA.Name = "Admin";
-
-            //    // DBC: update User set Name = "Admin" where Id = 1
-            //    database.SaveChanges();
-
-            //    userB.Age = 28;
-            //    // DBC: update User set Age = 28 where Id = 2
-            //    database.SaveChanges();
-
-            //    // DBC: COMMIT TRANSACTION
-            //    transaction.Complete();
-            //}
             db.Issues.Add(issue);
             try
             {
@@ -65,12 +40,12 @@ namespace Web.Managers
                 }
             }
 
-            if (issue.GetUrls() != null)
+            if (issue.GetLinks() != null)
             {
-                var _links = issue.GetUrls();
+                var _links = issue.GetLinks();
                 foreach (string link in _links)
                 {
-                    Url _url = new Models.Url(link);
+                    Url _url = new Url(link);
                     _result = _urlManager.Add(_url);
                     if (!_result) return false;
                 }
@@ -86,7 +61,7 @@ namespace Web.Managers
         public IEnumerable<string> GetLinks(WorkIssue issue)
         {
             List<string> _links = new List<string>();
-            _links.AddRange(issue.GetUrls());
+            _links.AddRange(issue.GetLinks());
             var _questions = GetQuestion(issue);
             foreach(var _question in _questions)
             {

@@ -23,18 +23,18 @@ namespace Web.Models
         public Project() : base() { }
         public Project(string Name) : base() { Title = Name; }
 
-        public IEnumerable<string> GetUrls()
-        {
-            //Dictionary<string, string> _dict = new Dictionary<string, string>();
-            List<string> _urls = new List<string>();
-            var _fields = this.Fields();
-            foreach(var item in _fields)
-            {
-                //_dict.Add(item.Key, item.Value.ToJson());
-                _urls.AddRange(item.Value.ToJson().GetUrls().ToList());
-            }
-            return _urls;
-        }
+        //public IEnumerable<string> GetUrls()
+        //{
+        //    //Dictionary<string, string> _dict = new Dictionary<string, string>();
+        //    List<string> _urls = new List<string>();
+        //    var _fields = this.Fields();
+        //    foreach(var item in _fields)
+        //    {
+        //        //_dict.Add(item.Key, item.Value.ToJson());
+        //        _urls.AddRange(item.Value.ToJson().GetUrls().ToList());
+        //    }
+        //    return _urls;
+        //}
     }
 
     public class Story : BaseObject
