@@ -125,6 +125,8 @@ namespace Web.Controllers
                 _question.Answers = new QuestionManager().GetAnswers(_question.Id);
             }
             ViewBag.Questions = _questions;
+            ViewBag.Contacts = db.Contacts.AsEnumerable();
+
             string _keyWord = workIssue.Content.GetHasTags().FirstOrDefault();
             var _all = db.Issues.Where(t => t.CreatedBy.ToLower() == workIssue.CreatedBy).AsEnumerable();
             if (_all != null && _all.Count()>0)

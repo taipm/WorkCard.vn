@@ -5,7 +5,10 @@
         <img src="assets/images/users/avatar-2.jpg" alt="">
     </div>
     <div class="user-desc">
-        <span class="name">@Model.LastName + " " + @Model.FirstName</span>
+        @if (!Model.FirstName.IsNullOrEmptyOrWhiteSpace())
+        {
+            <span class="name">@Model.LastName + " " + @Model.FirstName</span>
+        }
         <span class="desc">@Model.Email | @Model.CreatedDate.Value.TimeAgo()</span>
     </div>
 </a>

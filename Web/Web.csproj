@@ -1107,6 +1107,7 @@
     <Content Include="Views\Shared\_Contacts.cshtml" />
     <Content Include="Views\Shared\_ContactItem.cshtml" />
     <Content Include="Views\Shared\_Link.cshtml" />
+    <Content Include="Views\Shared\_QuestionItemWithCreateAnswer.cshtml" />
     <None Include="Views\WorkIssues\Details.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

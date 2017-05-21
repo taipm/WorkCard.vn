@@ -42,6 +42,10 @@ namespace Web.Controllers
         {
             Answer answer = new Answer();
             answer.QuestionId = questionId;
+            if(Request.IsAjaxRequest())
+            {
+                return PartialView("_AddAnswer", answer);
+            }
             return View(answer);
         }
 

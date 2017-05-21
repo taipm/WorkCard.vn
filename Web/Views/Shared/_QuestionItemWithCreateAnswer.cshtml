@@ -26,27 +26,14 @@
                     }
                 }
             }
+            
         </div>
-        <div id="Status-@Model.Id.ToString()"></div>
+
         <div class="comment-footer">
             <a href="#"><i class="fa fa-thumbs-o-up"></i></a>
             <a href="#"><i class="fa fa-thumbs-o-down"></i></a>
-            @Ajax.ActionLink("AjaxReply ", "Create", "Answers", new { questionId = Model.Id },
-                                    new AjaxOptions
-                                    {
-                                        UpdateTargetId = "Status-" + Model.Id.ToString(),
-                                        HttpMethod = "Get",
-                                    }, null)
-            @if (User.Identity.IsAuthenticated && User.Identity.Name == Model.CreatedBy)
-            {
-                @Ajax.ActionLink(" Delete ", "Delete", "Questions", new { Id = Model.Id },
-                                    new AjaxOptions
-                                    {
-                                        UpdateTargetId = "Status-" + Model.Id.ToString(),
-                                        HttpMethod = "Post",
-                                    }, null)
-            }
-            
+            @Html.ActionLink("Reply", "Create", "Answers", new { questionId = Model.Id }, null)
+            @Html.Partial("_AddAnswer", new Answer() { QuestionId = Model.Id })
         </div>
     </div>
 </div>

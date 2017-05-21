@@ -5,11 +5,12 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+@Html.Partial("_Questions", Model)
+@*<h2>Index</h2>
 
 <p>
     @Html.Partial("Create", new Question() { })
-    @*@Html.ActionLink("Create New", "Create")*@
+    @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
@@ -52,4 +53,4 @@
     </tr>
 }
 
-</table>
+</table>*@
