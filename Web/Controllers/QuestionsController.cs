@@ -52,6 +52,32 @@ namespace Web.Controllers
         [Authorize]
         [ValidateInput(false)]
         [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AjaxCreate(Question question)
+        {
+            if (ModelState.IsValid)
+            {
+                question.CreatedBy = User.Identity.Name;
+                db.Questions.Add(question);
+
+                await db.SaveChangesAsync();
+
+                if (Request.IsAjaxRequest())
+                {
+                    return PartialView("_QuestionItem", question);
+                }
+                return RedirectToAction("Index");
+            }
+
+            return View(question);
+        }
+
+        // POST: Questions/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [Authorize]
+        [ValidateInput(false)]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Question question)
         {
             if (ModelState.IsValid)
@@ -60,6 +86,7 @@ namespace Web.Controllers
                 db.Questions.Add(question);
 
                 await db.SaveChangesAsync();
+
                 if(question.IssueId.HasValue)
                 {
                     return RedirectToAction("Details", "WorkIssues",  new { id = question.IssueId.Value });

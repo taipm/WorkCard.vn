@@ -1110,6 +1110,8 @@
     <Content Include="Views\Shared\_QuestionItemWithCreateAnswer.cshtml" />
     <Content Include="Views\Shared\_AddAnswerAjax.cshtml" />
     <Content Include="Views\Shared\_AnswerItem.cshtml" />
+    <Content Include="Views\Shared\_AddQuestionAjax.cshtml" />
+    <Content Include="Views\Shared\_AddQuickIssueAjax.cshtml" />
     <None Include="Views\WorkIssues\Details.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

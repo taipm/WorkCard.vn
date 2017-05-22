@@ -231,6 +231,11 @@ namespace Web.Controllers
                         await db.SaveChangesAsync();
                     }
                 }
+
+                if(Request.IsAjaxRequest())
+                {
+                    return PartialView("_IssueItem", workIssue);
+                }
                 return RedirectToAction("Index");
             }
 

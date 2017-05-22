@@ -2,55 +2,9 @@
 @model IEnumerable<Web.Models.Question>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Câu hỏi";
 }
 
+@Html.Partial("_AddQuestionAjax", new Question())
 @Html.Partial("_Questions", Model)
-@*<h2>Index</h2>
 
-<p>
-    @Html.Partial("Create", new Question() { })
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.Raw("Câu hỏi")
-        </th>
-        <th>
-            @Html.Raw("Created")
-        </th>
-        <th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            <h4>
-                @Html.Raw(item.Title) |
-                @if (item.IssueId.HasValue)
-                {
-                    @Html.Raw(item.IssueId);
-                }
-            </h4>
-            <p>
-                @Html.Raw(item.Content)
-            </p>
-        </td>
-        <td>
-            @Html.Raw(item.CreatedDate.Value.ToShortDateString())
-            @if(!item.CreatedBy.IsEmpty())
-            {
-                @Html.Raw(" by" ) @Html.Raw(item.CreatedBy)
-            }
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
-</table>*@
