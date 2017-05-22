@@ -44,7 +44,7 @@ namespace Web.Controllers
             answer.QuestionId = questionId;
             if(Request.IsAjaxRequest())
             {
-                return PartialView("_AddAnswer", answer);
+                return PartialView("_AddAnswerAjax", answer);
             }
             return View(answer);
         }
@@ -62,6 +62,10 @@ namespace Web.Controllers
             {
                 db.Answers.Add(answer);
                 await db.SaveChangesAsync();
+                if(Request.IsAjaxRequest())
+                {
+                    return PartialView("_AnswerItem", answer);
+                }
                 return RedirectToAction("Details","Questions", new { id = answer.QuestionId});
             }
 

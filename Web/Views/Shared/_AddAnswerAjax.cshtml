@@ -1,0 +1,36 @@
+﻿@model Web.Models.Answer
+
+<div id="@Model.Id.ToString()"></div>
+
+@*@using (Html.BeginForm("Create", "Answers", new { questionId = Model.QuestionId }, FormMethod.Post, null))*@
+@using (Ajax.BeginForm("Create", "Answers", new { questionId = Model.QuestionId }, 
+    new AjaxOptions { HttpMethod = "POST", UpdateTargetId = Model.Id.ToString() }, null))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => Model.Id)
+    <div class="card-box">
+        <span class="input-icon icon-right">
+            Đáp: <br />
+        </span>
+        <textarea id="Content" name="Content" rows="1" class="form-control" placeholder="Post a new message"></textarea>
+        <div class="p-t-10 pull-right">
+            <p>
+                <input type="submit" value="Reply" class="btn btn-default" />
+            </p>
+        </div>
+        <ul class="nav nav-pills profile-pills m-t-10">
+            <li>
+                <a href="#"><i class="fa fa-user"></i></a>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-location-arrow"></i></a>
+            </li>
+            <li>
+                <a href="#"><i class=" fa fa-camera"></i></a>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-smile-o"></i></a>
+            </li>
+        </ul>
+    </div>
+}

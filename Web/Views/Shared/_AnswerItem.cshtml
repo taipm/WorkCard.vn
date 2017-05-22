@@ -1,5 +1,5 @@
 ﻿@using Web.Models
-@model Web.Models.Question
+@model Web.Models.Answer
 
 
 <div class="comment">
@@ -11,42 +11,29 @@
                 <span>
                     @Model.CreatedDate.Value.TimeAgo()
                 </span>
-                <span>@Model.Title</span>
+                <span>@*@Model.Title*@</span>
             </div>
             @Html.Raw(Model.Content)
-            @if (Model.Answers != null)
-            {
-                foreach (var _answer in Model.Answers)
-                {
-                    if (_answer != null)
-                    {
-                        <div class="comment-text">
-                            @Html.Raw(_answer.Content)
-                        </div>
-                    }
-                }
-            }
         </div>
         <div id="Status-@Model.Id.ToString()"></div>
         <div class="comment-footer">
             <a href="#"><i class="fa fa-thumbs-o-up"></i></a>
             <a href="#"><i class="fa fa-thumbs-o-down"></i></a>
-            @Ajax.ActionLink("Trả lời", "Create", "Answers", new { questionId = Model.Id },
+            @Ajax.ActionLink("AjaxReply ", "Create", "Answers", new { questionId = Model.Id },
                                     new AjaxOptions
                                     {
                                         UpdateTargetId = "Status-" + Model.Id.ToString(),
                                         HttpMethod = "Get",
                                     }, null)
-            @if (User.Identity.IsAuthenticated && (User.Identity.Name == Model.CreatedBy))
+            @if (User.Identity.IsAuthenticated && User.Identity.Name == Model.CreatedBy)
             {
-                @Ajax.ActionLink(" Xóa ", "Delete", "Questions", new { Id = Model.Id },
+                @Ajax.ActionLink(" Delete ", "Delete", "Questions", new { Id = Model.Id },
                                     new AjaxOptions
                                     {
                                         UpdateTargetId = "Status-" + Model.Id.ToString(),
                                         HttpMethod = "Post",
                                     }, null)
             }
-            
         </div>
     </div>
 </div>
