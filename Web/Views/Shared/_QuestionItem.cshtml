@@ -37,6 +37,12 @@
                                         UpdateTargetId = "Status-" + Model.Id.ToString(),
                                         HttpMethod = "Get",
                                     }, null)
+            @Ajax.ActionLink("Translate", "Translate", "Questions", new { questionId = Model.Id },
+                                    new AjaxOptions
+                                    {
+                                        UpdateTargetId = "Status-" + Model.Id.ToString(),
+                                        HttpMethod = "Get",
+                                    }, null)
             @if (User.Identity.IsAuthenticated && (User.Identity.Name == Model.CreatedBy))
             {
                 @Ajax.ActionLink(" Xóa ", "Delete", "Questions", new { Id = Model.Id },

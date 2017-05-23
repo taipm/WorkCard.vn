@@ -169,7 +169,7 @@ namespace Web.Controllers
             {
                 workIssue.CreatedBy = User.Identity.Name;
                 workIssue.AutoAdjust();
-                var _isAdded = _manager.AddIssue(workIssue);
+                bool _isAdded = await _manager.AddIssueAsync(workIssue);
                 if(_isAdded)
                     return RedirectToAction("Index");
                 else

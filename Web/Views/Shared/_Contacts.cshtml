@@ -2,16 +2,28 @@
 
 <h4 class="header-title m-t-0 m-b-30">Contacts/Members</h4>
 
-@if (Model != null)
-{
-    <ul class="list-group m-b-0 user-list">
-        @foreach (var item in Model)
+<div class="row">
+    @if (Model != null)
+    {
+        int _column = 3;
+        foreach (var item in Model)
         {
-            <li class="list-group-item">
-                @Html.Partial("_ContactItem", item)
-            </li>
+            _column += 1;
+            if (_column % 3 == 0)
+            {
+                <div class="row">
+                    <div class="col-lg-4">
+                        @Html.Partial("_ContactItem", item)
+                    </div><!-- end col-->
+                </div>
+            }
+            else
+            {
+                <div class="col-lg-4">
+                    @Html.Partial("_ContactItem", item)
+                </div><!-- end col-->
+            }
         }
-    </ul>
-
-}
-
+    }
+</div>
+<!-- end row -->

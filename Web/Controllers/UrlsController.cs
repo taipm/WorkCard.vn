@@ -50,7 +50,7 @@ namespace Web.Controllers
             Url _url = new Url(url);
             _url.CreatedBy = User.Identity.Name;
 
-            bool _isAdded = _manager.Add(_url);
+            bool _isAdded = await _manager.AddAsync(_url);
 
             if (_isAdded)
             {

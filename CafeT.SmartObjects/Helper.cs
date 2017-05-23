@@ -9,9 +9,9 @@ namespace CafeT.SmartObjects
 {
     public static class Helper
     {
-        public static SmartText ToSmartText(this string text)
-        {
-            return new SmartText(text);
-        }
+        //public static SmartText ToSmartText(this string text)
+        //{
+        //    return new SmartText(text);
+        //}
     }
 }

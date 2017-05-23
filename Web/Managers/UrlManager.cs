@@ -10,13 +10,13 @@ namespace Web.Managers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public bool Add(Url url)
+        public async System.Threading.Tasks.Task<bool> AddAsync(Url url)
         {
-            var _myUrls = db.Urls.Where(t => t.CreatedBy == url.CreatedBy).Select(t=>t.Address);
-            if(!_myUrls.Contains(url.Address))
+            var _myUrls = db.Urls.Where(t => t.CreatedBy == url.CreatedBy).Select(t => t.Address);
+            if (!_myUrls.Contains(url.Address))
             {
                 db.Urls.Add(url);
-                db.SaveChangesAsync();
+                await db.SaveChangesAsync();
                 return true;
             }
             return false;

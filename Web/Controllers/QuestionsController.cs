@@ -8,17 +8,65 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Web.Models;
+using Microsoft.Translator.API;
+using System.Net.Http;
 
 namespace Web.Controllers
 {
     public class QuestionsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private const string SubscriptionKey = "3c45b3b12bda4d568939ab4fc7245944";   //Enter here the Key from your Microsoft Translator Text subscription on http://portal.azure.com
+
+
+        /// Demonstrates getting an access token and using the token to translate.
+        private static async Task<string> TranslateAsync(string text)
+        {
+            var translatorService = new TranslatorService.LanguageServiceClient();
+            var authTokenSource = new AzureAuthToken(SubscriptionKey);
+            var token = string.Empty;
+
+            try
+            {
+                token = await authTokenSource.GetAccessTokenAsync();
+            }
+            catch (HttpRequestException)
+            {
+                switch (authTokenSource.RequestStatusCode)
+                {
+                    case HttpStatusCode.Unauthorized:
+                        Console.WriteLine("Request to token service is not authorized (401). Check that the Azure subscription key is valid.");
+                        break;
+                    case HttpStatusCode.Forbidden:
+                        Console.WriteLine("Request to token service is not authorized (403). For accounts in the free-tier, check that the account quota is not exceeded.");
+                        break;
+                }
+                throw;
+            }
+
+            return translatorService.Translate(token, text, "en", "vi", "text/plain", "general", string.Empty);
+        }
 
         // GET: Questions
         public async Task<ActionResult> Index()
         {
-            return View(await db.Questions.ToListAsync());
+            return View(await db.Questions.OrderByDescending(t=>t.CreatedDate.Value).ToListAsync());
+        }
+
+        // POST: Questions/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpGet]
+        public async Task<ActionResult> Translate(Guid questionId)
+        {
+            Question question = await db.Questions.FindAsync(questionId);
+            question.Content = await TranslateAsync(question.Content);
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_QuestionItem", question);
+            }
+            return RedirectToAction("Index");
         }
 
         // GET: Questions/Details/5

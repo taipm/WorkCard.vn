@@ -5,6 +5,8 @@ using System.Web;
 using Web.Models;
 using System.Data;
 using CafeT.Objects;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Web.Managers
 {
@@ -12,7 +14,7 @@ namespace Web.Managers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public bool AddIssue(WorkIssue issue)
+        public async Task<bool> AddIssueAsync(WorkIssue issue)
         {
             bool _result = false;
             UrlManager _urlManager = new UrlManager();
@@ -20,14 +22,14 @@ namespace Web.Managers
             db.Issues.Add(issue);
             try
             {
-                db.SaveChangesAsync();
+                await db.SaveChangesAsync();
                 _result = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return false;
             }
-            
+
 
             if (issue.HasInnerMembers())
             {
@@ -35,7 +37,7 @@ namespace Web.Managers
                 foreach (string _member in _innerMembers)
                 {
                     Contact _contact = new Contact();
-                    _result = _contactManager.Add(_contact);
+                    _result =  await _contactManager.AddAsync(_contact);
                     if (!_result) return false;
                 }
             }
@@ -46,7 +48,7 @@ namespace Web.Managers
                 foreach (string link in _links)
                 {
                     Url _url = new Url(link);
-                    _result = _urlManager.Add(_url);
+                    _result = await _urlManager.AddAsync(_url);
                     if (!_result) return false;
                 }
             }

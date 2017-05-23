@@ -14,6 +14,10 @@ namespace Web.Models
         public Guid? ProjectId { set; get; }
         public Guid? StoryId { set; get; }
         public Guid? IssueId { set; get; }
+
+        public bool IsRequired { set; get; } = false;
+        public virtual IEnumerable<Contact> Contacts { set; get; }
+
         public List<string> Links
         {
             get
@@ -26,5 +30,11 @@ namespace Web.Models
             }
         }
         public Question() : base() { }
+
+        public bool HasAnswer()
+        {
+            if (Answers == null || Answers.Count() < 1) return false;
+            return true;
+        }
     }
 }

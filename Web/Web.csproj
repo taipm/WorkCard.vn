@@ -154,6 +154,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -215,6 +216,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AzureAuthToken.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\EmailService.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -224,6 +226,11 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="Connected Services\TranslatorService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AnswersController.cs" />
     <Compile Include="Controllers\ApplicationUsersController.cs" />
@@ -342,6 +349,10 @@
     <Compile Include="Migrations\201705180807018_UpdateContact.cs" />
     <Compile Include="Migrations\201705180807018_UpdateContact.Designer.cs">
       <DependentUpon>201705180807018_UpdateContact.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705220905347_UpdateQuestion.cs" />
+    <Compile Include="Migrations\201705220905347_UpdateQuestion.Designer.cs">
+      <DependentUpon>201705220905347_UpdateQuestion.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
@@ -602,6 +613,12 @@
     <Content Include="Assets\Templates\Adminto\plugins\x-editable\dist\bootstrap3-editable\img\clear.png" />
     <Content Include="Assets\Templates\Adminto\plugins\x-editable\dist\bootstrap3-editable\img\loading.gif" />
     <Content Include="Assets\Templates\Adminto\plugins\x-editable\dist\bootstrap3-editable\js\bootstrap-editable.min.js" />
+    <None Include="Connected Services\TranslatorService\configuration91.svcinfo" />
+    <None Include="Connected Services\TranslatorService\configuration.svcinfo" />
+    <None Include="Connected Services\TranslatorService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -686,10 +703,32 @@
     <Content Include="Assets\Templates\Adminto\plugins\fileuploads\fonts\dropify.eot" />
     <Content Include="Assets\Templates\Adminto\plugins\fileuploads\fonts\dropify.ttf" />
     <Content Include="Assets\Templates\Adminto\plugins\fileuploads\fonts\dropify.woff" />
+    <None Include="Connected Services\TranslatorService\soap.wsdl" />
+    <None Include="Connected Services\TranslatorService\soap.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TranslatorService\soap1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TranslatorService\soap2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TranslatorService\soap3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TranslatorService\SoapService.wsdl" />
+    <Content Include="Connected Services\TranslatorService\Web.TranslatorService.GetTranslationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\TranslatorService\Web.TranslatorService.TranslateArray2Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\TranslatorService\Web.TranslatorService.TranslateArrayResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Properties\PublishProfiles\WorkCard - Web Deploy.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
@@ -1220,6 +1259,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
@@ -1295,6 +1335,9 @@
     <EmbeddedResource Include="Migrations\201705180807018_UpdateContact.resx">
       <DependentUpon>201705180807018_UpdateContact.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705220905347_UpdateQuestion.resx">
+      <DependentUpon>201705220905347_UpdateQuestion.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CafeT.EF6.Objects\CafeT.EF6.Objects.csproj">
@@ -1332,6 +1375,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\TranslatorService\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

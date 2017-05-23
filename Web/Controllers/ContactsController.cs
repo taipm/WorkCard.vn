@@ -51,7 +51,7 @@ namespace Web.Controllers
             _contact.CreatedBy = User.Identity.Name;
             _contact.UserName = User.Identity.Name;
 
-            bool _isAdded = _manager.Add(_contact);
+            bool _isAdded = await _manager.AddAsync(_contact);
             if(_isAdded)
             {
                 if (Request.IsAjaxRequest())
