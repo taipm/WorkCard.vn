@@ -1,0 +1,22 @@
+﻿@model Web.Models.Contact
+
+<div class="card-box widget-user">
+    <div>
+        <img src="assets/images/users/avatar-2.jpg" class="img-responsive img-circle" alt="user">
+        <div class="wid-u-info">
+            <h4 class="m-t-0 m-b-5 font-600"> 
+                @if (!Model.LastName.IsNullOrEmptyOrWhiteSpace())
+                {
+                    @Html.Raw(Model.LastName + " ")
+                }
+                @if (!Model.FirstName.IsNullOrEmptyOrWhiteSpace())
+                {
+                    @Html.Raw(Model.FirstName)
+                }
+            </h4>
+            <p class="text-muted m-b-5 font-13">@Model.Email</p>
+            <span class="desc">@Model.CreatedDate.Value.TimeAgo()</span>
+            <small class="text-custom"><b>Support Lead</b></small>
+        </div>
+    </div>
+</div>

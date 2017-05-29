@@ -98,7 +98,7 @@ namespace CafeT.Time
                 return true;
             return false;
         }
-        public static bool IsWorkingDate(this DateTime date)
+        public static bool IsWorkDay(this DateTime date)
         {
             return !date.IsWeekend();
         }
@@ -113,6 +113,60 @@ namespace CafeT.Time
             if (date.Date == DateTime.Today.AddDays(-1))
                 return true;
             return false;
+        }
+        
+        public static DateTime AddWorkdays(this DateTime originalDate, int workDays)
+        {
+            DateTime tmpDate = originalDate;
+            while (workDays > 0)
+            {
+                tmpDate = tmpDate.AddDays(1);
+                if (tmpDate.DayOfWeek < DayOfWeek.Saturday &&
+                    tmpDate.DayOfWeek > DayOfWeek.Sunday &&
+                    !tmpDate.IsHoliday())
+                    workDays--;
+            }
+            return tmpDate;
+        }
+
+        //Can add more holidays in Viet Nam Calendar
+        public static bool IsHoliday(this DateTime date)
+        {
+            if (date.IsWeekend()) return true;
+            return false;
+        }
+        public static int GetWorkDays(DateTime start, DateTime end)
+        {
+            if (start.DayOfWeek == DayOfWeek.Saturday)
+            {
+                start = start.AddDays(2);
+            }
+            else if (start.DayOfWeek == DayOfWeek.Sunday)
+            {
+                start = start.AddDays(1);
+            }
+
+            if (end.DayOfWeek == DayOfWeek.Saturday)
+            {
+                end = end.AddDays(-1);
+            }
+            else if (end.DayOfWeek == DayOfWeek.Sunday)
+            {
+                end = end.AddDays(-2);
+            }
+
+            int diff = (int)end.Subtract(start).TotalDays;
+
+            int result = diff / 7 * 5 + diff % 7;
+
+            if (end.DayOfWeek < start.DayOfWeek)
+            {
+                return result - 2;
+            }
+            else
+            {
+                return result;
+            }
         }
     }
 }

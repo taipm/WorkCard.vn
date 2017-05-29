@@ -1,12 +1,12 @@
 ﻿@model Web.Models.Question
 
-
-@*@using (Html.BeginForm("Create", "Answers", new { questionId = Model.QuestionId }, FormMethod.Post, null))*@
 @using (Ajax.BeginForm("AjaxCreate", "Questions", null, 
     new AjaxOptions { HttpMethod = "POST", UpdateTargetId = Model.Id.ToString() }, null))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => Model.Id)
+    @Html.HiddenFor(model => Model.IssueId)
+    @Html.HiddenFor(model => Model.CreatedDate)
     <div class="card-box">
         <span class="input-icon icon-right">
             Hỏi: <br />

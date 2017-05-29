@@ -32,7 +32,7 @@ namespace Web.Models
         public string Email { set; get; }
         public string HomeAddress { set; get; }
         public string OfficeName { set; get; }
-
+        public string About { set; get; }
         public Address Address { set; get; }
         //public string Title { set; get; }
         //public string OfficeAddress { set; get; }

@@ -20,8 +20,6 @@ namespace Web.Models
         [ScaffoldColumn(false)]
         public string CreatedBy { set; get; }
 
-        //public string Message { set; get; }
-
         public BaseObject()
         {
             Id = Guid.NewGuid();

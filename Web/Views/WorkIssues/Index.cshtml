@@ -68,7 +68,7 @@
 
     <div class="row">
         <div class="col-sm-4">
-        @if (Model != null && Model.ToList().GetFromNow() != null && Model.ToList().GetFromNow().Count > 0)
+        @if (Model != null && Model.GetFromNow() != null && Model.GetFromNow().Count() > 0)
         {
             @Html.Partial("_IssuesNow", Model.ToList().GetFromNow().AsEnumerable())
         }
@@ -76,18 +76,18 @@
         </div><!-- end col -->
 
         <div class="col-sm-4">
-            @if (Model != null && Model.ToList().GetTomorrow() != null && Model.ToList().GetTomorrow().Count > 0)
+            @if (Model != null && Model.ToList().GetTomorrow() != null && Model.GetTomorrow().Count() > 0)
             {
                 @Html.Partial("_IssuesUpcoming", Model.ToList().GetTomorrow().AsEnumerable())
             }
             
         </div><!-- end col -->
         <div class="col-sm-4">
-            @if (Model != null && Model.ToList().GetExpired() != null && Model.ToList().GetExpired().Count > 0)
+            @if (Model != null && Model.ToList().GetExpired() != null && Model.GetExpired().Count() > 0)
             {
                 @Html.Partial("_IssuesExpired", Model.ToList().GetExpired().AsEnumerable())
             }
-            @if (Model != null && Model.ToList().GetDone() != null && Model.ToList().GetDone().Count > 0)
+            @if (Model != null && Model.ToList().GetDone() != null && Model.GetDone().Count() > 0)
             {
                 @Html.Partial("_IssuesCompleted", Model.ToList().GetDone().AsEnumerable())
             }

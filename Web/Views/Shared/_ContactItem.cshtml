@@ -11,10 +11,10 @@
             <li><a href="#">Block</a></li>
         </ul>
     </div>
-    <div>
+    <div class="row">
         <img src="assets/images/users/avatar-10.jpg" class="img-circle thumb-xl img-thumbnail m-b-10" alt="profile-image">
         <p class="text-muted font-13 m-b-30">
-            Hi I'm Johnathn Deo,has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type.
+            @Html.Raw(Model.About)
         </p>
         <div class="text-left">
             <p class="text-muted font-13">
@@ -32,5 +32,11 @@
             <p class="text-muted font-13"><strong>Location :</strong> <span class="m-l-15">@Model.Address</span></p>
         </div>
         <button type="button" class="btn btn-custom btn-rounded waves-effect waves-light">Send Message</button>
+    </div>
+    <div class="comment-footer pull-right">
+        @Html.ActionLink("Details", "Details", "Contacts", new { id = Model.Id }, 
+                new { @class = "btn btn-custom btn-rounded waves-effect waves-light" })
+        @Html.ActionLink("Delete", "Delete", "Contacts", new { id = Model.Id },
+                null)
     </div>
 </div>

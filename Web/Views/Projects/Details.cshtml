@@ -6,6 +6,36 @@
     ViewBag.Title = "Details";
 }
 
+<script>
+    $(document).ready(function () {
+        $("#Content").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Projects/AutoCompleted",
+                    type: "POST",
+                    dataType: "json",
+                    data: {projectId: '@Model.Id.ToString()', Prefix: request.term },
+                    //data: { Prefix: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            var _content = $("#Content").val();
+                            var _index = _content.lastIndexOf(" ");
+                            _content = _content.substring(0, _index + 1);
+                            return {
+                                label: item,
+                                value: _content +  item
+                            };
+                        }))
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+
 <div class="row">
     <div class="col-sm-8">
         <div class="bg-picture card-box">
@@ -38,7 +68,40 @@
         </div>
         <!--/ meta -->
         <div class="row">
-            @Html.Partial("_CreateIssueForProject", new WorkIssue() { ProjectId = Model.Id })
+            @*@Html.Partial("_CreateIssueForProject", new WorkIssue() { ProjectId = Model.Id })*@
+            @using (Ajax.BeginForm("AddContact", "Projects", new { projectId = Model.Id },
+                new AjaxOptions { HttpMethod = "POST", UpdateTargetId = Model.Id.ToString() }, null))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => Model.Id)
+                <div class="card-box">
+                    <span class="input-icon icon-right">
+                        Hỏi: <br />
+                    </span>
+                    <textarea id="Content" name="Content" rows="1" class="form-control" placeholder="Post a new message"></textarea>
+                    <div class="p-t-10 pull-right">
+                        <p>
+                            <input type="submit" value="Post" class="btn btn-default" />
+                        </p>
+                    </div>
+                    <ul class="nav nav-pills profile-pills m-t-10">
+                        <li>
+                            <a href="#"><i class="fa fa-user"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-location-arrow"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class=" fa fa-camera"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-smile-o"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            }
+
+            <div id="@Model.Id.ToString()" class="card-box panel panel-border panel-success"></div>
             @Html.Partial("_Issues", Model.Issues)
         </div>
         
@@ -59,7 +122,7 @@
             </div>
             @if (Model.Contacts != null)
             {
-                @Html.Partial("_Contacts", Model.Comments)
+                @Html.Partial("_ContactsInProject", Model.Contacts)
             }
             @if (Model.GetLinks() != null)
             {
@@ -139,70 +202,3 @@
 </div>
 <!-- end row -->
 
-@*<div>
-    <h4>Project</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedBy)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedBy)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
-<div class="row">
-    @if(Model.Questions != null && Model.Questions.Count()>0)
-    {
-        foreach(var item in Model.Questions)
-        {
-            @Html.Partial("_QuestionItem", item)
-        }
-    }
-</div>*@

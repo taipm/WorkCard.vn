@@ -354,6 +354,14 @@
     <Compile Include="Migrations\201705220905347_UpdateQuestion.Designer.cs">
       <DependentUpon>201705220905347_UpdateQuestion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705250317441_AddAboutToContact.cs" />
+    <Compile Include="Migrations\201705250317441_AddAboutToContact.Designer.cs">
+      <DependentUpon>201705250317441_AddAboutToContact.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705260656445_UpdateQuestion1.cs" />
+    <Compile Include="Migrations\201705260656445_UpdateQuestion1.Designer.cs">
+      <DependentUpon>201705260656445_UpdateQuestion1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -380,12 +388,14 @@
     <Compile Include="Models\Contact.cs" />
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\Url.cs" />
+    <Compile Include="Models\Job.cs" />
     <Compile Include="Models\WorkIssue.cs" />
     <Compile Include="ModelViews\AccountViewModels.cs" />
     <Compile Include="ModelViews\IndexIssuesViewModel.cs" />
     <Compile Include="ModelViews\ManageViewModels.cs" />
     <Compile Include="ModelViews\RegisterViewModel.cs" />
-    <Compile Include="ModelViews\WorkView.cs" />
+    <Compile Include="ModelViews\WorkingDay.cs" />
+    <Compile Include="ModelViews\IssuesView.cs" />
     <Compile Include="ModelViews\YouTubeView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -1079,6 +1089,7 @@
     <Content Include="Scripts\ckeditor\skins\v2\templates.css" />
     <Content Include="Scripts\ckeditor\themes\default\theme.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <None Include="Properties\PublishProfiles\WorkCard - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.1.1-vsdoc.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <None Include="Scripts\jquery-1.10.2-vsdoc.js" />
@@ -1109,6 +1120,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Views\Contacts\extras-profile.html" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_Questions.cshtml" />
     <Content Include="Views\Shared\_IssueItemExpired.cshtml" />
@@ -1151,6 +1163,10 @@
     <Content Include="Views\Shared\_AnswerItem.cshtml" />
     <Content Include="Views\Shared\_AddQuestionAjax.cshtml" />
     <Content Include="Views\Shared\_AddQuickIssueAjax.cshtml" />
+    <Content Include="Views\Shared\_AddMessageToProjectAjax.cshtml" />
+    <Content Include="Views\Projects\_ContactInProject.cshtml" />
+    <Content Include="Views\Projects\_ContactsInProject.cshtml" />
+    <Content Include="Views\Shared\_DeleteMsg.cshtml" />
     <None Include="Views\WorkIssues\Details.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1259,7 +1275,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
@@ -1338,6 +1353,12 @@
     <EmbeddedResource Include="Migrations\201705220905347_UpdateQuestion.resx">
       <DependentUpon>201705220905347_UpdateQuestion.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705250317441_AddAboutToContact.resx">
+      <DependentUpon>201705250317441_AddAboutToContact.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705260656445_UpdateQuestion1.resx">
+      <DependentUpon>201705260656445_UpdateQuestion1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CafeT.EF6.Objects\CafeT.EF6.Objects.csproj">
@@ -1347,6 +1368,10 @@
     <ProjectReference Include="..\CafeT.Html\CafeT.Html.csproj">
       <Project>{6F875B12-CE9C-46E4-A8B8-D8A1B0E2DFE2}</Project>
       <Name>CafeT.Html</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CafeT.Networks\CafeT.Networks.csproj">
+      <Project>{A79C53E7-B191-4DBD-AD15-E3E7CF6E13DB}</Project>
+      <Name>CafeT.Networks</Name>
     </ProjectReference>
     <ProjectReference Include="..\CafeT.Objects\CafeT.Objects.csproj">
       <Project>{E9909E52-25BE-4F82-873B-DAF2EC30DE76}</Project>

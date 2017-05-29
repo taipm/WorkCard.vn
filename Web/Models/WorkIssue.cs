@@ -86,16 +86,12 @@ namespace Web.Models
             Times = new List<DateTime>();
         }
 
-        //public IEnumerable<string> GetUrls()
-        //{
-        //    List<string> _urls = new List<string>();
-        //    var _fields = this.Fields();
-        //    foreach (var item in _fields)
-        //    {
-        //        _urls.AddRange(item.Value.ToJson().GetUrls().ToList());
-        //    }
-        //    return _urls;
-        //}
+        public bool IsOf(string userName)
+        {
+            if ((!this.CreatedBy.IsNullOrEmptyOrWhiteSpace() && (this.CreatedBy.ToLower() == userName))
+                || (!this.Owner.IsNullOrEmptyOrWhiteSpace() && (this.Owner.ToLower() == userName))) return true;
+            return false;
+        }
 
         public bool IsFree()
         {
@@ -141,6 +137,16 @@ namespace Web.Models
         public bool IsToday()
         {
             if (End != null && End.HasValue && End.Value.IsToday()) return true;
+            return false;
+        }
+        public bool IsInDay(DateTime date)
+        {
+            if (End != null && End.HasValue && (End.Value.Day == date.Day)) return true;
+            return false;
+        }
+        public bool IsCompleted()
+        {
+            if (End.HasValue && this.Status == IssueStatus.Done) return true;
             return false;
         }
         public bool IsWeekend()

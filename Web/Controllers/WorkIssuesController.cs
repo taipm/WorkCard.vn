@@ -20,11 +20,18 @@ namespace Web.Controllers
     
     public class WorkIssuesController : BaseController
     {
+        IssuesManager _manager = new IssuesManager();
         public WorkIssuesController(IUnitOfWorkAsync unitOfWorkAsync) : base(unitOfWorkAsync)
         {
 
         }
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        public Dictionary<string, string> AutoCompletedStore()
+        {
+            Dictionary<string, string> _dict = new Dictionary<string, string>();
+            return _dict;
+        }
 
         [HttpPost]
         public JsonResult AutoCompleted(string Prefix)
@@ -32,7 +39,8 @@ namespace Web.Controllers
             //Process Prefix
             string _text = Prefix;
             string _lastWord = Prefix.ToWords().LastOrDefault();
-            _text = _text.DeleteEndTo(" ");
+            if(_text.EndsWith(" "))
+                _text = _text.DeleteEndTo(" ");
             Prefix = _lastWord;
             //Note : you can bind same list from database   
             Dictionary<string, string> _dict = new Dictionary<string, string>();
@@ -86,26 +94,6 @@ namespace Web.Controllers
             return View("Index", _objects);
         }
 
-        //[HttpGet]
-        //public ActionResult Index(int? page)
-        //{
-        //    var dummyItems = Enumerable.Range(1, 150).Select(x => "Item " + x);
-        //    var _objects = _unitOfWorkAsync.RepositoryAsync<WorkIssue>()
-        //                        .Query().Select()
-        //                        .Where(m => !string.IsNullOrWhiteSpace(m.Title))
-        //                        .OrderByDescending(t => t.CreatedDate).ToList();
-
-        //    var pager = new Pager(_objects.Count(), page);
-
-        //    var viewModel = new IndexIssuesViewModel
-        //    {
-        //        Items = _objects.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
-        //        Pager = pager
-        //    };
-
-        //    return View(viewModel);
-        //}
-
         // GET: WorkIssues/Details/5
         public async Task<ActionResult> Details(Guid? id)
         {
@@ -125,7 +113,7 @@ namespace Web.Controllers
                 _question.Answers = new QuestionManager().GetAnswers(_question.Id);
             }
             ViewBag.Questions = _questions;
-            ViewBag.Contacts = db.Contacts.AsEnumerable();
+            ViewBag.Contacts = new ContactManager().GetContactsOfIssue(workIssue.Id);
 
             string _keyWord = workIssue.Content.GetHasTags().FirstOrDefault();
             var _all = db.Issues.Where(t => t.CreatedBy.ToLower() == workIssue.CreatedBy).AsEnumerable();
@@ -140,6 +128,50 @@ namespace Web.Controllers
             }
 
             return View(workIssue);
+        }
+
+        // POST: Questions/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpGet]
+        [Authorize]
+        public ActionResult AddQuestion(Guid issueId)
+        {
+            Question _question = new Question();
+            _question.IssueId = issueId;
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_AddQuestionAjax", _question);
+            }
+            return RedirectToAction("Index");
+        }
+
+        // POST: Questions/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [Authorize]
+        [ValidateInput(false)]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddQuestion(Question question)
+        {
+            if (ModelState.IsValid)
+            {
+                question.CreatedBy = User.Identity.Name;
+                var _result = await _manager.AddQuestionAsync(question);
+                
+                if (Request.IsAjaxRequest())
+                {
+                    if(_result)
+                        return PartialView("_QuestionItem", question);
+                    else
+                        return PartialView("_ErrorMsg", "Không thể thêm câu hỏi: " + question.Title);
+                }
+                return RedirectToAction("Index");
+            }
+
+            return View(question);
         }
 
         // GET: WorkIssues/Create
@@ -220,6 +252,7 @@ namespace Web.Controllers
 
                 if(workIssue.GetLinks() != null)
                 {
+                    UrlManager _manager = new UrlManager();
                     var _links = workIssue.GetLinks();
                     foreach (string link in _links)
                     {
@@ -227,8 +260,7 @@ namespace Web.Controllers
                         _url.IssueId = workIssue.Id;
                         _url.CreatedBy = User.Identity.Name;
                         _url.CreatedDate = DateTime.Now;
-                        db.Urls.Add(_url);
-                        await db.SaveChangesAsync();
+                        await _manager.AddAsync(_url);
                     }
                 }
 
@@ -441,12 +473,16 @@ namespace Web.Controllers
         // POST: WorkIssues/Delete/5
         [HttpPost, ActionName("Delete")]
         [Authorize]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(Guid id)
         {
             WorkIssue workIssue = await db.Issues.FindAsync(id);
             db.Issues.Remove(workIssue);
             await db.SaveChangesAsync();
+            if(Request.IsAjaxRequest())
+            {
+                return PartialView("_DeleteMsg", "Đã xóa");
+            }
             return RedirectToAction("Index");
         }
 

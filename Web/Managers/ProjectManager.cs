@@ -10,6 +10,11 @@ namespace Web.Managers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public Project GetById(Guid id)
+        {
+            return db.Projects.FindAsync(id).Result;
+        }
+
         public IEnumerable<WorkIssue> GetIssues(Guid projectId)
         {
             var _issues = db.Issues.Where(t => t.ProjectId == projectId);
@@ -29,6 +34,27 @@ namespace Web.Managers
         {
             var _contacts = db.Contacts.Where(t => t.ProjectId == projectId);
             return _contacts.AsEnumerable();
+        }
+
+        public async System.Threading.Tasks.Task<bool> AddContactAsync(Guid projectId, Contact contact)
+        {
+            if (!contact.ProjectId.HasValue) return false;
+            var _nowContacts = GetContacts(projectId).Select(t => t.Email);
+            if (!_nowContacts.Contains(contact.Email))
+            {
+                db.Contacts.Add(contact);
+                await db.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
+        public async System.Threading.Tasks.Task AddContactsAsync(Guid projectId, List<Contact> contacts)
+        {
+            foreach (var contact in contacts)
+            {
+                await AddContactAsync(projectId, contact);
+            }
         }
     }
 }

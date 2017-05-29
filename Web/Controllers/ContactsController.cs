@@ -35,6 +35,8 @@ namespace Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Contact contact = await db.Contacts.FindAsync(id);
+            ViewBag.Issues = new ContactManager().GetAllIssues(contact.Id);
+            
             if (contact == null)
             {
                 return HttpNotFound();
@@ -113,7 +115,7 @@ namespace Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,FirstName,LastName,Email,UserName,IsRegistered,CreatedDate,UpdatedDate,UpdatedBy,CreatedBy")] Contact contact)
+        public async Task<ActionResult> Edit(Contact contact)
         {
             if (ModelState.IsValid)
             {

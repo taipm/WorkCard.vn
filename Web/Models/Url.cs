@@ -1,4 +1,6 @@
 ﻿using CafeT.Html;
+using CafeT.Networks;
+using CafeT.Objects;
 using CafeT.Text;
 using System;
 using System.Collections.Generic;
@@ -25,14 +27,39 @@ namespace Web.Models
 
         //public bool IsLive { set; get; }
         public Url() : base() { }
+
         public Url(string url):base()
         {
             if (url.IsUrl())
             {
                 Address = url;
+                Uri myUri = new Uri(url);
+                string host = myUri.Host;
+                Domain = host;
             }
         }
 
+        public bool IsLive()
+        {
+            GetDomain();
+            if(!Domain.IsNullOrEmptyOrWhiteSpace())
+            {
+                ComputerObject _computer = new ComputerObject();
+                return _computer.IsConnectedToUrl(Domain);
+            }
+            return false;
+        }
+
+        public void GetDomain()
+        {
+            if (Address.IsUrl())
+            {
+                Address = Address;
+                Uri myUri = new Uri(Address);
+                string host = myUri.Host;
+                Domain = host;
+            }
+        }
         public void Fetch()
         {
             HtmlContent = this.Address.LoadHtml().Result;

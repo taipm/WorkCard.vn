@@ -62,13 +62,32 @@ namespace CafeT.Objects
 
             PropertyInfo[] pi = _type.GetProperties()
                                     .Where(p => p.GetIndexParameters().Length == 0).ToArray();
-
-            foreach (PropertyInfo p in pi)
+            if(_dict.Count > 0)
             {
-                _dict.Add(p.ToString(), p.GetValue(instance));
+                foreach (PropertyInfo p in pi)
+                {
+                    _dict.Add(p.ToString(), p.GetValue(instance));
+                }
             }
-
+            
             return _dict;
+        }
+        /// <summary>
+        /// Created by Phan Minh Tai (taipm.vn@gmail.com)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
+        /// <returns></returns>
+        public static bool HasLink<T>(this T instance) where T : class
+        {
+            List<string> _urls = new List<string>();
+            var _fields = instance.Fields();
+            foreach (var item in _fields)
+            {
+                var _links = item.Value.ToJson().GetUrls();
+                if (_links != null) return true;
+            }
+            return false;
         }
 
         public static IEnumerable<string> GetLinks<T>(this T instance) where T : class
@@ -193,17 +212,6 @@ namespace CafeT.Objects
                                                                   (arrayTypes.Contains(prop.PropertyType) 
                                                                   ? string.Join(", ", (IEnumerable<string>)prop.GetValue(instance, null))                                        
                                                                   : prop.GetValue(instance, null)))));
-        }
-
-        public static void Print(this ExpandoObject dynamicObject)
-        {
-            var dynamicDictionary = dynamicObject as IDictionary<string, object>;
-
-            foreach (KeyValuePair<string, object> property in dynamicDictionary)
-            {
-                Console.WriteLine("{0}: {1}", property.Key, property.Value.ToString());
-            }
-            Console.WriteLine();
         }
 
         public static Dictionary<string, object> GetPropertyDictionary(this object source)

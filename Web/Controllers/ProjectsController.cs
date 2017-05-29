@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using Web.Models;
 using Repository.Pattern.UnitOfWork;
 using Web.Managers;
+using CafeT.Text;
 
 namespace Web.Controllers
 {
@@ -20,7 +21,79 @@ namespace Web.Controllers
         {
         }
 
+        [HttpPost]
+        public JsonResult AutoCompleted(string projectId, string Prefix)
+        {
+            //string projectId = string.Empty;
+            Guid _projectId = Guid.NewGuid();
+            if (!projectId.IsNullOrEmptyOrWhiteSpace())
+                _projectId = Guid.Parse(projectId);
+            
+            //Note : you can bind same list from database   
+            Dictionary<string, string> _dict = new Dictionary<string, string>();
+            var _contacts = _manager.GetContacts(_projectId);
+            foreach(var _contact in _contacts)
+            {
+                if(!_contact.FirstName.IsNullOrEmptyOrWhiteSpace())
+                    _dict.Add(_contact.FirstName, _contact.Email);
+                if (!_contact.LastName.IsNullOrEmptyOrWhiteSpace())
+                    _dict.Add(_contact.FirstName, _contact.Email);
+            }
+            char _lastChar = Prefix.ToCharArray().LastOrDefault();
+            if(_lastChar == '@')
+            {
+                var _emails = _contacts.Select(t => t.Email).Distinct();
+                foreach (var _email in _emails)
+                {
+                    _dict.Add(_email, _email);
+                }
+            }
+
+            //Process Prefix
+            string _text = Prefix;
+            string _lastWord = Prefix.ToWords().LastOrDefault();
+            if (_text.EndsWith(" "))
+            {
+                _text = _text.DeleteEndTo(" ");
+            }
+
+            if(!_lastWord.IsNullOrEmptyOrWhiteSpace())
+                Prefix = _lastWord;
+
+            var _keyWord = _dict.Where(t => t.Key.Contains(Prefix) || t.Value.Contains(Prefix)).Select(t => t.Value);
+            return Json(_keyWord, JsonRequestBehavior.AllowGet);
+        }
+
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        [ValidateInput(false)]
+        public async Task<ActionResult> AddContact(Guid projectId, FormCollection collection)
+        {
+            List<Contact> _contacts = new List<Contact>();
+            var _project = _manager.GetById(projectId);
+            var _emails = collection["Content"].ToString().GetEmails();
+
+            if(_contacts != null)
+            {
+                foreach(string _email in _emails)
+                {
+                    Contact _item = new Contact(_email);
+                    _item.ProjectId = projectId;
+                    _item.CreatedBy = User.Identity.Name;
+                    _contacts.Add(_item);
+                }
+                await new ProjectManager().AddContactsAsync(projectId, _contacts);
+            }
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_WorkTime", "Added contacts");
+            }
+            return RedirectToAction("Index");
+        }
+
 
         // GET: Projects
         public async Task<ActionResult> Index()
@@ -49,6 +122,7 @@ namespace Web.Controllers
             }
             Project project = await db.Projects.FindAsync(id);
             project.Issues = _manager.GetIssues(project.Id);
+            project.Contacts = _manager.GetContacts(project.Id);
             if (project == null)
             {
                 return HttpNotFound();

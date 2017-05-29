@@ -1,18 +1,19 @@
-﻿@model Web.Models.WorkIssue
+﻿@model Web.Models.Project
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 
 <script>
     $(document).ready(function () {
         $("#Content").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: "/WorkIssues/AutoCompleted",
+                    url: "/Projects/AutoCompleted",
                     type: "POST",
                     dataType: "json",
-                    data: { Prefix: request.term },
+                    data: {projectId:@Model.Id.ToString(), Prefix: request.term },
                     success: function (data) {
                         response($.map(data, function (item) {
                             var _content = $("#Content").val();
@@ -33,7 +34,7 @@
     })
 </script>
 
-@using (Ajax.BeginForm("Create", "WorkIssues", null, 
+@using (Ajax.BeginForm("AddContact", "Projects", new { projectId = Model.Id },
     new AjaxOptions { HttpMethod = "POST", UpdateTargetId = Model.Id.ToString() }, null))
 {
     @Html.AntiForgeryToken()

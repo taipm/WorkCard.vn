@@ -1,4 +1,5 @@
-﻿using CafeT.Text;
+﻿using CafeT.Objects;
+using CafeT.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,17 +19,19 @@ namespace Web.Models
         public bool IsRequired { set; get; } = false;
         public virtual IEnumerable<Contact> Contacts { set; get; }
 
-        public List<string> Links
+        public IEnumerable<string> Links
         {
             get
             {
-                List<string> _links = new List<string>();
-                _links.AddRange(this.Content.GetUrls().ToList());
-                if (!this.Title.IsNullOrEmptyOrWhiteSpace())
-                    _links.AddRange(this.Title.GetUrls().ToList());
-                return _links.Distinct().ToList();
+                return this.GetLinks();
+                //List<string> _links = new List<string>();
+                //_links.AddRange(this.Content.GetUrls().ToList());
+                //if (!this.Title.IsNullOrEmptyOrWhiteSpace())
+                //    _links.AddRange(this.Title.GetUrls().ToList());
+                //return _links.Distinct().ToList();
             }
         }
+
         public Question() : base() { }
 
         public bool HasAnswer()

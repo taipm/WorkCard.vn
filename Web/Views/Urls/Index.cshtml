@@ -17,9 +17,6 @@
         <th>
             @Html.DisplayNameFor(model => model.Address)
         </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.LastestCheck)
         </th>
@@ -32,17 +29,12 @@
             @Html.DisplayFor(modelItem => item.Domain)
         </td>
         <td>
+            @if(item.IsLive())
+            {
+                @Html.Raw("LIVE")
+            }
             @Html.DisplayFor(modelItem => item.Address)
         </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.Title)
-            <br />| @Html.DisplayFor(modelItem => item.CommentId)
-            <br />| @Html.DisplayFor(modelItem => item.StoryId)
-            <br />| @Html.DisplayFor(modelItem => item.IssueId)
-            <br />| @Html.DisplayFor(modelItem => item.ProjectId)
-            <br />| @Html.DisplayFor(modelItem => item.QuestionId)
-            <br />| @Html.DisplayFor(modelItem => item.AnswerId)
-        </td>*@
        
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

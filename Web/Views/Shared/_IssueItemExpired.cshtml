@@ -6,7 +6,7 @@
 
 @if (Model.IsExpired())
 {
-    <div class="card-box kanban-box">
+    <div id="@Model.Id.ToString()" class="card-box kanban-box">
         @*<div class="checkbox-wrapper">
             <div class="checkbox checkbox-success checkbox-single">
                 <input type="checkbox" id="singleCheckbox2" value="option2"
@@ -27,24 +27,11 @@
             {
                 <span class="label label-success pull-right">@Model.TimeToDo.Value phút</span>
             }
-            @if (User.Identity.IsAuthenticated)
-            {
-                @Ajax.ActionLink("Now in (10m) ", "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = DateTime.Now.AddMinutes(10) },
-                            new AjaxOptions
-                            {
-                                UpdateTargetId = "Update-" + Model.Id.ToString(),
-                                HttpMethod = "Post",
-                            }, new { @class = "btn btn-default" })
-            }
-            @if (DateTime.Now.IsInHours(11, 12))
-            {
-                @Ajax.ActionLink("Tomorrow", "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = DateTime.Now.AddDays(1) },
-                            new AjaxOptions
-                            {
-                                UpdateTargetId = "Update-" + Model.Id.ToString(),
-                                HttpMethod = "Post",
-                            }, new { @class = "btn btn-default" })
-            }
+            
+            
+            @*<p>
+                @Html.Partial("_IssueMenu")
+            </p>*@
             <div id="Update-@Model.Id"></div>
             <ul class="list-inline m-b-0">
                 <li>
@@ -68,5 +55,47 @@
                 </li>
             </ul>
         </div>
+        <p>
+            <div class="comment-footer">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @Ajax.ActionLink("Now (+10m) ", "SetWorkOnTime", "WorkIssues", new { id = Model.Id, date = DateTime.Now.AddMinutes(10) },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Update-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, null)
+                    @Ajax.ActionLink("Tomorrow", "SetWorkOnTime", "WorkIssues", new { id = Model.Id, date = DateTime.Now.AddDays(1) },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Update-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, null)
+                    @Ajax.ActionLink("Done", "SetWorkOnTime", "WorkIssues", new { id = Model.Id, date = DateTime.Now.AddDays(1) },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Update-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, null)
+                    if (User.Identity.Name == Model.CreatedBy)
+                    {
+                        <a href="#"><i class="fa fa-edit"></i></a>
+                        @Ajax.ActionLink("Edit ", "Edit", "WorkIssues", new { id = Model.Id },
+                                    new AjaxOptions
+                                    {
+                                        UpdateTargetId = "Status-" + Model.Id.ToString(),
+                                        HttpMethod = "Post",
+                                    }, null)
+                        @Ajax.ActionLink("Delete ", "Delete", "WorkIssues", new { id = Model.Id },
+                                    new AjaxOptions
+                                    {
+                                        UpdateTargetId = Model.Id.ToString(),
+                                        HttpMethod = "Post",
+                                        InsertionMode = InsertionMode.Replace
+                                    }, null)
+                    }
+                }
+            </div>
+        </p>
     </div>
 }

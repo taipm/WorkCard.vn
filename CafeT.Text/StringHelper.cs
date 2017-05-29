@@ -43,15 +43,7 @@ namespace CafeT.Text
         {
             return new NotImplementedException().Message;
         }
-        //#region Navigation
-        //public static string[] GetNextTo(this string text, string word)
-        //{
-        //    return new string[] { };
-        //}
-        //public static string[] GetPrevTo(this string text, string word)
-        //{
-        //    return new string[] { };
-        //}
+        
 
         //#endregion
         #region Commands

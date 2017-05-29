@@ -14,6 +14,17 @@ namespace Web.Managers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public async Task<bool> AddQuestionAsync(Question question)
+        {
+           if(question.IssueId.HasValue)
+            {
+                db.Questions.Add(question);
+                var result = await db.SaveChangesAsync();
+                if (result > 0) return true;
+                return false;
+            }
+            return false;
+        }
         public async Task<bool> AddIssueAsync(WorkIssue issue)
         {
             bool _result = false;

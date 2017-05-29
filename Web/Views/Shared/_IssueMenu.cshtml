@@ -1,57 +1,98 @@
 ﻿@using Web.Models
 @model Web.Models.WorkIssue
 
-@if (User.Identity.IsAuthenticated)
-{
-    //Common menu for all item
-    @*@Html.Partial("_ShareIssue", Model)*@
-
-    if (Model.Status == Web.Models.IssueStatus.Done)
-    {
-        @Html.Raw("Hoàn thành")
-    }
-    else if (Model.Status != Web.Models.IssueStatus.Finished)
+@*@if (User.Identity.IsAuthenticated)
     {
         @Ajax.ActionLink("Finished ", "MarkAsFinished", "WorkIssues", new { Id = Model.Id },
-                            new AjaxOptions
-                            {
-                                UpdateTargetId = "Status-" + Model.Id.ToString(),
-                                HttpMethod = "Post",
-                            }, new { @class = "btn btn-default" })
-    }
-    else if (Model.Status != IssueStatus.Done)
-    {
+                                        new AjaxOptions
+                                        {
+                                            UpdateTargetId = "Status-" + Model.Id.ToString(),
+                                            HttpMethod = "Post",
+                                        }, new { @class = "btn-sm btn-default" })
         @Ajax.ActionLink("Done ", "MarkAsDone", "WorkIssues", new { Id = Model.Id },
-                            new AjaxOptions
-                            {
-                                UpdateTargetId = "Status-" + Model.Id.ToString(),
-                                HttpMethod = "Post",
-                            }, new { @class = "btn btn-danger" })
+                                        new AjaxOptions
+                                        {
+                                            UpdateTargetId = "Status-" + Model.Id.ToString(),
+                                            HttpMethod = "Post",
+                                        }, new { @class = "btn-sm btn-danger" })
+
+        if (Model.Status == Web.Models.IssueStatus.Done)
+        {
+            @Html.Raw("Hoàn thành")
+        }
+        else if (Model.Status != Web.Models.IssueStatus.Finished)
+        {
+            @Ajax.ActionLink("Finished ", "MarkAsFinished", "WorkIssues", new { Id = Model.Id },
+                                new AjaxOptions
+                                {
+                                    UpdateTargetId = "Status-" + Model.Id.ToString(),
+                                    HttpMethod = "Post",
+                                }, new { @class = "btn btn-default" })
+        }
+        else 
+        if (Model.IsTomorrow() && Model.Status != IssueStatus.Done)
+        {
+            @Ajax.ActionLink("Today ", "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = DateTime.Now },
+                                new AjaxOptions
+                                {
+                                    UpdateTargetId = "Update-" + Model.Id.ToString(),
+                                    HttpMethod = "Post",
+                                }, new { @class = "btn btn-default" })
+        }
+        if (Model.IsExpired())
+        {
+            @Ajax.ActionLink("Now in (10m) ", "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = DateTime.Now.AddMinutes(10) },
+                                new AjaxOptions
+                                {
+                                    UpdateTargetId = "Update-" + Model.Id.ToString(),
+                                    HttpMethod = "Post",
+                                }, new { @class = "btn btn-default" })
+        }
+        @Ajax.ActionLink("Push", "PushEmail", "WorkIssues", new { Id = Model.Id},
+                                new AjaxOptions
+                                {
+                                    UpdateTargetId = "Update-" + Model.Id.ToString(),
+                                    HttpMethod = "Post",
+                                }, new { @class = "btn btn-default" })
     }
-    if (Model.IsTomorrow() && Model.Status != IssueStatus.Done)
-    {
-        @Ajax.ActionLink("Today ", "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = DateTime.Now },
-                            new AjaxOptions
-                            {
-                                UpdateTargetId = "Update-" + Model.Id.ToString(),
-                                HttpMethod = "Post",
-                            }, new { @class = "btn btn-default" })
-    }
-    if (Model.IsExpired())
-    {
-        @Ajax.ActionLink("Now in (10m) ", "SetWorkOnTime", "WorkIssues", new { Id = Model.Id, date = DateTime.Now.AddMinutes(10) },
-                            new AjaxOptions
-                            {
-                                UpdateTargetId = "Update-" + Model.Id.ToString(),
-                                HttpMethod = "Post",
-                            }, new { @class = "btn btn-default" })
-    }
-    @Ajax.ActionLink("Push", "PushEmail", "WorkIssues", new { Id = Model.Id},
-                            new AjaxOptions
-                            {
-                                UpdateTargetId = "Update-" + Model.Id.ToString(),
-                                HttpMethod = "Post",
-                            }, new { @class = "btn btn-default" })
-}
+*@
 <div id="Update-@Model.Id"></div>
 <div id="Status-@Model.Id"></div>
+<div class="comment-footer">
+    @if (User.Identity.IsAuthenticated && (User.Identity.Name == Model.CreatedBy))
+    {
+        @Ajax.ActionLink(" Xóa ", "Delete", "WorkIssues", new { Id = Model.Id },
+                                    new AjaxOptions
+                                    {
+                                        UpdateTargetId = "Status-" + Model.Id.ToString(),
+                                        HttpMethod = "Post",
+                                    }, null)
+    }
+    @if (User.Identity.IsAuthenticated && (User.Identity.Name == Model.CreatedBy))
+    {
+        @Ajax.ActionLink(" Cập nhật ", "Edit", "WorkIssues", new { Id = Model.Id },
+                                    new AjaxOptions
+                                    {
+                                        UpdateTargetId = "Status-" + Model.Id.ToString(),
+                                        HttpMethod = "Post",
+                                    }, null)
+    }
+    @if (User.Identity.IsAuthenticated && Model.IsOf(User.Identity.Name))
+    {
+        @Ajax.ActionLink(" Hỏi ", "AddQuestion", "WorkIssues", new { issueId = Model.Id },
+                                    new AjaxOptions
+                                    {
+                                        UpdateTargetId = "Status-" + Model.Id.ToString(),
+                                        HttpMethod = "Get",
+                                    }, null)
+    }
+    @if (Model.Status != IssueStatus.Done)
+    {
+        @Ajax.ActionLink("Done ", "MarkAsDone", "WorkIssues", new { Id = Model.Id },
+                                new AjaxOptions
+                                {
+                                    UpdateTargetId = "Status-" + Model.Id.ToString(),
+                                    HttpMethod = "Post",
+                                }, null)
+    }
+</div>

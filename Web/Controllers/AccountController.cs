@@ -221,7 +221,7 @@ namespace Web.Controllers
                     var folder = System.Web.HttpContext.Current.Server.MapPath("~/App_Data/Uploads/" + model.Email.Replace("@", "_"));
                     if (!Directory.Exists(folder))
                         Directory.CreateDirectory(folder);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "WorkIssues");
                 }
                 AddErrors(result);
             }
@@ -465,7 +465,7 @@ namespace Web.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "WorkIssues");
         }
 
         //

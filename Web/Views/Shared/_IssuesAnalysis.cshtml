@@ -5,8 +5,7 @@
 {
     var _totalTime = (double)Model.Where(t => t.TimeToDo.HasValue).Sum(t => t.TimeToDo.Value);
     var _percent = (double)Model.Where(t => t.TimeToDo.HasValue).Sum(t => t.TimeToDo.Value) / (8 * 60) * 100;
-    @*@Html.Raw(@Model.Count().ToString() + "|" + "Thời gian" +  @_totalTime + "(phút) = " + @_percent.ToString() +"%")*@
     <h4 class="header-title m-t-0 m-b-30 text-primary">
-        @Html.Raw("Items ") (@Model.Count()) | Thời gian @_totalTime (phút) = @_percent.ToString() %
+        @Html.Raw("Items ") (@Model.Count()) | Thời gian @_totalTime (phút) = @String.Format("{0:0.##}", _percent) %
     </h4>
 }
