@@ -94,5 +94,16 @@
                                     UpdateTargetId = "Status-" + Model.Id.ToString(),
                                     HttpMethod = "Post",
                                 }, null)
+
+        if (Model.IsToday())
+        {
+            @Ajax.ActionLink("Tomorrow", "SetWorkOnTime", "WorkIssues", new { id = Model.Id, date = DateTime.Now.AddDays(1) },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "Update-" + Model.Id.ToString(),
+                                HttpMethod = "Post",
+                            }, null)
+        }
     }
+
 </div>

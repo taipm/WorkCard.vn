@@ -21,15 +21,23 @@
                 <strong>Full Name :</strong> <span class="m-l-15">
                     @if (!Model.FirstName.IsNullOrEmptyOrWhiteSpace())
                     {
-                        <span class="name">@Model.LastName + " " + @Model.FirstName</span>
+                        <span class="name">
+                            @Model.LastName
+                            @Html.Raw(" ")
+                            @Model.FirstName
+                        </span>
                     }
                 </span>
             </p>
-            <p class="text-muted font-13"><strong>Mobile :</strong><span class="m-l-15">@Model.OfficeName</span></p>
-            <p class="text-muted font-13"><strong>Email :</strong> 
-                <span class="desc">@Model.Email | @Model.CreatedDate.Value.TimeAgo()</span>
+            <p class="text-muted font-13"><strong>Mobile : @Model.MobilePhone</strong>
+            <p>
+                Office: @Model.OfficeName
             </p>
-            <p class="text-muted font-13"><strong>Location :</strong> <span class="m-l-15">@Model.Address</span></p>
+            <p class="text-muted font-13"><strong>Email :</strong> 
+                <span class="desc">@Model.Email</span>
+            </p>
+            <p>Đã tham gia: @Model.CreatedDate.Value.TimeAgo()</p>
+            <p class="text-muted font-13"><strong>Địa chỉ :</strong> <span class="m-l-15">@Model.Address</span></p>
         </div>
         <button type="button" class="btn btn-custom btn-rounded waves-effect waves-light">Send Message</button>
     </div>

@@ -29,18 +29,21 @@ namespace Web.Models
     {
         public string FirstName { set; get; } = string.Empty;
         public string LastName { set; get; } = string.Empty;
-        public string Email { set; get; }
-        public string HomeAddress { set; get; }
+        
+        public string Email { set; get; } = string.Empty;
+        public string MobilePhone { set; get; } = string.Empty;
+
+        public string HomeAddress { set; get; } = string.Empty;
+        public string HomePhone { set; get; } = string.Empty;
+
         public string OfficeName { set; get; }
+        public string OfficePhone { set; get; }
+        
         public string About { set; get; }
         public Address Address { set; get; }
-        //public string Title { set; get; }
-        //public string OfficeAddress { set; get; }
 
         public Guid? ProjectId { set; get; }
         public Guid? IssueId { set; get; }
-
-        //public virtual IEnumerable<Phone> Phones { set; get; }
 
         public string UserName { set; get; }
         public bool? IsRegistered { set; get; }
@@ -48,6 +51,12 @@ namespace Web.Models
         public Contact() : base() { }
         public Contact(string email):base()
         {
+            Email = email;
+        }
+        public Contact(string firstName, string lastName, string email) : base()
+        {
+            FirstName = firstName;
+            LastName = lastName;
             Email = email;
         }
     }

@@ -71,7 +71,7 @@
                                 UpdateTargetId = "Update-" + Model.Id.ToString(),
                                 HttpMethod = "Post",
                             }, null)
-                    @Ajax.ActionLink("Done", "SetWorkOnTime", "WorkIssues", new { id = Model.Id, date = DateTime.Now.AddDays(1) },
+                    @Ajax.ActionLink("Done", "MarkAsDone", "WorkIssues", new { id = Model.Id, date = DateTime.Now.AddDays(1) },
                             new AjaxOptions
                             {
                                 UpdateTargetId = "Update-" + Model.Id.ToString(),
