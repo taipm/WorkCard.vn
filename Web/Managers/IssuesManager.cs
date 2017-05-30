@@ -48,7 +48,7 @@ namespace Web.Managers
                 foreach (string _member in _innerMembers)
                 {
                     Contact _contact = new Contact();
-                    _result =  await _contactManager.AddAsync(_contact);
+                    _result =  await _contactManager.AddContactAsync(_contact);
                     if (!_result) return false;
                 }
             }

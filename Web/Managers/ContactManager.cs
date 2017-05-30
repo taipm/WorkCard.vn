@@ -15,14 +15,14 @@ namespace Web.Managers
             bool result = true;
             foreach(var contact in contacts)
             {
-                result =  result && await AddAsync(contact);
+                result =  result && await AddContactAsync(contact);
                 //if (!result) return false;
             }
             return result;
         }
 
 
-        public async System.Threading.Tasks.Task<bool> AddAsync(Contact contact)
+        public async System.Threading.Tasks.Task<bool> AddContactAsync(Contact contact)
         {
             var _myContacts = db.Contacts.Where(t => t.UserName == contact.UserName).Select(t => t.Email);
             if (!_myContacts.Contains(contact.Email))

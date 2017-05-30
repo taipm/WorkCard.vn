@@ -34,7 +34,7 @@
 </script>
 
 @using (Ajax.BeginForm("Create", "WorkIssues", null, 
-    new AjaxOptions { HttpMethod = "POST", UpdateTargetId = Model.Id.ToString() }, null))
+    new AjaxOptions { HttpMethod = "POST", UpdateTargetId = Model.Id.ToString(), InsertionMode = InsertionMode.InsertBefore }, null))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => Model.Id)

@@ -284,9 +284,7 @@ namespace Web.Controllers
                         _contact.Email = _member;
                         _contact.UserName = User.Identity.Name;
                         _contact.CreatedBy = User.Identity.Name;
-
-                        db.Contacts.Add(_contact);
-                        await db.SaveChangesAsync();
+                        await _contactManager.AddContactAsync(_contact);
                     }
                 }
 
