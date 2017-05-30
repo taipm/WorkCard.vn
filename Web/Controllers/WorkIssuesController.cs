@@ -21,6 +21,7 @@ namespace Web.Controllers
     public class WorkIssuesController : BaseController
     {
         IssuesManager _manager = new IssuesManager();
+        ContactManager _contactManager = new ContactManager();
         public WorkIssuesController(IUnitOfWorkAsync unitOfWorkAsync) : base(unitOfWorkAsync)
         {
 
@@ -34,25 +35,64 @@ namespace Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public JsonResult AutoCompleted(string Prefix)
         {
+            //Note : you can bind same list from database   
+            Dictionary<string, string> _dict = new Dictionary<string, string>();
+            var _contacts = _contactManager.GetContacts(User.Identity.Name);
+            foreach (var _contact in _contacts)
+            {
+                if (!_contact.FirstName.IsNullOrEmptyOrWhiteSpace())
+                    _dict.Add(_contact.FirstName, _contact.Email);
+                if (!_contact.LastName.IsNullOrEmptyOrWhiteSpace())
+                    _dict.Add(_contact.LastName, _contact.Email);
+            }
+            char _lastChar = Prefix.ToCharArray().LastOrDefault();
+            if (_lastChar == '@')
+            {
+                var _emails = _contacts.Select(t => t.Email).Distinct();
+                foreach (var _email in _emails)
+                {
+                    _dict.Add(_email, _email);
+                }
+            }
+
             //Process Prefix
             string _text = Prefix;
             string _lastWord = Prefix.ToWords().LastOrDefault();
-            if(_text.EndsWith(" "))
+            if (_text.EndsWith(" "))
+            {
                 _text = _text.DeleteEndTo(" ");
-            Prefix = _lastWord;
-            //Note : you can bind same list from database   
-            Dictionary<string, string> _dict = new Dictionary<string, string>();
-            _dict.Add("@Now", DateTime.Now.ToString());
-            _dict.Add("@Today", DateTime.Today.ToString());
-            _dict.Add("@Tomorrow", DateTime.Today.AddDays(1).ToString());
-            _dict.Add("@Yesterday", DateTime.Today.AddDays(-1).ToString());
-            _dict.Add("huynhquy9x@gmail.com", "Huỳnh Văn Quy");
-            _dict.Add("taipm.vn@gmail.com", "Phan Minh Tài");
+            }
+
+            if (!_lastWord.IsNullOrEmptyOrWhiteSpace())
+                Prefix = _lastWord;
+
             var _keyWord = _dict.Where(t => t.Key.Contains(Prefix) || t.Value.Contains(Prefix)).Select(t => t.Value);
             return Json(_keyWord, JsonRequestBehavior.AllowGet);
         }
+
+        //[HttpPost]
+        //public JsonResult AutoCompleted(string Prefix)
+        //{
+        //    //Process Prefix
+        //    string _text = Prefix;
+        //    string _lastWord = Prefix.ToWords().LastOrDefault();
+        //    if(_text.EndsWith(" "))
+        //        _text = _text.DeleteEndTo(" ");
+        //    Prefix = _lastWord;
+        //    //Note : you can bind same list from database   
+        //    Dictionary<string, string> _dict = new Dictionary<string, string>();
+        //    _dict.Add("@Now", DateTime.Now.ToString());
+        //    _dict.Add("@Today", DateTime.Today.ToString());
+        //    _dict.Add("@Tomorrow", DateTime.Today.AddDays(1).ToString());
+        //    _dict.Add("@Yesterday", DateTime.Today.AddDays(-1).ToString());
+        //    _dict.Add("huynhquy9x@gmail.com", "Huỳnh Văn Quy");
+        //    _dict.Add("taipm.vn@gmail.com", "Phan Minh Tài");
+        //    var _keyWord = _dict.Where(t => t.Key.Contains(Prefix) || t.Value.Contains(Prefix)).Select(t => t.Value);
+        //    return Json(_keyWord, JsonRequestBehavior.AllowGet);
+        //}
 
         // GET: WorkIssues
         public async Task<ActionResult> SearchBy(string keyWord)

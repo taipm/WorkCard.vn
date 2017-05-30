@@ -52,10 +52,17 @@ namespace Web.Managers
             }
             return _results;
         }
+
         public IEnumerable<Contact> GetContactsOfIssue(Guid issueId)
         {
             return db.Contacts.Where(t => t.IssueId == issueId);
         }
+
+        public IEnumerable<Contact> GetContacts(string userName)
+        {
+            return db.Contacts.Where(t => t.CreatedBy == userName);
+        }
+
         public IEnumerable<WorkIssue> GetTodayIssues(Guid contactId)
         {
             return GetAllIssues(contactId).Where(t => t.IsToday()).AsEnumerable();

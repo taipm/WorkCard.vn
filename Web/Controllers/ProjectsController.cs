@@ -37,7 +37,7 @@ namespace Web.Controllers
                 if(!_contact.FirstName.IsNullOrEmptyOrWhiteSpace())
                     _dict.Add(_contact.FirstName, _contact.Email);
                 if (!_contact.LastName.IsNullOrEmptyOrWhiteSpace())
-                    _dict.Add(_contact.FirstName, _contact.Email);
+                    _dict.Add(_contact.LastName, _contact.Email);
             }
             char _lastChar = Prefix.ToCharArray().LastOrDefault();
             if(_lastChar == '@')
