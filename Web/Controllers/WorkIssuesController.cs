@@ -274,7 +274,10 @@ namespace Web.Controllers
                 workIssue.AutoAdjust();
                 db.Issues.Add(workIssue);
                 await db.SaveChangesAsync();
-                
+
+                //Notify
+                await workIssue.EmailNotifyAsync();
+
                 if(workIssue.HasInnerMembers())
                 {
                     var _innerMembers = workIssue.GetInnerMembers();
@@ -321,9 +324,18 @@ namespace Web.Controllers
         {
             WorkIssue workIssue = _unitOfWorkAsync.RepositoryAsync<WorkIssue>()
                 .Query().Select().Where(t => t.Id == id).FirstOrDefault();
-
-            EmailService _email = new EmailService();
-            await _email.SendAsync(workIssue);
+            var _emails = workIssue.GetEmailsFromObject();
+            if(_emails != null && _emails.Count() > 0)
+            {
+                _emails = _emails.Distinct();
+                foreach(string _email in _emails)
+                {
+                    OutlookEmailService _emailService = new OutlookEmailService();
+                    _emailService.ToEmail = _email;
+                    await _emailService.SendAsync(workIssue);
+                }
+            }
+            
             if (Request.IsAjaxRequest())
             {
                 return PartialView("_WorkTime", "Sent email");

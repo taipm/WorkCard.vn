@@ -16,6 +16,92 @@ using System.Xml.Serialization;
 
 namespace CafeT.Objects
 {
+    public static class TypeExtendsions
+    {
+        /// <summary>
+        /// Get all the fields of a class
+        /// </summary>
+        /// <param name="type">Type object of that class</param>
+        /// <returns></returns>
+        public static IEnumerable<FieldInfo> GetAllFields(this Type type)
+        {
+            if (type == null)
+            {
+                return Enumerable.Empty<FieldInfo>();
+            }
+
+            BindingFlags flags = BindingFlags.Public |
+                                 BindingFlags.NonPublic |
+                                 BindingFlags.Static |
+                                 BindingFlags.Instance |
+                                 BindingFlags.DeclaredOnly;
+
+            return type.GetFields(flags).Union(GetAllFields(type.BaseType));
+        }
+
+        /// <summary>
+        /// Get all properties of a class
+        /// </summary>
+        /// <param name="type">Type object of that class</param>
+        /// <returns></returns>
+        public static IEnumerable<PropertyInfo> GetAllProperties(this Type type)
+        {
+            if (type == null)
+            {
+                return Enumerable.Empty<PropertyInfo>();
+            }
+
+            BindingFlags flags = BindingFlags.Public |
+                                 BindingFlags.NonPublic |
+                                 BindingFlags.Static |
+                                 BindingFlags.Instance |
+                                 BindingFlags.DeclaredOnly;
+
+            return type.GetProperties(flags).Union(GetAllProperties(type.BaseType));
+        }
+
+        /// <summary>
+        /// Get all constructors of a class
+        /// </summary>
+        /// <param name="type">Type object of that class</param>
+        /// <returns></returns>
+        public static IEnumerable<ConstructorInfo> GetAllConstructors(this Type type)
+        {
+            if (type == null)
+            {
+                return Enumerable.Empty<ConstructorInfo>();
+            }
+
+            BindingFlags flags = BindingFlags.Public |
+                                 BindingFlags.NonPublic |
+                                 BindingFlags.Static |
+                                 BindingFlags.Instance |
+                                 BindingFlags.DeclaredOnly;
+
+            return type.GetConstructors(flags);
+        }
+
+        /// <summary>
+        /// Get all methods of a class
+        /// </summary>
+        /// <param name="type">Type object for that class</param>
+        /// <returns></returns>
+        public static IEnumerable<MethodInfo> GetAllMethods(this Type type)
+        {
+            if (type == null)
+            {
+                return Enumerable.Empty<MethodInfo>();
+            }
+
+            BindingFlags flags = BindingFlags.Public |
+                                 BindingFlags.NonPublic |
+                                 BindingFlags.Static |
+                                 BindingFlags.Instance |
+                                 BindingFlags.DeclaredOnly;
+
+            return type.GetMethods(flags).Union(GetAllMethods(type.BaseType));
+        }
+    }
     public static class ObjectExtensions
     {
         public static Exception ToException(this object o)
@@ -51,25 +137,19 @@ namespace CafeT.Objects
             Dictionary<string, object> _dict = new Dictionary<string, object>();
             // Include the type of the object
             System.Type _type = instance.GetType();
-            FieldInfo[] fi = _type.GetFields();
-            if (fi.Length > 0)
+
+            FieldInfo[] fi = _type.GetAllFields().ToArray();
+
+            foreach (FieldInfo f in fi)
             {
-                foreach (FieldInfo f in fi)
+                string name = f.Name; // Get string name
+                object temp = f.GetValue(instance); // Get value
+                if (temp is string) // See if it is a string.
                 {
-                    _dict.Add(f.ToString(), f.GetValue(instance));
+                    _dict.Add(name, temp);
                 }
             }
 
-            PropertyInfo[] pi = _type.GetProperties()
-                                    .Where(p => p.GetIndexParameters().Length == 0).ToArray();
-            if(_dict.Count > 0)
-            {
-                foreach (PropertyInfo p in pi)
-                {
-                    _dict.Add(p.ToString(), p.GetValue(instance));
-                }
-            }
-            
             return _dict;
         }
         /// <summary>
@@ -101,7 +181,24 @@ namespace CafeT.Objects
 
             return _urls;
         }
+        public static IEnumerable<string> GetEmailsFromObject<T>(this T instance) where T : class
+        {
+            List<string> _emails = new List<string>();
+            var _fields = instance.Fields();
+            foreach (var item in _fields)
+            {
+                try
+                {
+                    _emails.AddRange(item.Value.ToJson().GetEmails().ToList());
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
 
+            return _emails;
+        }
         public static string GetObjectAllFields<T>(this T instance) where T : class
         {
             StringBuilder sb = new StringBuilder();

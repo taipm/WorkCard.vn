@@ -11,9 +11,104 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web;
 using CafeT.Html;
+using FluentEmail.Markdown;
+using FluentEmail;
+using CafeT.Objects;
 
 namespace Web
 {
+    public class OutlookEmailService : IIdentityMessageService, IDisposable
+    {
+        public string ToEmail { set; get; }
+        public void Dispose()
+        {
+            this.Dispose();
+        }
+        public void SendAsMarkDown(WorkIssue model)
+        {
+            Email.DefaultRenderer = new MarkdownRenderer();
+
+            // Use FluentEmail without the need to call UsingTemplateEngine() each time
+            try
+            {
+                var email = Email
+                    .From("taipm.vn@outlook.com")
+                    .BodyAsHtml()
+                    .Subject("WorkCard.vn - Your email")
+                    .UsingTemplateEngine(new MarkdownRenderer())
+                    ;
+
+                SmtpClient client = new SmtpClient
+                {
+                    EnableSsl = true,
+                    Host = "smtp.live.com",
+                    Port = 587,
+                    Credentials = new NetworkCredential("taipm.vn@outlook.com", "P@$$w0rdPMT789")
+                };
+
+                var _emails = model.GetEmailsFromObject();
+                if (_emails != null && _emails.Count() > 0)
+                {
+                    _emails = _emails.Distinct();
+                    foreach (var _email in _emails)
+                    {
+                        email.UsingTemplateFromFile(@"~/EmailTemplates/CreateIssueEmail.md",
+                                                new
+                                                {
+                                                    Id = model.Id,
+                                                    Name = _email,
+                                                    Title = model.Title,
+                                                    Content = model.Content,
+                                                    Start = model.Start,
+                                                    End = model.End,
+                                                    CreatedBy = model.CreatedBy,
+                                                    CreatedDate = model.CreatedDate
+                                                });
+                        email.To(_email);
+                        email.UsingClient(client);
+                        email.Send();
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+
+        public Task SendAsync(IdentityMessage message)
+        {
+            MailMessage _msg = new MailMessage("taipm.vn@outlook.com", ToEmail);
+            _msg.Subject = message.Subject;
+            _msg.To.Add(new MailAddress(message.Destination));
+            _msg.Body = message.Body;
+            _msg.IsBodyHtml = true;
+
+            using (SmtpClient client = new SmtpClient
+            {
+                EnableSsl = true,
+                Host = " smtp.live.com",
+                Port = 587,
+                Credentials = new NetworkCredential("taipm.vn@outlook.com", "P@$$w0rdPMT789")
+            })
+            {
+                client.Send(_msg);
+            }
+            return Task.FromResult(0);
+        }
+
+        public Task SendAsync(WorkIssue model)
+        {
+            IdentityMessage _msg = new IdentityMessage();
+            if(!model.Title.IsNullOrEmptyOrWhiteSpace())
+            _msg.Subject = model.Title.RemoveHtml();
+            _msg.Body = model.Content;
+            _msg.Destination = ToEmail;
+            return this.SendAsync(_msg);
+        }
+    }
+
     public class EmailService : IIdentityMessageService, IDisposable
     {
         public Task SendAsync(IdentityMessage message)

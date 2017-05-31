@@ -8,6 +8,7 @@ using CafeT.Text;
 using CafeT.Time;
 using CafeT.Html;
 using CafeT.Objects;
+using System.Threading.Tasks;
 
 namespace Web.Models
 {
@@ -308,11 +309,13 @@ namespace Web.Models
             this.Start = DateTime.Today.SetStartWorkingTime();
             this.End = DateTime.Today.SetStartWorkingTime().AddMinutes(30);
         }
+
         public void SetNow()
         {
             this.Start = DateTime.Now;
             this.End = DateTime.Now.AddMinutes(30);
         }
+
         public void SetTomorrow()
         {
             this.Start = DateTime.Today.AddDays(1).SetStartWorkingTime();
@@ -342,6 +345,25 @@ namespace Web.Models
                     Message += "\n Đã quá hạn " + this.End.Value.TimeAgo()  + ". Vui lòng cập nhật tiến độ";
             }
             return Message;
+        }
+
+        //Created by: Phan Minh Tai
+        //Must to complete with EmailService config
+        public async Task EmailNotifyAsync()
+        {
+            OutlookEmailService _emailService = new OutlookEmailService();
+            _emailService.SendAsMarkDown(this);
+            //var _emails = this.GetEmailsFromObject();
+            //if(_emails != null && _emails.Count()>0)
+            //{
+            //    _emails = _emails.Distinct();
+            //    foreach(var _email in _emails)
+            //    {
+            //        _emailService.ToEmail = _email;
+                    
+            //        //await _emailService.SendAsync(this);
+            //    }
+            //}
         }
     }
 }
